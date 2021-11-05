@@ -1,5 +1,10 @@
 package com.insa.app;
 
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.net.URL;
+
 /**
  * Hello world!
  *
