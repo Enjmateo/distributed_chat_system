@@ -3,40 +3,45 @@ package com.insa.communication;
 import java.util.UUID;
 
 public class Data {
-    private static String DB_URL = null;
+    private static String dbURL = null;
 
-    private static String DB_USERNAME = null;
-    private static String DB_PASSWORD = null;
+    private static String dbUsername = null;
+    private static String dbPassword = null;
 
-    private static UUID uuid = null;
+    private static String uuid = null;
 
-    public Data () {}
+    public Data () {
+
+        //SI PAS D'UUID :
+        uuid = UUIDManager.createNewUUID();
+    }
+
 
     protected static String getDBUrl() throws Exception {
-        if (DB_URL == null) {
+        if (dbURL == null) {
             throw new Exception("[!] Data not found (DB url)");
         } else {
-            return DB_URL;
+            return dbURL;
         }
     }
 
     protected static String getDBUsername() throws Exception {
-        if (DB_USERNAME == null) {
+        if (dbUsername == null) {
             throw new Exception("[!] Data not found (DB username)");
         } else {
-            return DB_USERNAME;
+            return dbUsername;
         }
     }
 
     protected static String getDBPassword() throws Exception {
-        if (DB_PASSWORD == null) {
+        if (dbPassword == null) {
             throw new Exception("[!] Data not found (DB password)");
         } else {
-            return DB_PASSWORD;
+            return dbPassword;
         }
     }
 
-    protected static UUID getUUID() throws Exception {
+    protected static String getUUID() throws Exception {
         if (uuid == null) {
             throw new Exception("[!] Data not found (UUID)");
         } else {

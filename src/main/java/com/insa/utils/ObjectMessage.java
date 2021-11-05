@@ -1,4 +1,4 @@
-package com.insa.utils.tcp;
+package com.insa.utils;
 import java.io.Serializable;
 
 
