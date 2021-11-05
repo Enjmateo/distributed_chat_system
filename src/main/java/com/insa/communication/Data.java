@@ -1,4 +1,6 @@
 package com.insa.communication;
+import java.util.UUID;
+import org.json.*;
 
 public class Data {
     private static String dbURL = null;
@@ -6,12 +8,12 @@ public class Data {
     private static String dbUsername = null;
     private static String dbPassword = null;
 
-    private static String uuid = null;
+    private static UUID uuid = null;
 
     public Data () {
-
+        JSONParser parser = new JSONParser();
         //SI PAS D'UUID :
-        uuid = UUIDManager.createNewUUID();
+        uuid = UUID.randomUUID();
     }
 
 
@@ -43,7 +45,7 @@ public class Data {
         if (uuid == null) {
             throw new Exception("[!] Data not found (UUID)");
         } else {
-            return uuid;
+            return uuid.toString();
         }
     }
 }
