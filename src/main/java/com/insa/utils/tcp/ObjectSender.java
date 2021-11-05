@@ -1,4 +1,4 @@
-package com.insa.utils;
+package com.insa.utils.tcp;
 
 public class ObjectSender {
     
