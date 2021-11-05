@@ -1,7 +1,5 @@
 package com.insa.communication;
 
-import java.util.UUID;
-
 public class Data {
     private static String dbURL = null;
 
