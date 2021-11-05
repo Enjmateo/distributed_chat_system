@@ -1,7 +1,6 @@
 package com.insa.app;
 
 import com.insa.gui.*;
-import com.insa.communication.*;
 
 public class App 
 {
@@ -11,11 +10,7 @@ public class App
         
         /* DB connection */ 
         System.out.print( "[+] Connecting to database..." );
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        
         System.out.println( "Ok." );
 
         /* Launching main windows */
