@@ -1,5 +1,7 @@
 package com.insa.communication;
 import java.util.UUID;
+
+import java.io.*;
 import org.json.*;
 
 public class Data {
@@ -8,14 +10,42 @@ public class Data {
     private static String dbUsername = null;
     private static String dbPassword = null;
 
-    private static UUID uuid = null;
+    private static String uuid = null;
 
     public Data () {
-        JSONParser parser = new JSONParser();
-        //SI PAS D'UUID :
-        uuid = UUID.randomUUID();
+        String text = "";
+        try {
+            InputStream fileInput = new FileInputStream("./data.json");
+            text = new String(fileInput.readAllBytes());
+            fileInput.close();
+        }catch(IOException e) {
+            //TODO Add error window or create a new dile data.json
+        }
+
+        //System.out.println(text);
+        JSONObject json = new JSONObject(text);
+        if(json.isNull("uuid")) {
+            uuid = UUID.randomUUID().toString();
+            json.put("uuid", uuid);
+            try {
+                OutputStream fileOutput = new FileOutputStream("./data.json");
+                fileOutput.write(json.toString().getBytes());
+                fileOutput.close();
+            } catch (Exception e) {
+                //TODO: handle exception
+            }
+        } else {
+            uuid = json.getString("uuid");
+        }
+        dbURL = json.getString("dbAddr");
+        dbUsername = json.getString("dbUser");
+        dbPassword = json.getString("dbPassword");        
     }
 
+    public static void main(String[] args) {
+        //TODO à supprimer (tests)
+        new Data();
+    }
 
     protected static String getDBUrl() throws Exception {
         if (dbURL == null) {
