@@ -7,10 +7,10 @@
   <groupId>com.insa.app</groupId>
   <artifactId>distributed_chat_system</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
 
   <name>distributed_chat_system</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <url></url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,6 +29,11 @@
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
         <version>8.0.27</version>
+    </dependency>
+    <dependency>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>20190722</version>
     </dependency>
   </dependencies>
 
