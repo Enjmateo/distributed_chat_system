@@ -11,11 +11,6 @@ import java.io.File;
 import java.io.IOException;
 
 public class MainWindows implements ActionListener {
-    JFrame frame;
-    JPanel panel;
-    JTextField textField;
-    JButton button;
-    Container contentPane;
 
     private void initGTK() {
         try {
@@ -25,39 +20,68 @@ public class MainWindows implements ActionListener {
         }
     }
 
-    public void launchMainFrame() {
-        // GTK+
-        initGTK();
+    /**
+     * @deprecated
+     * @param text
+     * @param container
+     */
+    private static void addButton(String text, Container container) {
+        JButton button = new JButton(text);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        container.add(button);
+    }
 
-        // Creating main frame
-        frame = new JFrame("Java chat system");
-        panel = new JPanel();
-        contentPane = frame.getContentPane();
-        contentPane.setLayout(new CardLayout());
+    /**
+     * Migration vers le layout floating pour plus de flexibilité en cours.
+     * Voir les examples, ajouter deux panels (image et b+text)
+     * @param contentPane
+     */
+    private static void addComponents(Container contentPane) {
+        //contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+        FlowLayout el = new FlowLayout();
+        contentPane.setLayout(el);
+        el.setAlignment(FlowLayout.TRAILING);
 
         // Logo
         BufferedImage logo;
         try {
             logo = ImageIO.read(new File("img/logo_s.png"));
             JLabel picLabel = new JLabel(new ImageIcon(logo));
-            contentPane.add(picLabel, BorderLayout.PAGE_START);
+            picLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            contentPane.add(picLabel);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        contentPane.add(panel, BorderLayout.CENTER);
 
-        // Page stand
-        textField = new JTextField("Pseudo");
-        button = new JButton("Go!");
+        // Pseudo field
+        JTextField textField = new JTextField("Pseudo", 20);
         textField.setAlignmentX(Component.CENTER_ALIGNMENT);
+        textField.setSize(new Dimension(120, 120));
+        textField.setHorizontalAlignment(JTextField.CENTER);
+
+        // Button go
+        JButton button = new JButton("Go!");
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        contentPane.add(textField, BorderLayout.CENTER);
-        contentPane.add(button, BorderLayout.CENTER);
-        
+        contentPane.add(textField);
+        contentPane.add(button);
 
+        // Debug: To remove
+        addButton("Long-Named Button 4", contentPane);
+    }
+
+    public void start() {
+        // GTK+
+        initGTK();
+
+        // Creating main frame
+        JFrame frame = new JFrame("Java chat system");
+        Container contentPane = frame.getContentPane();
+        contentPane.setLayout(new CardLayout());
+
+        addComponents(frame.getContentPane());
+        
         // Frame properties
-        frame.setPreferredSize(new Dimension(800, 400));
         frame.pack();
         frame.setVisible(true);
 
@@ -71,7 +95,7 @@ public class MainWindows implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-
+        ExitHandler.exit();
     }
     
 }
