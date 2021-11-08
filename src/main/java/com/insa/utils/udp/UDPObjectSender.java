@@ -4,10 +4,10 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-public class ObjectSender {
+public class UDPObjectSender {
     private static DatagramSocket socket = null;
 
-    public ObjectSender() throws Exception{
+    public UDPObjectSender() throws Exception{
         socket = new DatagramSocket();
     }
 

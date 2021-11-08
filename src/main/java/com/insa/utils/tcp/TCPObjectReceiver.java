@@ -1,5 +1,5 @@
 package com.insa.utils.tcp;
 
-public class ObjectReceiver {
+public class TCPObjectReceiver {
     
 }
