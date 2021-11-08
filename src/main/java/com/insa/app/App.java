@@ -15,6 +15,6 @@ public class App
 
         /* Launching main windows */
         MainWindows mw = new MainWindows();
-        mw.launchMainFrame();
+        mw.start();
     }
 }
