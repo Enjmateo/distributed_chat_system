@@ -14,19 +14,27 @@ public class App
    
         System.out.println( "[+] Printing welcome windows" );
         WelcomeWindows ww = new WelcomeWindows();
-        ww.start();
-        ww.dispose();
+
+        // Debug
+        ww.skipWindows();
     }
 
     /**
      * Main thread launch after welcome windows
      * @param Pseudo
      */
-    public static void mainThread ( String Pseudo )
+    public static void mainThread ( String pseudo )
     {
-        System.out.println( "[+] Pseudo: " + Pseudo );
+        System.out.println( "[+] Pseudo: " + pseudo );
+        
         MainWindows mw = new MainWindows();
-        mw.start();
 
+        mw.setStatus("Idle (Debug)");
+        mw.setPseudo(pseudo);
+        mw.addUser(pseudo);
+
+        // Test
+        mw.addUser("Alias");
+        mw.addUser("Lambda");
     }
 }

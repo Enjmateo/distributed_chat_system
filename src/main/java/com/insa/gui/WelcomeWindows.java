@@ -14,13 +14,7 @@ import java.io.IOException;
 public class WelcomeWindows extends JFrame implements ActionListener {
     private JButton button;
     private JTextField textField;
-    private JFrame frame;
 
-    /**
-     * Migration vers le layout floating pour plus de flexibilité en cours.
-     * Voir les examples, ajouter deux panels (image et b+text)
-     * @param contentPane
-     */
     private void addComponents(final Container contentPane) {
         contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 
@@ -61,23 +55,22 @@ public class WelcomeWindows extends JFrame implements ActionListener {
         contentPane.add(login, BorderLayout.SOUTH); ;
     }
 
-    public void start() {
+    public WelcomeWindows() {
+        super("Java chat system - Welcome");
+
         // GTK+
         GUIUtils.initGTK();
 
-        // Creating main frame
-        frame = new JFrame("Java chat system - Welcome");
-        Container contentPane = frame.getContentPane();
-        contentPane.setLayout(new CardLayout());
+        setLayout(new CardLayout());
 
-        addComponents(frame.getContentPane());
+        addComponents(this.getContentPane());
         
         // Frame properties
-        frame.pack();
-        frame.setVisible(true);
+        pack();
+        setVisible(true);
 
         // Adding listener
-        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 ExitHandler.exit();
@@ -85,10 +78,19 @@ public class WelcomeWindows extends JFrame implements ActionListener {
         });
     }
 
+    /** DEBUG
+     * @see actionPerformed
+     */
+    public void skipWindows() {
+        System.out.println( "[!] Skipping..." );
+        App.mainThread("M. Louis DEBUG");
+        this.dispose();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         System.out.println( "[+] Go!" );
         App.mainThread(textField.getText());
-        frame.dispose();
+        this.dispose();
     }
 }

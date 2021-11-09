@@ -6,60 +6,109 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class MainWindows implements ActionListener {
+public class MainWindows extends JFrame implements ActionListener {
+    
+    private JPanel panel;
+    private JLabel header1;
+    private JLabel header2;
+    private JLabel header3;
 
-    /**
-     * Migration vers le layout floating pour plus de flexibilité en cours.
-     * Voir les examples, ajouter deux panels (image et b+text)
-     * @param contentPane
-     */
-    private static void addComponents(final Container contentPane) {
-        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
-        //FlowLayout el = new FlowLayout();
-        //contentPane.setLayout(el);
-        //el.setAlignment(FlowLayout.TRAILING);
+    private JScrollPane chatPane;
+    private JTextArea chatArea;
 
-        // Panels
-        final JPanel image = new JPanel();
-        final JPanel login = new JPanel();
-        image.setLayout(new FlowLayout());
-        login.setLayout(new FlowLayout());
+    private JButton sendButton;
+    private JTextField sendBox;
 
-        image.add(new JButton("Button 1"));
-  
-        // Pseudo field
-        JTextField textField = new JTextField("Pseudo", 10);
-        textField.setAlignmentX(Component.CENTER_ALIGNMENT);
-        textField.setHorizontalAlignment(JTextField.CENTER);
+    private JList<String> contactList;
+    DefaultListModel<String> rawList = new DefaultListModel<>();
 
-        // Button go
-        JButton button = new JButton("Go!");
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+    private String pseudo;
+    private String lastStatus;
 
-        login.add(textField);
-        login.add(button);
 
-        contentPane.add(image, BorderLayout.CENTER);
-        contentPane.add(login, BorderLayout.SOUTH); ;
+
+    private void addComponents(final Container contentPane) {
+        panel = new JPanel();
+
+        contactList = new JList<String>(rawList);
+
+        sendBox = new JTextField();
+        sendButton = new JButton();
+
+        chatPane = new JScrollPane();
+        chatArea = new JTextArea();
+
+        header1 = new JLabel();
+        header2 = new JLabel();
+        header3 = new JLabel();
+
+        setResizable(false);
+        panel.setLayout(null);
+
+        ///Ajout de la liste de contact
+        panel.add(contactList);
+        contactList.setBounds(760, 80, 200, 660);
+
+        /// Ajout des textes d'entête
+        header1.setText("Objet de Discution Digitale - Client");
+        panel.add(header1);
+        header1.setBounds(10, 0, 600, 40);
+
+        header2.setText("Licence GNU GPL v3");
+        panel.add(header2);
+        header2.setBounds(10, 20, 600, 40);
+
+        updateStatus();
+        panel.add(header3);
+        header3.setBounds(10, 40, 600, 40);
+
+        /// Ajout de la barre d'envoi des messages
+        sendBox.setToolTipText("text\tType your message here...");
+        panel.add(sendBox);
+        sendBox.setBounds(10, 750, 650, 40);
+
+        sendButton.setText("Send");
+        panel.add(sendButton);
+        sendButton.setBounds(670, 750, 80, 40);
+
+        /// Ajout de l'espace de chat
+        chatArea.setColumns(30);
+        chatArea.setRows(10);
+
+        chatPane.setViewportView(chatArea);
+        panel.add(chatPane);
+        chatPane.setBounds(10, 80, 740, 660 );
+
+        /// Mise en forme de la fenêtre
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, 1000, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
     }
 
-    public void start() {
-        // GTK+
+    public MainWindows (){
+        super("Java chat system");
+
         GUIUtils.initGTK();
 
-        // Creating main frame
-        JFrame frame = new JFrame("Java chat system");
-        Container contentPane = frame.getContentPane();
+        Container contentPane = getContentPane();
         contentPane.setLayout(new CardLayout());
 
-        addComponents(frame.getContentPane());
-        
-        // Frame properties
-        frame.pack();
-        frame.setVisible(true);
+        addComponents(getContentPane());
 
-        // Adding listener
-        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+        pack();
+        setVisible(true);
+
+        pseudo = "Unknown";
+        lastStatus = "Unknown";
+
+        addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 ExitHandler.exit();
@@ -67,12 +116,31 @@ public class MainWindows implements ActionListener {
         });
     }
 
-    public void stop() {
-        
+    private void updateStatus() {
+        header3.setText(this.lastStatus + " - " + this.pseudo);
+    }
+
+    public void setStatus(String status){
+        this.lastStatus = status;
+        updateStatus();
+    }
+
+    public void setPseudo(String pseudo){
+        this.pseudo = pseudo;
+        updateStatus();
+    }
+
+    /**
+     * @deprecated -> il faut créer la class utilisateur et la faire passer en parametres
+     * @param pseudo
+     */
+    public void addUser(String pseudo){
+        rawList.addElement(pseudo);
+        //rawList.removeElement(pseudo);
     }
 
     public void actionPerformed(ActionEvent e) {
+        dispose();
         ExitHandler.exit();
     }
-    
 }
