@@ -1,23 +1,28 @@
 package com.insa.gui;
 
+import com.insa.app.App;
 import com.insa.utils.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
-public class MainWindows implements ActionListener {
+public class WelcomeWindows extends JFrame implements ActionListener {
+    private JButton button;
+    private JTextField textField;
+    private JFrame frame;
 
     /**
      * Migration vers le layout floating pour plus de flexibilité en cours.
      * Voir les examples, ajouter deux panels (image et b+text)
      * @param contentPane
      */
-    private static void addComponents(final Container contentPane) {
+    private void addComponents(final Container contentPane) {
         contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
-        //FlowLayout el = new FlowLayout();
-        //contentPane.setLayout(el);
-        //el.setAlignment(FlowLayout.TRAILING);
 
         // Panels
         final JPanel image = new JPanel();
@@ -25,16 +30,29 @@ public class MainWindows implements ActionListener {
         image.setLayout(new FlowLayout());
         login.setLayout(new FlowLayout());
 
-        image.add(new JButton("Button 1"));
-  
+        // Logo
+        BufferedImage logo;
+        try {
+            logo = ImageIO.read(new File("img/logo_s.png"));
+            JLabel picLabel = new JLabel(new ImageIcon(logo));
+            picLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            //image.add(new JButton("Button 1"));
+            image.add(picLabel);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         // Pseudo field
-        JTextField textField = new JTextField("Pseudo", 10);
+        textField = new JTextField("Pseudo", 10);
         textField.setAlignmentX(Component.CENTER_ALIGNMENT);
         textField.setHorizontalAlignment(JTextField.CENTER);
 
         // Button go
-        JButton button = new JButton("Go!");
+        button = new JButton("Go!");
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        button.addActionListener(this);
 
         login.add(textField);
         login.add(button);
@@ -48,7 +66,7 @@ public class MainWindows implements ActionListener {
         GUIUtils.initGTK();
 
         // Creating main frame
-        JFrame frame = new JFrame("Java chat system");
+        frame = new JFrame("Java chat system - Welcome");
         Container contentPane = frame.getContentPane();
         contentPane.setLayout(new CardLayout());
 
@@ -67,12 +85,10 @@ public class MainWindows implements ActionListener {
         });
     }
 
-    public void stop() {
-        
-    }
-
+    @Override
     public void actionPerformed(ActionEvent e) {
-        ExitHandler.exit();
+        System.out.println( "[+] Go!" );
+        App.mainThread(textField.getText());
+        frame.dispose();
     }
-    
 }
