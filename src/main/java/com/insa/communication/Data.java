@@ -20,7 +20,7 @@ public class Data {
             text = new String(fileInput.readAllBytes());
             fileInput.close();
         }catch(IOException e) {
-            //TODO Add error window or create a new dile data.json
+            //TODO Add error window or create a new file data.json
         }
         JSONObject json = new JSONObject(text);
 

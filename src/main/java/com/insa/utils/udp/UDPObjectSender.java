@@ -31,6 +31,7 @@ public class UDPObjectSender {
 
     }
 
+    //Récupération des adresses de boradcast
     private ArrayList<InetAddress> listAllBroadcastAddresses() throws SocketException {
         ArrayList<InetAddress> broadcastList = new ArrayList<>();
         Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
@@ -49,8 +50,9 @@ public class UDPObjectSender {
         return broadcastList;
     }
 
+    //Conversion des objets en datagramPacket
     public DatagramPacket objectToDatagramPacket(ObjectMessage message, InetAddress address, int port) throws Exception {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream(6400);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream(Consts.MAX_UDP_PACKET_SIZE);
         final ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(message);
         final byte[] data = baos.toByteArray();
