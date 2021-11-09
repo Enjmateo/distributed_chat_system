@@ -1,5 +1,6 @@
 package com.insa.gui;
 
+import com.insa.app.App;
 import com.insa.utils.*;
 
 import javax.swing.*;
@@ -70,6 +71,11 @@ public class MainWindows extends JFrame implements ActionListener {
         sendButton.setText("Send");
         panel.add(sendButton);
         sendButton.setBounds(670, 750, 80, 40);
+        sendButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sendButtonAction(evt);
+            }
+        });
 
         /// Ajout de l'espace de chat
         chatArea.setColumns(30);
@@ -139,8 +145,24 @@ public class MainWindows extends JFrame implements ActionListener {
         //rawList.removeElement(pseudo);
     }
 
+    /** @deprecated -> bad argument (à changer) */
+    public void removeUser(){}
+
+    /** @deprecated -> bad argument (à changer)*/
+    public void addMessage(String msg){
+        chatArea.append("\n " + pseudo + ": " + msg);
+    }
+
     public void actionPerformed(ActionEvent e) {
         dispose();
         ExitHandler.exit();
+    }
+
+    private void sendButtonAction(ActionEvent evt) {
+        // Debug
+        addMessage(sendBox.getText());
+
+        //App.sendMessage(sendBox.getText());
+        sendBox.setText("");
     }
 }
