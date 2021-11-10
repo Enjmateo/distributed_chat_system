@@ -16,9 +16,7 @@ public class MainWindows extends JFrame implements ActionListener {
     private JLabel header3;
 
     private JScrollPane chatPane;
-    private JTextArea chatArea;
-    // Test
-    private JEditorPane testChat;
+    private JPanel newChatArea;
 
     private JButton sendButton;
     private JTextField sendBox;
@@ -34,36 +32,24 @@ public class MainWindows extends JFrame implements ActionListener {
     private void addComponents(final Container contentPane) {
         panel = new JPanel();
 
-        contactList = new JList<String>(rawList);
-
-        // Test chat
-        testChat = new JEditorPane();
-        testChat.setEditable(false);
-        testChat.setBackground(Color.WHITE);
-
-        try {
-            testChat.setPage("https://manah.fr");
-          }catch (IOException e) {
-            testChat.setContentType("text/html");
-            testChat.setText("<html>Could not load</html>");
-        }
-
-        /// DEBUG: Uncomment to test web page integration
-        testChat.setBounds(10, 80, 740, 660);
-        //panel.add(testChat);
-
         // Declarations
         sendBox = new JTextField();
         sendButton = new JButton();
 
-        chatPane = new JScrollPane();
-        chatArea = new JTextArea();
+        newChatArea = new JPanel();
+        newChatArea.setLayout(null);
+        newChatArea.setSize(new Dimension(8000, 8000));
+        //newChatArea.setEditable(false);
+        
+        chatPane = new JScrollPane(newChatArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         header1 = new JLabel();
         header2 = new JLabel();
         header3 = new JLabel();
 
-        setResizable(false);
+        contactList = new JList<String>(rawList);
+
+        this.setResizable(false);
         panel.setLayout(null);
 
         ///Ajout de la liste de contact
@@ -87,6 +73,11 @@ public class MainWindows extends JFrame implements ActionListener {
         sendBox.setToolTipText("text\tType your message here...");
         panel.add(sendBox);
         sendBox.setBounds(10, 750, 650, 40);
+        sendBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sendButtonAction(evt);
+            }
+        });
 
         sendButton.setText("Send");
         panel.add(sendButton);
@@ -98,23 +89,21 @@ public class MainWindows extends JFrame implements ActionListener {
         });
 
         /// Ajout de l'espace de chat
-        chatArea.setColumns(30);
-        chatArea.setRows(10);
-
-        chatPane.setViewportView(chatArea);
+        //newChatArea.setBounds(0, 0, 3740, 3660);
+        //chatPane.setViewportView(newChatArea);
         panel.add(chatPane);
         chatPane.setBounds(10, 80, 740, 660);
 
         /// Mise en forme de la fenêtre
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, 1000, javax.swing.GroupLayout.PREFERRED_SIZE)
+            layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+            .addComponent(panel, GroupLayout.PREFERRED_SIZE, 1000, GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
+            layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+            .addComponent(panel, GroupLayout.PREFERRED_SIZE, 800, GroupLayout.PREFERRED_SIZE)
         );
     }
 
@@ -169,8 +158,12 @@ public class MainWindows extends JFrame implements ActionListener {
     public void removeUser(){}
 
     /** @deprecated -> bad argument (à changer)*/
-    public void addMessage(String msg){
-        chatArea.append("\n " + pseudo + ": " + msg);
+    public void addMessage(String pseudo, String msg){
+        
+
+        new TextMessageView(this.pseudo, msg).addToPanel(newChatArea);;
+
+        //chatArea.append("\n " + pseudo + ": " + msg);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -178,14 +171,9 @@ public class MainWindows extends JFrame implements ActionListener {
         ExitHandler.exit();
     }
 
-    // Function that handle message sending
-    private void sendAction(String msg) {
-        addMessage(msg);
+    private void sendButtonAction(ActionEvent evt) {
+        addMessage(pseudo, sendBox.getText());
         //App.sendMessage(sendBox.getText());
         sendBox.setText("");
-    }
-
-    private void sendButtonAction(ActionEvent evt) {
-        sendAction(sendBox.getText());
     }
 }
