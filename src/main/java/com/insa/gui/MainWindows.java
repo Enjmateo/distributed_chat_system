@@ -38,8 +38,8 @@ public class MainWindows extends JFrame implements ActionListener {
 
         newChatArea = new JPanel();
         newChatArea.setLayout(null);
-        newChatArea.setSize(new Dimension(8000, 8000));
-        //newChatArea.setEditable(false);
+        newChatArea.setPreferredSize(new Dimension(8000, 8000));
+        newChatArea.setAutoscrolls(true);
         
         chatPane = new JScrollPane(newChatArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
@@ -105,6 +105,7 @@ public class MainWindows extends JFrame implements ActionListener {
             layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
             .addComponent(panel, GroupLayout.PREFERRED_SIZE, 800, GroupLayout.PREFERRED_SIZE)
         );
+        System.out.println("Taille H"+newChatArea.getHeight());
     }
 
     public MainWindows (){
