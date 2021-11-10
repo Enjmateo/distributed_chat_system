@@ -39,6 +39,8 @@ public class TextMessageView extends JTextArea {
     public void addToPanel(Container panel){
         this.setEditable(false);
         this.setText(sender + ": " + message);
+        this.setBackground(Color.black);
+        this.setForeground(Color.white);
 
         int height = this.getPreferredSize().height*this.getWrappedLines();
 
