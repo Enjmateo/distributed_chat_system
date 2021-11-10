@@ -7,7 +7,7 @@ public class TextMessageView extends JTextField {
     private String sender;
     private String message;
 
-    private static int yPos = 0;
+    
 
     public TextMessageView(String sender, String message){
         this.sender = sender;
@@ -17,8 +17,10 @@ public class TextMessageView extends JTextField {
     public void addToPanel(Container panel){
         this.setEditable(false);
         this.setText(sender + ": " + message);
-        this.setBounds(10, yPos, 600, 40);
-        yPos = yPos + 40;
+
+        // TODO: Mettre au propre  
+        this.setBounds(10, GUIUtils.yPos, 600, 40);
+        GUIUtils.yPos = GUIUtils.yPos + 40;
 
         panel.add(this);
     }

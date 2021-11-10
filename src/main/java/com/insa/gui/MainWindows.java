@@ -17,6 +17,7 @@ public class MainWindows extends JFrame implements ActionListener {
 
     private JScrollPane chatPane;
     private JPanel newChatArea;
+    private Dimension dim;
 
     private JButton sendButton;
     private JTextField sendBox;
@@ -38,7 +39,9 @@ public class MainWindows extends JFrame implements ActionListener {
 
         newChatArea = new JPanel();
         newChatArea.setLayout(null);
-        newChatArea.setPreferredSize(new Dimension(8000, 8000));
+
+        dim = new Dimension(720, 200);
+        newChatArea.setPreferredSize(dim);
         newChatArea.setAutoscrolls(true);
         
         chatPane = new JScrollPane(newChatArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -89,8 +92,6 @@ public class MainWindows extends JFrame implements ActionListener {
         });
 
         /// Ajout de l'espace de chat
-        //newChatArea.setBounds(0, 0, 3740, 3660);
-        //chatPane.setViewportView(newChatArea);
         panel.add(chatPane);
         chatPane.setBounds(10, 80, 740, 660);
 
@@ -105,7 +106,6 @@ public class MainWindows extends JFrame implements ActionListener {
             layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
             .addComponent(panel, GroupLayout.PREFERRED_SIZE, 800, GroupLayout.PREFERRED_SIZE)
         );
-        System.out.println("Taille H"+newChatArea.getHeight());
     }
 
     public MainWindows (){
@@ -161,8 +161,10 @@ public class MainWindows extends JFrame implements ActionListener {
     /** @deprecated -> bad argument (à changer)*/
     public void addMessage(String pseudo, String msg){
         
-
+        dim.height = (int)(dim.getHeight()) + 40;
         new TextMessageView(this.pseudo, msg).addToPanel(newChatArea);;
+        System.out.println(dim.height);
+        newChatArea.updateUI();
 
         //chatArea.append("\n " + pseudo + ": " + msg);
     }
