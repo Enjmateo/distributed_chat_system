@@ -7,13 +7,16 @@ import java.io.*;
 public class UDPObjectReceiver extends Thread {
     DatagramSocket socket;
     ObjectHandler handler;
+    boolean running = true;
     public UDPObjectReceiver(ObjectHandler handler) throws Exception{
         socket = new DatagramSocket();
         start();
     }
 
+    private synchronized boolean isRunning(){return running;}
+
     public void run(){
-        while(true){
+        while(isRunning()){
             try{
               byte[] recvBuf = new byte[5000];
               DatagramPacket packet = new DatagramPacket(recvBuf,
