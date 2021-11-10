@@ -6,6 +6,7 @@ import com.insa.utils.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 public class MainWindows extends JFrame implements ActionListener {
     
@@ -16,6 +17,8 @@ public class MainWindows extends JFrame implements ActionListener {
 
     private JScrollPane chatPane;
     private JTextArea chatArea;
+    // Test
+    private JEditorPane testChat;
 
     private JButton sendButton;
     private JTextField sendBox;
@@ -33,6 +36,23 @@ public class MainWindows extends JFrame implements ActionListener {
 
         contactList = new JList<String>(rawList);
 
+        // Test chat
+        testChat = new JEditorPane();
+        testChat.setEditable(false);
+        testChat.setBackground(Color.WHITE);
+
+        try {
+            testChat.setPage("https://manah.fr");
+          }catch (IOException e) {
+            testChat.setContentType("text/html");
+            testChat.setText("<html>Could not load</html>");
+        }
+
+        /// DEBUG: Uncomment to test web page integration
+        testChat.setBounds(10, 80, 740, 660);
+        //panel.add(testChat);
+
+        // Declarations
         sendBox = new JTextField();
         sendButton = new JButton();
 
@@ -83,7 +103,7 @@ public class MainWindows extends JFrame implements ActionListener {
 
         chatPane.setViewportView(chatArea);
         panel.add(chatPane);
-        chatPane.setBounds(10, 80, 740, 660 );
+        chatPane.setBounds(10, 80, 740, 660);
 
         /// Mise en forme de la fenêtre
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -158,11 +178,14 @@ public class MainWindows extends JFrame implements ActionListener {
         ExitHandler.exit();
     }
 
-    private void sendButtonAction(ActionEvent evt) {
-        // Debug
-        addMessage(sendBox.getText());
-
+    // Function that handle message sending
+    private void sendAction(String msg) {
+        addMessage(msg);
         //App.sendMessage(sendBox.getText());
         sendBox.setText("");
+    }
+
+    private void sendButtonAction(ActionEvent evt) {
+        sendAction(sendBox.getText());
     }
 }
