@@ -161,8 +161,9 @@ public class MainWindows extends JFrame implements ActionListener {
     /** @deprecated -> bad argument (à changer)*/
     public void addMessage(String pseudo, String msg){
         
-        dim.height = (int)(dim.getHeight()) + 40;
+        
         new TextMessageView(this.pseudo, msg).addToPanel(newChatArea);;
+        dim.height =  GUIUtils.yPos+20;
         System.out.println(dim.height);
         newChatArea.updateUI();
 
