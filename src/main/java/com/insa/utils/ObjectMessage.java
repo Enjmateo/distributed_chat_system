@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.util.*;
 
 
-public class ObjectMessage implements Serializable {
-    UUID sender;
+public abstract class ObjectMessage implements Serializable {
+    abstract void action(Object object);
     
 }

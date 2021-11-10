@@ -6,7 +6,8 @@ import java.io.*;
 
 public class UDPObjectReceiver extends Thread {
     DatagramSocket socket;
-    public UDPObjectReceiver() throws Exception{
+    ObjectHandler handler;
+    public UDPObjectReceiver(ObjectHandler handler) throws Exception{
         socket = new DatagramSocket();
         start();
     }
@@ -18,14 +19,14 @@ public class UDPObjectReceiver extends Thread {
               DatagramPacket packet = new DatagramPacket(recvBuf,
                                                          recvBuf.length);
                                                          socket.receive(packet);
-              int byteCount = packet.getLength();
+              //int byteCount = packet.getLength();
               ByteArrayInputStream byteStream = new
                                           ByteArrayInputStream(recvBuf);
               ObjectInputStream is = new
                    ObjectInputStream(new BufferedInputStream(byteStream));
               ObjectMessage object = (ObjectMessage)is.readObject();
               is.close();
-              //TODO call object Handler
+              handler.handleObject(object);
             }
             catch (IOException e){
               System.err.println("Exception:  " + e);
