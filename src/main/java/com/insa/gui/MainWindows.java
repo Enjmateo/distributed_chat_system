@@ -6,7 +6,6 @@ import com.insa.utils.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 
 public class MainWindows extends JFrame implements ActionListener {
     
@@ -21,6 +20,8 @@ public class MainWindows extends JFrame implements ActionListener {
 
     private JButton sendButton;
     private JTextField sendBox;
+    private JButton uploadButton;
+    private JFileChooser fileChooser;
 
     private JList<String> contactList;
     DefaultListModel<String> rawList = new DefaultListModel<>();
@@ -36,6 +37,7 @@ public class MainWindows extends JFrame implements ActionListener {
         // Declarations
         sendBox = new JTextField();
         sendButton = new JButton();
+        uploadButton = new JButton();
 
         newChatArea = new JPanel();
         newChatArea.setLayout(null);
@@ -72,7 +74,7 @@ public class MainWindows extends JFrame implements ActionListener {
         panel.add(header3);
         header3.setBounds(10, 40, 600, 40);
 
-        /// Ajout de la barre d'envoi des messages
+        /// Ajout de la barre d'envoi des messages et des fichiers
         sendBox.setToolTipText("text\tType your message here...");
         panel.add(sendBox);
         sendBox.setBounds(10, 750, 650, 40);
@@ -84,12 +86,22 @@ public class MainWindows extends JFrame implements ActionListener {
 
         sendButton.setText("Send");
         panel.add(sendButton);
-        sendButton.setBounds(670, 750, 80, 40);
+        sendButton.setBounds(665, 750, 80, 40);
         sendButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sendButtonAction(evt);
             }
         });
+        
+        uploadButton.setText("Send file...");
+        panel.add(uploadButton);
+        uploadButton.setBounds(750, 750, 100, 40);
+        uploadButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uploadButtonAction(evt);
+            }
+        });
+
 
         /// Ajout de l'espace de chat
         panel.add(chatPane);
@@ -175,9 +187,17 @@ public class MainWindows extends JFrame implements ActionListener {
         ExitHandler.exit();
     }
 
+    /** Sent message handler */
     private void sendButtonAction(ActionEvent evt) {
         addMessage(pseudo, sendBox.getText());
         //App.sendMessage(sendBox.getText());
         sendBox.setText("");
+    }
+
+    /** @deprecated -> TODO 
+     * File handler */
+    private void uploadButtonAction(ActionEvent evt) {
+        // TODO
+        int returnVal = fileChooser.showOpenDialog(this);
     }
 }
