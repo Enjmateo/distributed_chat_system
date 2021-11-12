@@ -8,14 +8,12 @@
   <p align="center">
     Java Chat System
     <br />
-    <a href="https://github.com/Enjmateo/distributed_chat_system/releases"><strong>Voir les Releases »</strong></a>
+    <a href="https://github.com/Enjmateo/distributed_chat_system/releases"><strong>See releases »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/Enjmateo/distributed_chat_system/wiki">Lire le wiki</a>
+    <a href="uml/">Project design</a>
     ·
-    <a href="https://github.com/Enjmateo/distributed_chat_system/issues">Issues</a>
-    ·
-    <a href="https://github.com/Enjmateo/distributed_chat_system/projects">Voir le Projet</a>
+    <a href="https://github.com/Enjmateo/distributed_chat_system/projects">See project</a>
   </p>
 
 
