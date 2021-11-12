@@ -1,9 +1,12 @@
 package com.insa.app;
 
+import com.insa.communication.*;
 import com.insa.gui.*;
 
 public class App 
 {
+    public Database DB;
+
     /**
      * Entry point
      * @param args
