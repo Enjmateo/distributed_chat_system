@@ -3,6 +3,8 @@ package com.insa.communication;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+import com.insa.utils.ObjectMessage;
+
 public class Database {
     public Database() {
         try {
@@ -16,5 +18,9 @@ public class Database {
         try (Connection con = DriverManager.getConnection(Data.getDBUrl(), Data.getDBUsername(), Data.getDBPassword())) {
             // use con here
         }
+    }
+
+    public void addMessage(ObjectMessage message) throws Exception {
+        // TODO...
     }
 }
