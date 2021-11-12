@@ -1,11 +1,11 @@
 package com.insa.gui;
 
-import com.insa.app.App;
 import com.insa.utils.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;        
 
 public class MainWindows extends JFrame implements ActionListener {
     
@@ -96,6 +96,7 @@ public class MainWindows extends JFrame implements ActionListener {
         uploadButton.setText("Send file...");
         panel.add(uploadButton);
         uploadButton.setBounds(750, 750, 100, 40);
+        fileChooser = new JFileChooser();
         uploadButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uploadButtonAction(evt);
@@ -148,11 +149,19 @@ public class MainWindows extends JFrame implements ActionListener {
         header3.setText(this.lastStatus + " - " + this.pseudo);
     }
 
+    /**
+     * Change the current status
+     * @param status
+     */
     public void setStatus(String status){
         this.lastStatus = status;
         updateStatus();
     }
 
+    /**
+     * Change user pseudo
+     * @param pseudo
+     */
     public void setPseudo(String pseudo){
         this.pseudo = pseudo;
         updateStatus();
@@ -167,24 +176,25 @@ public class MainWindows extends JFrame implements ActionListener {
         //rawList.removeElement(pseudo);
     }
 
-    /** @deprecated -> bad argument (à changer) */
+    /** 
+     * @deprecated -> bad argument (à changer) 
+     */
     public void removeUser(){}
 
     /** @deprecated -> bad argument (à changer)*/
     public void addMessage(String pseudo, String msg){
-        
-        
         new TextMessageView(this.pseudo, msg).addToPanel(newChatArea);;
         dim.height =  GUIUtils.yPos+20;
         System.out.println(dim.height);
         newChatArea.updateUI();
-
-        //chatArea.append("\n " + pseudo + ": " + msg);
     }
 
-    public void actionPerformed(ActionEvent e) {
-        dispose();
-        ExitHandler.exit();
+    /**
+     * @deprecated -> TODO
+     * @param f
+     */
+    public void addFile(File f) {
+        
     }
 
     /** Sent message handler */
@@ -198,6 +208,17 @@ public class MainWindows extends JFrame implements ActionListener {
      * File handler */
     private void uploadButtonAction(ActionEvent evt) {
         // TODO
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         int returnVal = fileChooser.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+        }
+    }
+
+    /** Class function -> not used */
+    public void actionPerformed(ActionEvent e) {
+        dispose();
+        ExitHandler.exit();
     }
 }
