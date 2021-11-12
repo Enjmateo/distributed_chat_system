@@ -3,7 +3,7 @@ import java.util.*;
 import java.lang.reflect.*;
 
 public class ObjectHandler {
-    HashMap<Class,Object> parameters;
+    private static HashMap<Class,Object> parameters;
 
     //Permer d'ajouter une classe à handle
     public void addHandler(Class classe, Object object) {

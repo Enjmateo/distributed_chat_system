@@ -42,7 +42,7 @@ public class UDPObjectReceiver extends Thread {
     }
 
     public synchronized void close(){
-        
+        this.running = false;
     }
 
 }
