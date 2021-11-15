@@ -5,7 +5,7 @@
 
     <groupId>com.insa.app</groupId>
     <artifactId>distributed_chat_system</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>distributed_chat_system</name>
@@ -89,5 +89,13 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>*.png</include>
+                </includes>
+            </resource>
+        </resources>
     </build>
 </project>

@@ -27,7 +27,7 @@ public class WelcomeWindows extends JFrame implements ActionListener {
         // Logo
         BufferedImage logo;
         try {
-            logo = ImageIO.read(new File("img/logo_s.png"));
+            logo = ImageIO.read(new File("src/main/resources/logo_s.png"));
             JLabel picLabel = new JLabel(new ImageIcon(logo));
             picLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
