@@ -15,7 +15,7 @@ public class ObjectHandler {
         try{
             ObjectMessage.class.getMethod("action", Object.class).invoke(objectMessage, parameters.get(objectMessage.getClass()));
         }catch(Exception e){
-
+            //TODO à faire
         }
     }
 
