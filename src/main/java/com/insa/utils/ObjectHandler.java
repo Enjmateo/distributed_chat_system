@@ -11,7 +11,7 @@ public class ObjectHandler {
     }
 
     //Permet d'appeler la méthode action sur l'objet objectMessage avec en argument l'objet associé à la classe de objectMessage
-    public void handleObject(ObjectMessage objectMessage){
+    public static void handleObject(ObjectMessage objectMessage){
         try{
             ObjectMessage.class.getMethod("action", Object.class).invoke(objectMessage, parameters.get(objectMessage.getClass()));
         }catch(Exception e){
