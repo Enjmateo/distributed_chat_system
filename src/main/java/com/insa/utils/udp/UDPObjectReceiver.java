@@ -6,9 +6,8 @@ import java.io.*;
 
 public class UDPObjectReceiver extends Thread {
     DatagramSocket socket;
-    ObjectHandler handler;
     boolean running = true;
-    public UDPObjectReceiver(ObjectHandler handler) throws Exception{
+    public UDPObjectReceiver() throws Exception{
         socket = new DatagramSocket();
         start();
     }
@@ -29,7 +28,7 @@ public class UDPObjectReceiver extends Thread {
                    ObjectInputStream(new BufferedInputStream(byteStream));
               ObjectMessage object = (ObjectMessage)is.readObject();
               is.close();
-              handler.handleObject(object);
+              ObjectHandler.handleObject(object);
             }
             catch (IOException e){
               System.err.println("Exception:  " + e);
@@ -39,9 +38,15 @@ public class UDPObjectReceiver extends Thread {
                 e.printStackTrace(); 
             }
         }
+        try {
+            close(true);
+        }catch(Exception e){}
     }
 
-    public synchronized void close(){
+    public synchronized void close(boolean force) throws IOException{
+        if(force){
+            socket.close();
+        }
         this.running = false;
     }
 
