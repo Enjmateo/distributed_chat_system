@@ -19,7 +19,7 @@ public class App
         WelcomeWindows ww = new WelcomeWindows();
 
         // Debug
-        ww.skipWindows();
+        //ww.skipWindows();
     }
 
     /**
