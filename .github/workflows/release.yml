@@ -33,7 +33,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref }}
+        tag_name: release
         release_name: Release ${{ steps.project.outputs.version }}-release
         prerelease: false
         draft: false
@@ -82,7 +82,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref }}
+        tag_name: nightly
         release_name: Release ${{ steps.project.outputs.version }}-nightly
         prerelease: true
         draft: false
