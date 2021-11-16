@@ -2,14 +2,12 @@ package com.insa.gui;
 
 import com.insa.app.App;
 import com.insa.utils.*;
+import com.insa.utils.Graphics;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+
 
 public class WelcomeWindows extends JFrame implements ActionListener {
     private JButton button;
@@ -25,17 +23,12 @@ public class WelcomeWindows extends JFrame implements ActionListener {
         login.setLayout(new FlowLayout());
 
         // Logo
-        BufferedImage logo;
-        try {
-            logo = ImageIO.read(new File("src/main/resources/logo_s.png"));
-            JLabel picLabel = new JLabel(new ImageIcon(logo));
-            picLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        Image logo = Graphics.getLogo();
+        JLabel picLabel = new JLabel(new ImageIcon(logo));
+        picLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            //image.add(new JButton("Button 1"));
-            image.add(picLabel);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // image.add(new JButton("Button 1"));
+        image.add(picLabel);
 
         // Pseudo field
         textField = new JTextField("Pseudo", 10);
@@ -52,7 +45,8 @@ public class WelcomeWindows extends JFrame implements ActionListener {
         login.add(button);
 
         contentPane.add(image, BorderLayout.CENTER);
-        contentPane.add(login, BorderLayout.SOUTH); ;
+        contentPane.add(login, BorderLayout.SOUTH);
+        ;
     }
 
     public WelcomeWindows() {
@@ -64,7 +58,7 @@ public class WelcomeWindows extends JFrame implements ActionListener {
         setLayout(new CardLayout());
 
         addComponents(this.getContentPane());
-        
+
         // Frame properties
         pack();
         setVisible(true);
@@ -78,18 +72,20 @@ public class WelcomeWindows extends JFrame implements ActionListener {
         });
     }
 
-    /** DEBUG
+    /**
+     * DEBUG
+     * 
      * @see actionPerformed
      */
     public void skipWindows() {
-        System.out.println( "[!] Skipping..." );
+        System.out.println("[!] Skipping...");
         App.mainThread("M. Louis DEBUG");
         this.dispose();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println( "[+] Go!" );
+        System.out.println("[+] Go!");
         App.mainThread(textField.getText());
         this.dispose();
     }
