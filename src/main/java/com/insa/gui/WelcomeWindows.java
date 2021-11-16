@@ -2,7 +2,6 @@ package com.insa.gui;
 
 import com.insa.app.App;
 import com.insa.utils.*;
-import com.insa.utils.Graphics;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +22,7 @@ public class WelcomeWindows extends JFrame implements ActionListener {
         login.setLayout(new FlowLayout());
 
         // Logo
-        Image logo = Graphics.getLogo();
+        Image logo = GUIUtils.getLogo();
         JLabel picLabel = new JLabel(new ImageIcon(logo));
         picLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 

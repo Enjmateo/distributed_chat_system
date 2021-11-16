@@ -1,11 +1,17 @@
 name: Manage release and packaging
 
+# Build & release manager, parse commit message to determine actions
+# "[release]" will build project and publish a release
+# "[nightly]" will build project and publish a nightly release
+# "[nocheck]" skip build (no release)
+# By default, a simple check is made
+
 on: [push]
 
 jobs:
   release:
     runs-on: ubuntu-latest
-    if: "contains(github.event.head_commit.message, '[release]') && !contains(github.event.head_commit.message, '[nightly]')"
+    if: "contains(github.event.head_commit.message, '[release]') && !contains(github.event.head_commit.message, '[nightly]') && !contains(github.event.head_commit.message, '[nocheck]')"
 
     steps:
     - uses: actions/checkout@v2
@@ -34,7 +40,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: release
-        release_name: Release ${{ steps.project.outputs.version }}-release
+        release_name: Build ${{ steps.project.outputs.version }}-release
         prerelease: false
         draft: false
         body: New release!
@@ -54,9 +60,13 @@ jobs:
 
   nightly:
     runs-on: ubuntu-latest
-    if: "contains(github.event.head_commit.message, '[nightly]')"
+    if: "contains(github.event.head_commit.message, '[nightly]') && !contains(github.event.head_commit.message, '[nocheck]')"
 
     steps:
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
     - uses: actions/checkout@v2
 
     - name: Set up JDK 11
@@ -86,7 +96,7 @@ jobs:
         release_name: Release ${{ steps.project.outputs.version }}-nightly
         prerelease: true
         draft: false
-        body: New release!
+        body: Nightly release (${{ steps.date.outputs.date }}). This version is not intended to be used in production. For development purposes.
         New release: ${{ steps.project.outputs.version }}
 
     - name: Upload release asset to GitHub
@@ -103,7 +113,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[release]') && !contains(github.event.head_commit.message, '[nightly]')"
+    if: "!contains(github.event.head_commit.message, '[release]') && !contains(github.event.head_commit.message, '[nightly]') && !contains(github.event.head_commit.message, '[nocheck]')"
 
     steps:
     - uses: actions/checkout@v2
@@ -117,6 +127,3 @@ jobs:
 
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-
-
-
