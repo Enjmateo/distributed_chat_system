@@ -1,7 +1,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/Enjmateo/distributed_chat_system">
-    <img src="img/logo_c.png" alt="Logo" width="500">
+    <img src="src/main/resources/logo_c.png" alt="Logo" width="500">
   </a>
 
 
