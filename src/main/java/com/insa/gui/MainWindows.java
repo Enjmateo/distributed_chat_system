@@ -59,8 +59,7 @@ public class MainWindows extends JFrame implements ActionListener {
 
         ///Ajout de la liste de contact
         panel.add(contactList);
-        contactList.setBounds(760, 80, 200, 660);
-        contactList.setBounds(GUIUtils.mainWindowsWidth * 0.76, 80, GUIUtils.mainWindowsWidth * 0.2, 660);
+        contactList.setBounds(GUIUtils.getMWWidth(0.76), 80, GUIUtils.getMWHeight(0.2), 660);
 
         /// Ajout des textes d'entête
         header1.setText("Objet de Discution Digitale - Client");

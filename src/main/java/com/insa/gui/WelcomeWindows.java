@@ -1,16 +1,21 @@
 package com.insa.gui;
 
 import com.insa.app.App;
+import com.insa.communication.Data;
 import com.insa.utils.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;   
 
 
 public class WelcomeWindows extends JFrame implements ActionListener {
-    private JButton button;
+    private JButton buttonGo;
+    private JButton buttonSettings;
     private JTextField textField;
+
+    private JFileChooser fileChooser;
 
     private void addComponents(final Container contentPane) {
         contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
@@ -35,13 +40,20 @@ public class WelcomeWindows extends JFrame implements ActionListener {
         textField.setHorizontalAlignment(JTextField.CENTER);
 
         // Button go
-        button = new JButton("Go!");
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        buttonGo = new JButton("Go!");
+        buttonGo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        button.addActionListener(this);
+        buttonGo.addActionListener(this);
+
+        // button settings
+        buttonSettings = new JButton("Load configuration");
+        buttonSettings.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        buttonSettings.addActionListener(this);
 
         login.add(textField);
-        login.add(button);
+        login.add(buttonGo);
+        login.add(buttonSettings);
 
         contentPane.add(image, BorderLayout.CENTER);
         contentPane.add(login, BorderLayout.SOUTH);
@@ -73,7 +85,6 @@ public class WelcomeWindows extends JFrame implements ActionListener {
 
     /**
      * DEBUG
-     * 
      * @see actionPerformed
      */
     public void skipWindows() {
@@ -82,10 +93,40 @@ public class WelcomeWindows extends JFrame implements ActionListener {
         this.dispose();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    private void actionButtonGo() {
         System.out.println("[+] Go!");
         App.mainThread(textField.getText());
         this.dispose();
     }
+
+    private void actionButtonSettings() {
+        System.out.println("[+] Asking config. file...");
+        fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        int returnVal = fileChooser.showOpenDialog(this);
+        System.out.println("[+] Showing windows...");
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            File oldConfigFile = new File(Consts.configFile);
+
+            String newConfigFile = selectedFile.getAbsolutePath();
+            System.out.println("[+] Config. file: " + newConfigFile);
+
+            oldConfigFile.delete();
+            selectedFile.renameTo(new File(Consts.configFile)); 
+            
+            Data.reloadData();
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == buttonGo) {
+            actionButtonGo();
+        } else if (e.getSource() == buttonSettings) {
+            actionButtonSettings();
+        }
+    }
+
 }

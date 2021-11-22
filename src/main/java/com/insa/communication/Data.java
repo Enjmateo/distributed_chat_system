@@ -1,5 +1,6 @@
 package com.insa.communication;
 
+import com.insa.utils.Consts;
 import com.insa.utils.ExitHandler;
 
 import java.io.*;
@@ -14,13 +15,12 @@ public class Data {
 
     private static UUID uuid = null;
 
-    
 
-    public Data () {
+    public static void reloadData(){
         String text = "";
 
         try {
-            InputStream fileInput = new FileInputStream("./data.json");
+            InputStream fileInput = new FileInputStream(Consts.configFile);
             text = new String(fileInput.readAllBytes());
             fileInput.close();
         }catch(IOException e) {
@@ -34,7 +34,7 @@ public class Data {
             uuid = UUID.randomUUID();
             json.put("uuid", uuid.toString());
             try {
-                OutputStream fileOutput = new FileOutputStream("./data.json");
+                OutputStream fileOutput = new FileOutputStream(Consts.configFile);
                 fileOutput.write(json.toString().getBytes());
                 fileOutput.close();
             } catch (Exception e) {ExitHandler.error(e);}
@@ -43,7 +43,11 @@ public class Data {
         }
         dbURL = json.getString("dbAddr");
         dbUsername = json.getString("dbUser");
-        dbPassword = json.getString("dbPassword");        
+        dbPassword = json.getString("dbPassword");
+    }
+
+    public Data () {
+        reloadData();  
     }
 
 
