@@ -115,7 +115,7 @@ public class WelcomeWindows extends JFrame implements ActionListener {
 
             oldConfigFile.delete();
             selectedFile.renameTo(new File(Consts.configFile)); 
-            
+
             Data.reloadData();
         }
     }
