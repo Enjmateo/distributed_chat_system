@@ -1,8 +1,10 @@
 package com.insa.communication;
-import java.util.UUID;
+
+import com.insa.utils.ExitHandler;
 
 import java.io.*;
 import org.json.*;
+import java.util.UUID;
 
 public class Data {
     private static String dbURL = null;
@@ -11,6 +13,8 @@ public class Data {
     private static String dbPassword = null;
 
     private static UUID uuid = null;
+
+    
 
     public Data () {
         String text = "";
@@ -22,6 +26,7 @@ public class Data {
         }catch(IOException e) {
             //TODO Add error window or create a new file data.json
         }
+
         JSONObject json = new JSONObject(text);
 
 
@@ -32,9 +37,7 @@ public class Data {
                 OutputStream fileOutput = new FileOutputStream("./data.json");
                 fileOutput.write(json.toString().getBytes());
                 fileOutput.close();
-            } catch (Exception e) {
-                //TODO: handle exception
-            }
+            } catch (Exception e) {ExitHandler.error(e);}
         } else {
             uuid = UUID.fromString(json.getString("uuid"));
         }

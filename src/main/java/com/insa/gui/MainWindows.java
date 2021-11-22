@@ -60,6 +60,7 @@ public class MainWindows extends JFrame implements ActionListener {
         ///Ajout de la liste de contact
         panel.add(contactList);
         contactList.setBounds(760, 80, 200, 660);
+        contactList.setBounds(GUIUtils.mainWindowsWidth * 0.76, 80, GUIUtils.mainWindowsWidth * 0.2, 660);
 
         /// Ajout des textes d'entête
         header1.setText("Objet de Discution Digitale - Client");
@@ -113,11 +114,11 @@ public class MainWindows extends JFrame implements ActionListener {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-            .addComponent(panel, GroupLayout.PREFERRED_SIZE, 1000, GroupLayout.PREFERRED_SIZE)
+            .addComponent(panel, GroupLayout.PREFERRED_SIZE, GUIUtils.mainWindowsWidth, GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-            .addComponent(panel, GroupLayout.PREFERRED_SIZE, 800, GroupLayout.PREFERRED_SIZE)
+            .addComponent(panel, GroupLayout.PREFERRED_SIZE, GUIUtils.mainWindowsHeight, GroupLayout.PREFERRED_SIZE)
         );
     }
 

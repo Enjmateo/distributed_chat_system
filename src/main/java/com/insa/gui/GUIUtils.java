@@ -5,6 +5,9 @@ import java.awt.*;
 import java.net.URL;
 
 public class GUIUtils {
+    protected static final int mainWindowsWidth = 1000;
+    protected static final int mainWindowsHeight = 800;
+
     protected static int yPos = 0;
     
     static void initGTK() {
@@ -22,5 +25,13 @@ public class GUIUtils {
 
     public static Image getLogo() {
         return getImage("logo_s.png");
+    }
+
+    public static int getMWWidth(double proportion) {
+        return (int)(proportion * mainWindowsWidth);
+    }
+
+    public static int getMWHeight(double proportion) {
+        return (int)(proportion * mainWindowsHeight);
     }
 }

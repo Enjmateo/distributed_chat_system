@@ -1,11 +1,12 @@
 package com.insa.communication;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.*;
 
 import com.insa.utils.ObjectMessage;
 
 public class Database {
+    private Connection conn;
+
     public Database() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -15,9 +16,7 @@ public class Database {
     }
 
     public void connect() throws Exception {
-        try (Connection con = DriverManager.getConnection(Data.getDBUrl(), Data.getDBUsername(), Data.getDBPassword())) {
-            // use con here
-        }
+        conn = DriverManager.getConnection(Data.getDBUrl(), Data.getDBUsername(), Data.getDBPassword());
     }
 
     public void addMessage(ObjectMessage message) throws Exception {
