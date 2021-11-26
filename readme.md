@@ -11,9 +11,11 @@
     <a href="https://github.com/Enjmateo/distributed_chat_system/releases"><strong>See releases »</strong></a>
     <br />
     <br />
+    <a href="documentation.md">Documentation</a>
+    .
     <a href="uml/">Project design (UML)</a>
     ·
-    <a href="https://github.com/Enjmateo/distributed_chat_system/">See project</a>
+    <a href="https://github.com/Enjmateo/distributed_chat_system/">Project</a>
   </p>
 
 

@@ -11,7 +11,7 @@ on: [push]
 jobs:
   release:
     runs-on: ubuntu-latest
-    if: "contains(github.event.head_commit.message, '[release]') && !contains(github.event.head_commit.message, '[nightly]') && !contains(github.event.head_commit.message, '[nocheck]')"
+    if: "github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[release]') && !contains(github.event.head_commit.message, '[nightly]') && !contains(github.event.head_commit.message, '[nocheck]')"
 
     steps:
     - uses: actions/checkout@v2
@@ -60,7 +60,7 @@ jobs:
 
   nightly:
     runs-on: ubuntu-latest
-    if: "contains(github.event.head_commit.message, '[nightly]') && !contains(github.event.head_commit.message, '[nocheck]')"
+    if: "github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[nightly]') && !contains(github.event.head_commit.message, '[nocheck]')"
 
     steps:
     - name: Get current date
@@ -112,7 +112,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[release]') && !contains(github.event.head_commit.message, '[nightly]') && !contains(github.event.head_commit.message, '[nocheck]')"
+    if: "github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, '[release]') && !contains(github.event.head_commit.message, '[nightly]') && !contains(github.event.head_commit.message, '[nocheck]')"
 
     steps:
     - uses: actions/checkout@v2
