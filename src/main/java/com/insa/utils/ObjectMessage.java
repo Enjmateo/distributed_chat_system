@@ -21,5 +21,12 @@ public abstract class ObjectMessage implements Serializable {
 
     abstract public void sendToDatabase(Database database);
     abstract public void action(Object object);
-    
+
+    public UUID getSender(){
+        return sender;
+    }
+
+    public UUID getRecepter(){
+        return recepter;
+    }
 }
