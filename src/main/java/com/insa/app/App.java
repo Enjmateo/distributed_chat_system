@@ -32,7 +32,7 @@ public class App
         } catch (Exception e) {ExitHandler.error(e);}
         
         // Debug
-        //ww.skipWindows();
+        ww.skipWindows();
     }
 
     /**
@@ -47,7 +47,7 @@ public class App
         System.out.println( "[+] Connecting to DB");
         DB =  new Database();
         try {
-            if (DB.connect() == 0){DB.printInfo();}
+            DB.connect();
         } catch (Exception e) {ExitHandler.error(e);}
         
         MainWindows mw = new MainWindows();

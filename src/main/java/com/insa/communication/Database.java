@@ -20,7 +20,7 @@ public class Database {
     public int connect() {
         System.out.print( "   [>] Connection..." );
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://" + Data.getDBUrl() + ":3306", Data.getDBUsername(), Data.getDBPassword());
+            conn = DriverManager.getConnection("jdbc:" + Data.getDBUrl(), Data.getDBUsername(), Data.getDBPassword());
         } catch (Exception e) {
             System.out.println( "failed!" );
             return 1;
@@ -29,12 +29,11 @@ public class Database {
         return 0;
     }
 
-    public void printInfo() {
+    private void executeQuery(String q){
         Statement stmt;
         try {
             stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM " + Consts.dBTableName);
-            System.out.println(rs.getAsciiStream(1));
+            stmt.executeQuery(q);          
         } catch (SQLException e) {
             System.out.println( "[!] DB failed" );
             ExitHandler.error(e);
@@ -42,6 +41,6 @@ public class Database {
     }
 
     public void addMessage(ObjectMessage message) throws Exception {
-        // TODO...
+        
     }
 }
