@@ -29,7 +29,7 @@ public class Database {
         return 0;
     }
 
-    private void executeQuery(String q){
+    public void executeQuery(String q){
         Statement stmt;
         try {
             stmt = conn.createStatement();
@@ -38,9 +38,5 @@ public class Database {
             System.out.println( "[!] DB failed" );
             ExitHandler.error(e);
         }
-    }
-
-    public void addMessage(ObjectMessage message) throws Exception {
-        
     }
 }
