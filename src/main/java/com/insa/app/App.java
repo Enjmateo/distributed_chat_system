@@ -50,6 +50,8 @@ public class App
             DB.connect();
         } catch (Exception e) {ExitHandler.error(e);}
         
+        DB.getMessages(localUser.getUUID());
+
         MainWindows mw = new MainWindows();
 
         mw.setStatus("Idle (Debug)");

@@ -10,15 +10,21 @@ The configuration data is kept in a configuration file in the same directory as 
 |-----------------|--------------------|----------------------|----------------|-----------------|-------------------|
 | ...             | ...                | ...                  | ...            |                 |                   |
 
+`messageType` inform data type:
+* 0 => Debug message
+* 1 => Text message
+* 2 => Image message
+* 3 => File message
+
 #### Message table
-* Table name: `text_messages`
+* Table name: `text_message`
 
 | messageID (int) | messagePart (int) | content (var char [512]) |
 |-----------------|-------------------|--------------------------|
 | ...             | ...               | ...                      |
 
 #### File message table
-* Table name: `file_messages`
+* Table name: `file_message`
 
 | messageID (int) | fileName (var char [128]) | fileID (char [36]) | size (int) |
 |-----------------|---------------------------|------------------------|------------|
