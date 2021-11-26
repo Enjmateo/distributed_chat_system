@@ -20,6 +20,6 @@ The configuration data is kept in a configuration file in the same directory as 
 #### File message table
 * Table name: `file_messages`
 
-| messageID (int) | fileName (var char [128]) | fileID (var char [36]) | size (int) |
+| messageID (int) | fileName (var char [128]) | fileID (char [36]) | size (int) |
 |-----------------|---------------------------|------------------------|------------|
 | ...             | ...                       | ...                    | ...        |

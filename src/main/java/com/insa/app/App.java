@@ -47,8 +47,7 @@ public class App
         System.out.println( "[+] Connecting to DB");
         DB =  new Database();
         try {
-            DB.connect();
-            DB.printInfo();
+            if (DB.connect() == 0){DB.printInfo();}
         } catch (Exception e) {ExitHandler.error(e);}
         
         MainWindows mw = new MainWindows();
