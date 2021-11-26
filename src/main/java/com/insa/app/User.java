@@ -65,4 +65,7 @@ public class User {
     public boolean isLocal() {
         return this.local;
     }
+    public boolean isConnected(){
+        return this.connected;
+    }
 }

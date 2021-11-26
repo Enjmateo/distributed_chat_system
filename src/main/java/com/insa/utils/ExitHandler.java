@@ -8,6 +8,7 @@ public class ExitHandler {
 
     public static void error(Exception e) {
         System.out.println( "[-] The program has encountered an error and crashes." );
+        System.out.println( "[-] Error: " + e.getMessage());
         e.printStackTrace();
         System.exit(1);
     }

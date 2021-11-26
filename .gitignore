@@ -17,3 +17,6 @@ buildNumber.properties
 
 # IDE
 .vscode
+
+# Config file
+.data.json

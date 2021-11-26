@@ -12,6 +12,7 @@ public class TCPObjectReceiver extends Thread {
 
     public TCPObjectReceiver(Socket socket){
         this.inputSocket = socket;
+        this.start();
     }
     public synchronized boolean isRunning() {return running;}
     public synchronized void close(boolean force ) throws IOException{
