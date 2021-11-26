@@ -1,14 +1,13 @@
 package com.insa.app;
 
-import java.util.UUID;
-
 import com.insa.communication.*;
 import com.insa.gui.*;
 import com.insa.utils.ExitHandler;
 
 public class App 
 {
-    public Database DB;
+    public static Database DB;
+    public static User localUser;
 
     /**
      * Entry point
@@ -23,7 +22,7 @@ public class App
 
         System.out.println( "[+] Creating base object" );
 
-        User localUser = new User(null, null, true);
+        localUser = new User(null, null, true);
 
         System.out.println( "[+] Reading config file");
         Data.reloadData();
@@ -43,6 +42,14 @@ public class App
     public static void mainThread ( String pseudo )
     {
         System.out.println( "[+] Pseudo: " + pseudo );
+        localUser.setPseudo(pseudo);
+
+        System.out.println( "[+] Connecting to DB");
+        DB =  new Database();
+        try {
+            DB.connect();
+            DB.printInfo();
+        } catch (Exception e) {ExitHandler.error(e);}
         
         MainWindows mw = new MainWindows();
 

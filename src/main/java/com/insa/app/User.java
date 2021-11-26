@@ -16,6 +16,9 @@ public class User {
     private TCPObjectSender sender;
     private TCPObjectReceiver receiver;
 
+    enum Status {IDLE, CONNECTED, DISCONNECTED};
+    Status status;
+
     /**
      * Public class user
      * @param pseudo Set user pseudo
@@ -26,18 +29,21 @@ public class User {
         this.pseudo = pseudo;
         this.uuid = uuid;
         this.local = local;
+        this.status = Status.IDLE;
     }
 
     public void connect(Socket socket) throws Exception {
         this.sender = new TCPObjectSender(socket);
         this.receiver = new TCPObjectReceiver(socket);
         this.connected = true;
+        this.status = Status.CONNECTED;
     }
 
     public void disconnect() throws Exception {
         this.sender.close();
         this.receiver.close(true);
         this.connected = false;
+        this.status = Status.DISCONNECTED;
     }
 
     public void setPseudo(String pseudo) {
@@ -65,7 +71,23 @@ public class User {
     public boolean isLocal() {
         return this.local;
     }
+
     public boolean isConnected(){
         return this.connected;
+    }
+
+    public void setIdle() {
+        this.status = Status.IDLE;
+    }
+
+    public String getStatusString() {
+        switch(status) {
+            case DISCONNECTED:
+                return "Disconnected";
+            case CONNECTED:
+                return "Connected";
+            default:
+                return "Idle";
+        }
     }
 }
