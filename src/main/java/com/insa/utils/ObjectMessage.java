@@ -5,11 +5,21 @@ import com.insa.communication.*;
 
 
 public abstract class ObjectMessage implements Serializable {
-    private transient UUID sender;
-    private transient UUID recepter;
-    private Date date;
+    protected transient UUID sender;
+    protected UUID recepter;
+    protected Date date;
 
-    abstract public void sendToDatabase(Data data);
+    public ObjectMessage(UUID sender, UUID recepter) {
+        this.sender = sender;
+        this.recepter = recepter;
+        date = new Date();
+    }
+    public ObjectMessage(UUID sender){
+        this.sender = sender;
+        date = new Date();
+    }
+
+    abstract public void sendToDatabase(Database database);
     abstract public void action(Object object);
     
 }
