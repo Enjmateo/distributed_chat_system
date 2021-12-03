@@ -76,6 +76,7 @@ public class Database {
 
                 switch (messageType) {
                     case 0:
+                        textContent = "Auto-generated debug message";
                     case 1:
                         ResultSet ts = executeQuery("SELECT * FROM text_message WHERE messageID=" + id);
                         if (ts.next()) {

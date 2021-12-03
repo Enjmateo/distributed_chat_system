@@ -1,8 +1,11 @@
 package com.insa.app;
 
+import java.util.ArrayList;
+
 import com.insa.communication.*;
 import com.insa.gui.*;
 import com.insa.utils.ExitHandler;
+import com.insa.utils.ObjectMessage;
 
 public class App 
 {
@@ -50,13 +53,20 @@ public class App
             DB.connect();
         } catch (Exception e) {ExitHandler.error(e);}
         
-        DB.getMessages(localUser.getUUID());
+        ArrayList<ObjectMessage> messagesList = DB.getMessages(localUser.getUUID());
 
         MainWindows mw = new MainWindows();
 
         mw.setStatus("Idle (Debug)");
         mw.setPseudo(pseudo);
         mw.addUser(pseudo);
+
+        for (ObjectMessage message : messagesList) {
+            if (message.getClass() == TextMessage.class) {
+                mw.addMessage(message.getSender().toString(), ((TextMessage)message).getContent());
+            }
+        }
+        
 
         // Test
         mw.addUser("Alias");
