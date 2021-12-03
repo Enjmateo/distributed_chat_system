@@ -27,8 +27,6 @@ public abstract class ObjectMessage implements Serializable {
         date = new Date();
     }
 
-    abstract public void action(Object object);
-
     public UUID getSender(){
         return sender;
     }

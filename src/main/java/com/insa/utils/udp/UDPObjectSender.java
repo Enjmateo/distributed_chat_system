@@ -12,17 +12,17 @@ public class UDPObjectSender {
     }
 
 
-    private void send(ObjectMessage message, InetAddress address, int port) throws Exception {
+    private static void send(ObjectMessage message, InetAddress address, int port) throws Exception {
         DatagramPacket packet = objectToDatagramPacket(message, address, port);
         socket.send(packet);
     }
     
-    public void sendMessage(ObjectMessage message, InetAddress address, int port) throws Exception {
+    public static void sendMessage(ObjectMessage message, InetAddress address, int port) throws Exception {
         socket.setBroadcast(false);
         send(message, address, port);
     }
 
-    public void broadcastMessage(ObjectMessage broadcastMessage, int port) throws Exception {
+    public static void broadcastMessage(ObjectMessage broadcastMessage, int port) throws Exception {
         socket.setBroadcast(true);
         ArrayList<InetAddress> adresses = listAllBroadcastAddresses();
         for(InetAddress address : adresses) {
@@ -32,7 +32,7 @@ public class UDPObjectSender {
     }
 
     //Récupération des adresses de boradcast
-    private ArrayList<InetAddress> listAllBroadcastAddresses() throws SocketException {
+    private static ArrayList<InetAddress> listAllBroadcastAddresses() throws SocketException {
         ArrayList<InetAddress> broadcastList = new ArrayList<>();
         Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
         while (interfaces.hasMoreElements()) {
@@ -51,7 +51,7 @@ public class UDPObjectSender {
     }
 
     //Conversion des objets en datagramPacket
-    public DatagramPacket objectToDatagramPacket(ObjectMessage message, InetAddress address, int port) throws Exception {
+    public static DatagramPacket objectToDatagramPacket(ObjectMessage message, InetAddress address, int port) throws Exception {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream(Consts.MAX_UDP_PACKET_SIZE);
         final ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(message);

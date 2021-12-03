@@ -1,5 +1,6 @@
 package com.insa.utils.udp;
 
+import com.insa.app.ObjectHandler;
 import com.insa.utils.*;
 import java.net.*;
 import java.io.*;
@@ -27,6 +28,9 @@ public class UDPObjectReceiver extends Thread {
               ObjectInputStream is = new
                    ObjectInputStream(new BufferedInputStream(byteStream));
               ObjectMessage object = (ObjectMessage)is.readObject();
+              if(object instanceof ConfigMessage){
+                ((ConfigMessage)object).setAddress(packet.getAddress());
+              }
               is.close();
               ObjectHandler.handleObject(object);
             }

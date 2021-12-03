@@ -1,6 +1,8 @@
 package com.insa.utils.tcp;
 import java.io.*;
 import java.net.*;
+
+import com.insa.app.ObjectHandler;
 import com.insa.utils.*;
 
 public class TCPObjectReceiver extends Thread {

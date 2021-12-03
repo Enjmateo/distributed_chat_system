@@ -16,7 +16,7 @@ public class User {
     private TCPObjectSender sender;
     private TCPObjectReceiver receiver;
 
-    enum Status {IDLE, CONNECTED, DISCONNECTED};
+    enum Status {WAITING, IDLE, CONNECTED, DISCONNECTED};
     Status status;
 
     /**
@@ -25,10 +25,9 @@ public class User {
      * @param uuid Set user UUID
      * @param local True if the user is local 
      */
-    public User(String pseudo, UUID uuid, boolean local) {
+    public User(String pseudo, UUID uuid) {
         this.pseudo = pseudo;
         this.uuid = uuid;
-        this.local = local;
         this.status = Status.IDLE;
     }
 
@@ -52,6 +51,8 @@ public class User {
 
     public InetAddress getInetAddress() {return address;}
 
+    public void setInetAddress(InetAddress address){ this.address = address; }
+    
     public String getPseudo() {
         return this.pseudo;
     }
@@ -68,16 +69,15 @@ public class User {
         this.local = local;
     }
 
-    public boolean isLocal() {
-        return this.local;
-    }
-
     public boolean isConnected(){
         return this.connected;
     }
 
     public void setIdle() {
         this.status = Status.IDLE;
+    }
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public String getStatusString() {
@@ -86,6 +86,8 @@ public class User {
                 return "Disconnected";
             case CONNECTED:
                 return "Connected";
+            case WAITING:
+                return "Waiting";
             default:
                 return "Idle";
         }

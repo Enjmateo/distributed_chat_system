@@ -25,7 +25,7 @@ public class App
 
         System.out.println( "[+] Creating base object" );
 
-        localUser = new User(null, null, true);
+        localUser = new User(null, null);
 
         System.out.println( "[+] Reading config file");
         Data.reloadData();
@@ -71,5 +71,11 @@ public class App
         // Test
         mw.addUser("Alias");
         mw.addUser("Lambda");
+
+        // LISTE DES OBJETS A INITIALISER
+
+        /* 
+        -UDP Object Sender 
+        */
     }
 }

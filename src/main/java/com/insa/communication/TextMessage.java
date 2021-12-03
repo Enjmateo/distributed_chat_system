@@ -41,7 +41,5 @@ public class TextMessage extends ObjectMessage implements Message {
 
     }
 
-    public void action(Object object){
-        // TODO...
-    }
+
 }
