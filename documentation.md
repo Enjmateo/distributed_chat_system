@@ -29,3 +29,11 @@ The configuration data is kept in a configuration file in the same directory as 
 | messageID (int) | fileName (var char [128]) | fileID (char [36]) | size (int) |
 |-----------------|---------------------------|------------------------|------------|
 | ...             | ...                       | ...                    | ...        |
+
+#### Init. database
+```SQL
+create table messages(messageID integer not null, sender char(36) not null, receiver char(36) not null, sendDate integer not null, contentID integer not null, messageType integer);
+create table text_message(messageID integer not null, messagePart integer, content varchar(512));
+create table file_message(messageID integer not null, fileName varchar(128) not null, fileID char(36), size integer);
+```
+
