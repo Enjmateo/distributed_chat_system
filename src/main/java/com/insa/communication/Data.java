@@ -67,33 +67,37 @@ public class Data {
         System.out.println("   [>] DB passwd: " + dbPassword);
     }
 
-    protected static String getDBUrl() throws Exception {
+    protected static String getDBUrl() {
         if (dbURL == null) {
-            throw new Exception("[!] Data not found (DB url)");
+            reloadData();
+            return getDBUrl();
         } else {
             return dbURL;
         }
     }
 
-    protected static String getDBUsername() throws Exception {
+    protected static String getDBUsername() {
         if (dbUsername == null) {
-            throw new Exception("[!] Data not found (DB username)");
+            reloadData();
+            return getDBUsername();
         } else {
             return dbUsername;
         }
     }
 
-    protected static String getDBPassword() throws Exception {
+    protected static String getDBPassword() {
         if (dbPassword == null) {
-            throw new Exception("[!] Data not found (DB password)");
+            reloadData();
+            return getDBPassword();
         } else {
             return dbPassword;
         }
     }
 
-    public static UUID getUUID() throws Exception {
+    public static UUID getUUID(){
         if (uuid == null) {
-            throw new Exception("[!] Data not found (UUID)");
+            reloadData();
+            return getUUID();
         } else {
             return uuid;
         }
