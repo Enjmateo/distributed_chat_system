@@ -33,7 +33,7 @@ public abstract class ObjectMessage implements Serializable {
         return sender;
     }
 
-    public UUID getRecepter(){
-        return recepter;
+    public UUID getReceiver(){
+        return receiver;
     }
 }
