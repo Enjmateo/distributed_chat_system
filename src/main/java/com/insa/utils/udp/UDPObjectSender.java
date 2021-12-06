@@ -33,25 +33,27 @@ public class UDPObjectSender {
         socket.setBroadcast(true);
         ArrayList<InetAddress> adresses = listAllBroadcastAddresses();
         for(InetAddress address : adresses) {
+            System.out.println("Broadcast sur "+address.toString()+" port : "+port); 
             send(broadcastMessage, address, port);
         }
 
     }
 
     //Récupération des adresses de boradcast
-    private static ArrayList<InetAddress> listAllBroadcastAddresses() throws SocketException {
+    private static ArrayList<InetAddress> listAllBroadcastAddresses() throws SocketException, UnknownHostException {
         ArrayList<InetAddress> broadcastList = new ArrayList<>();
         Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+        InetAddress toDrop = InetAddress.getByName("0.0.0.0");
         while (interfaces.hasMoreElements()) {
             NetworkInterface networkInterface = interfaces.nextElement();
     
             if (networkInterface.isLoopback() || !networkInterface.isUp()) {
                 continue;
             }
-    
             networkInterface.getInterfaceAddresses().stream() 
               .map(a -> a.getBroadcast())
               .filter(Objects::nonNull)
+              .filter(m->!m.equals(toDrop))
               .forEach(broadcastList::add);
         }
         return broadcastList;
