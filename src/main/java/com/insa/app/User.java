@@ -8,7 +8,6 @@ import java.net.*;
 public class User {
     private String pseudo;
     private UUID uuid;
-    private boolean local;
 
     private InetAddress address;
 
@@ -63,10 +62,6 @@ public class User {
 
     public UUID getUUID() {
         return this.uuid;
-    }
-
-    public void setLocal(boolean local) {
-        this.local = local;
     }
 
     public boolean isConnected(){

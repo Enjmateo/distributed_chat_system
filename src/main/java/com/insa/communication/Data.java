@@ -16,7 +16,7 @@ public class Data {
     private static UUID uuid = null;
 
 
-    private static void init(){
+    public static void init(){
         File newConfig = new File(Consts.configFile);
         try {
             newConfig.createNewFile();
@@ -54,6 +54,9 @@ public class Data {
         printConfig();
     }
 
+    /**
+     * @deprecated
+     */
     public Data () {
         reloadData();  
     }

@@ -1,13 +1,15 @@
 package com.insa.gui;
 
 import com.insa.app.App;
+import com.insa.app.UsersHandler;
 import com.insa.communication.Data;
 import com.insa.utils.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.*;   
+import java.io.*;
+import java.util.ArrayList;   
 
 
 public class WelcomeWindows extends JFrame implements ActionListener {
@@ -85,17 +87,27 @@ public class WelcomeWindows extends JFrame implements ActionListener {
 
     /**
      * DEBUG
+     * @deprecated
      * @see actionPerformed
      */
     public void skipWindows() {
         System.out.println("[!] Skipping...");
-        App.mainThread("M. Louis DEBUG");
+        App.mainThread();
         this.dispose();
     }
 
     private void actionButtonGo() {
         System.out.println("[+] Go!");
-        App.mainThread(textField.getText());
+
+        ArrayList<String> pseudoList = UsersHandler.getPseudos();
+        String pseudo = textField.getText();
+        if (pseudoList.contains(pseudo)) {
+            System.out.println("[!] Given pseudo already used!");
+            return;
+        }
+
+        UsersHandler.getLocalUser().setPseudo(pseudo);
+        App.mainThread();
         this.dispose();
     }
 

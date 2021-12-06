@@ -1,8 +1,6 @@
 package com.insa.utils.tcp;
 import java.lang.Thread; 
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.net.ServerSocket;
 import com.insa.app.*;

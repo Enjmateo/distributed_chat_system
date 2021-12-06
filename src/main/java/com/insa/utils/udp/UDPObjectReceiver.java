@@ -8,6 +8,7 @@ import java.io.*;
 public class UDPObjectReceiver extends Thread {
     DatagramSocket socket;
     boolean running = true;
+    
     public UDPObjectReceiver() throws Exception{
         socket = new DatagramSocket();
         start();

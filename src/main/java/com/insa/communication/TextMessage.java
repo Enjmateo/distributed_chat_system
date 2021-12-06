@@ -1,6 +1,5 @@
 package com.insa.communication;
 
-import com.insa.app.*;
 import com.insa.utils.*;
 import java.util.*;
 

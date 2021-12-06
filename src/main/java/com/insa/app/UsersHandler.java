@@ -2,10 +2,15 @@ package com.insa.app;
 import java.util.*;
 import java.net.*;
 import java.util.stream.*;
+import com.insa.communication.*;
 
 public class UsersHandler {
     static private User self;
     static private ArrayList<User> users;
+
+    public synchronized static void init() {
+        self = new User(null, Data.getUUID());
+    }
 
     public synchronized static void addUser(User user) {
         users.add(user);
@@ -24,6 +29,11 @@ public class UsersHandler {
     }
     public synchronized static ArrayList<User> getConnectedUsers(){
         return new ArrayList<User>(users.stream().filter(x->x.isConnected()).collect(Collectors.toList()));
+    }
+
+    public synchronized static ArrayList<String> getPseudos(){
+        if (users!= null) return new ArrayList<String>(users.stream().map(e -> e.getPseudo()).collect(Collectors.toList()));
+        else return new ArrayList<String>();
     }
 
     public synchronized static User getLocalUser(){

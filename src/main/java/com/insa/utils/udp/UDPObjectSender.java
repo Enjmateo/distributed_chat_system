@@ -7,10 +7,17 @@ import java.util.*;
 public class UDPObjectSender {
     private static DatagramSocket socket = null;
 
-    public UDPObjectSender() throws Exception{
+    /**
+     * @deprecated
+     * @throws Exception
+     */
+    public UDPObjectSender() throws Exception {
         socket = new DatagramSocket();
     }
 
+    public static void init() throws Exception {
+        socket = new DatagramSocket();
+    }
 
     private static void send(ObjectMessage message, InetAddress address, int port) throws Exception {
         DatagramPacket packet = objectToDatagramPacket(message, address, port);
