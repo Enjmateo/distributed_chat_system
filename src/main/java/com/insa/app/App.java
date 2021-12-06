@@ -23,7 +23,7 @@ public class App
     {
         System.out.println( "[+] Launching app" );
 
-        Data.init();
+        Data.reloadData();
         UsersHandler.init();
 
         UDPObjectReceiver udpReceiver = null;
@@ -66,15 +66,16 @@ public class App
         }
         
         //UsersHandler.getPseudos().stream().
-        /*
+        
         System.out.println( "[+] Connecting to DB");
         DB =  new Database();
         try {
             DB.connect();
         } catch (Exception e) {ExitHandler.error(e);}
         
-        ArrayList<ObjectMessage> messagesList = DB.getMessages(localUser.getUUID());
+        //ArrayList<ObjectMessage> messagesList = DB.getMessages(localUser.getUUID());
 
+        /*
         MainWindows mw = new MainWindows();
 
         mw.setStatus("Idle (Debug)");

@@ -24,7 +24,7 @@ public class Database {
             conn = DriverManager.getConnection("jdbc:" + Data.getDBUrl(), Data.getDBUsername(), Data.getDBPassword());
         } catch (Exception e) {
             System.out.println("failed!");
-            return 1;
+            ExitHandler.error(e);
         }
         System.out.println("ok.");
         return 0;
