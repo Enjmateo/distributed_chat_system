@@ -15,29 +15,47 @@ public class Data {
 
     private static UUID uuid = null;
 
-
-    public static void init(){
+    public static void init() {
         File newConfig = new File(Consts.configFile);
         try {
             newConfig.createNewFile();
-        } catch (IOException e) {ExitHandler.error(e);}
+        } catch (IOException e) {
+            ExitHandler.error(e);
+        }
 
         FileWriter configWriter;
         try {
             configWriter = new FileWriter(Consts.configFile);
-            configWriter.write("{\"uuid\":\"" + UUID.randomUUID().toString() + "\",\"dbAddr\":\"localhost\",\"dbUser\":\"admin\",\"dbPassword\":\"admin\"}");
+
+            /*
+             * if (dbURL != null){
+             * configWriter.write("{\"uuid\":\"" + UUID.randomUUID().toString() +
+             * "\",\"dbAddr\":\"" + dbURL + "\",\"dbUser\":\"" + dbUsername +
+             * "\",\"dbPassword\":\"" + dbPassword + "\"}");
+             * } else {
+             * configWriter.write("{\"uuid\":\"" + UUID.randomUUID().toString() +
+             * "\",\"dbAddr\":\"localhost\",\"dbUser\":\"admin\",\"dbPassword\":\"admin\"}")
+             * ;
+             * }
+             */
+
+            configWriter.write("{\"uuid\":\"" + UUID.randomUUID().toString()
+                    + "\",\"dbAddr\":\"localhost\",\"dbUser\":\"admin\",\"dbPassword\":\"admin\"}");
+
             configWriter.close();
-        } catch (IOException e) {ExitHandler.error(e);}
+        } catch (IOException e) {
+            ExitHandler.error(e);
+        }
     }
 
-    public static void reloadData(){
+    public static void reloadData() {
         String text = "";
 
         try {
             InputStream fileInput = new FileInputStream(Consts.configFile);
             text = new String(fileInput.readAllBytes());
             fileInput.close();
-        }catch(IOException e) {
+        } catch (IOException e) {
             System.out.println("[!] Config file not found, creating new one...");
             init();
             reloadData();
@@ -46,7 +64,18 @@ public class Data {
 
         JSONObject json = new JSONObject(text);
 
-        uuid = UUID.fromString(json.getString("uuid"));
+        if (json.isNull("uuid")) {
+            uuid = UUID.randomUUID();
+            json.put("uuid", uuid.toString());
+            try {
+                OutputStream fileOutput = new FileOutputStream(Consts.configFile);
+                fileOutput.write(json.toString().getBytes());
+                fileOutput.close();
+            } catch (Exception e) {ExitHandler.error(e);}
+        } else {
+            uuid = UUID.fromString(json.getString("uuid"));
+        }
+
         dbURL = json.getString("dbAddr");
         dbUsername = json.getString("dbUser");
         dbPassword = json.getString("dbPassword");
@@ -57,12 +86,11 @@ public class Data {
     /**
      * @deprecated
      */
-    public Data () {
-        reloadData();  
+    public Data() {
+        reloadData();
     }
 
-
-    public static void printConfig(){
+    public static void printConfig() {
         System.out.println("[+] Loaded config: ");
         System.out.println("   [>] UUID: " + uuid.toString());
         System.out.println("   [>] DB Addr: " + dbURL);
@@ -97,7 +125,7 @@ public class Data {
         }
     }
 
-    public static UUID getUUID(){
+    public static UUID getUUID() {
         if (uuid == null) {
             reloadData();
             return getUUID();
