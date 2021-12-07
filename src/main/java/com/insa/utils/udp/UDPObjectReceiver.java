@@ -10,7 +10,7 @@ public class UDPObjectReceiver extends Thread {
     boolean running = true;
     
     public UDPObjectReceiver() throws Exception{
-        socket = new DatagramSocket();
+        socket = new DatagramSocket(Consts.udpPort);
         start();
     }
 
