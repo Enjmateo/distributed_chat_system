@@ -96,7 +96,7 @@ jobs:
         release_name: Release ${{ steps.project.outputs.version }}-nightly
         prerelease: true
         draft: false
-        body: Nightly release (${{ steps.date.outputs.date }}). This version is not intended to be used in production. For development purposes.
+        body: Nightly release (${{ steps.date.outputs.date }}). This version is not intended to be used in production. For development purposes.\n(${{ github.event.head_commit.message }})
 
     - name: Upload release asset to GitHub
       id: upload-release-asset 
