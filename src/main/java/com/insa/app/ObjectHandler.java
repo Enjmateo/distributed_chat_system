@@ -39,5 +39,7 @@ public class ObjectHandler {
             System.out.println("[+] Updating pseudo for " + obj.getPseudo());
             user.setPseudo(obj.getPseudo());
         }
+
+        UsersHandler.listUsers();
     }
 }

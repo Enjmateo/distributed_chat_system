@@ -1,8 +1,5 @@
 package com.insa.app;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import com.insa.communication.*;
 import com.insa.gui.*;
 import com.insa.utils.*;
@@ -12,8 +9,9 @@ import com.insa.utils.udp.*;
 public class App 
 {
     public static Database DB;
-    private UDPObjectReceiver udpReceiver;
+    //private UDPObjectReceiver udpReceiver;
     private static WelcomeWindows ww;
+
 
     /**
      * Entry point
@@ -40,10 +38,7 @@ public class App
             Thread.sleep(Consts.discoveryTimeoutMs);
         } catch (Exception e) {ExitHandler.error(e);}
 
-        System.out.println( "[1] List of received pseudos: " );
-        for (String i : UsersHandler.getPseudos()) {
-            System.out.println( "    [>] Pseudo : " + i );
-        }
+        UsersHandler.listUsers();        
         
         //ArrayList<String> pseudoList = UsersHandler.getPseudos();
 
@@ -67,10 +62,7 @@ public class App
             UDPObjectSender.broadcastMessage(new ConfigMessage(UsersHandler.getLocalUser().getPseudo(), ConfigMessage.MessageType.PSEUDO_SET), Consts.udpPort);
         } catch (Exception e) {ExitHandler.error(e);}
 
-        System.out.println( "[2] List of received pseudos: " );
-        for (String i : UsersHandler.getPseudos()) {
-            System.out.println( "    [>] Pseudo : " + i );
-        }
+        UsersHandler.listUsers();
         
         //UsersHandler.getPseudos().stream().
         
@@ -88,7 +80,7 @@ public class App
 
         mw.setStatus("Idle (Debug)");
         mw.setPseudo(pseudo);
-        mw.addUser(pseudo);
+        //mw.addUser(pseudo);
 
         /*
         for (ObjectMessage message : messagesList) {

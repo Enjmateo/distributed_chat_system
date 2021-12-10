@@ -40,4 +40,12 @@ public class UsersHandler {
     public synchronized static User getLocalUser(){
         return self;
     }
+    
+    public static void listUsers() {
+        System.out.println( "[+] Local user: " + self.toString() );
+        System.out.println( "[+] List of received users: " );
+        for (User user : users) {
+            System.out.println( "    [>] Users : " + user.toString() );
+        }
+    }
 }
