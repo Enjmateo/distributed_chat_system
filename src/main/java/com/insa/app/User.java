@@ -87,4 +87,7 @@ public class User {
                 return "Idle";
         }
     }
+    public String toString(){
+        return this.pseudo + " (" + this.uuid.toString() + ") : "+this.status;
+    }
 }
