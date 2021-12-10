@@ -25,6 +25,7 @@ public class UDPObjectSender {
     }
     
     public static void sendMessage(ObjectMessage message, InetAddress address, int port) throws Exception {
+        System.out.println("[+] Sending UDP message to " + address.toString() + ":" + port);
         socket.setBroadcast(false);
         send(message, address, port);
     }
@@ -33,7 +34,7 @@ public class UDPObjectSender {
         socket.setBroadcast(true);
         ArrayList<InetAddress> adresses = listAllBroadcastAddresses();
         for(InetAddress address : adresses) {
-            System.out.println("Broadcast sur "+address.toString()+" port : "+port); 
+            System.out.println("[+] Broadcast sur "+address.toString()+" port : "+port); 
             send(broadcastMessage, address, port);
         }
 

@@ -55,7 +55,8 @@ public class App
      */
     public static void mainThread ()
     {
-        System.out.println( "[+] Pseudo: " + UsersHandler.getLocalUser().getPseudo() );
+        String pseudo = UsersHandler.getLocalUser().getPseudo();
+        System.out.println( "[+] Pseudo: " + pseudo );
 
         try {
             UDPObjectSender.broadcastMessage(new ConfigMessage(UsersHandler.getLocalUser().getPseudo(), ConfigMessage.MessageType.PSEUDO_SET), Consts.udpPort);
@@ -70,18 +71,19 @@ public class App
         System.out.println( "[+] Connecting to DB");
         DB =  new Database();
         try {
-            DB.connect();
+            //&DB.connect();
         } catch (Exception e) {ExitHandler.error(e);}
         
         //ArrayList<ObjectMessage> messagesList = DB.getMessages(localUser.getUUID());
 
-        /*
+        
         MainWindows mw = new MainWindows();
 
         mw.setStatus("Idle (Debug)");
         mw.setPseudo(pseudo);
         mw.addUser(pseudo);
 
+        /*
         for (ObjectMessage message : messagesList) {
             if (message.getClass() == TextMessage.class) {
                 mw.addMessage(message.getSender().toString(), ((TextMessage)message).getContent());
@@ -100,7 +102,7 @@ public class App
         /* 
         -UDP Object Sender 
         */
-
-        ExitHandler.exit();
+        
+        //ExitHandler.exit();
     }
 }
