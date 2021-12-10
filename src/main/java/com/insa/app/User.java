@@ -88,6 +88,6 @@ public class User {
         }
     }
     public String toString(){
-        return this.pseudo + " (" + this.uuid.toString() + ") : "+this.status;
+        return (this.pseudo == null? "undefined" : this.pseudo) + " (" + this.uuid.toString() + ") : "+this.status;
     }
 }
