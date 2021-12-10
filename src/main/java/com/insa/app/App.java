@@ -62,8 +62,9 @@ public class App
             UDPObjectSender.broadcastMessage(new ConfigMessage(UsersHandler.getLocalUser().getPseudo(), ConfigMessage.MessageType.PSEUDO_SET), Consts.udpPort);
         } catch (Exception e) {ExitHandler.error(e);}
 
+        System.out.println( "[+] List of received pseudos: " );
         for (String i : UsersHandler.getPseudos()) {
-            System.out.println( "[>] " + i );
+            System.out.println( "    [>] Pseudo : " + i );
         }
         
         //UsersHandler.getPseudos().stream().
@@ -71,7 +72,8 @@ public class App
         System.out.println( "[+] Connecting to DB");
         DB =  new Database();
         try {
-            //&DB.connect();
+            //DB.connect();
+            System.out.println( "[!] Skiping DB co.");
         } catch (Exception e) {ExitHandler.error(e);}
         
         //ArrayList<ObjectMessage> messagesList = DB.getMessages(localUser.getUUID());
