@@ -11,6 +11,7 @@ public class ConfigMessage extends ObjectMessage {
     }
     public ConfigMessage(){
         super();
+        type = MessageType.NOTIFY;
     }
     public ConfigMessage(String pseudo, MessageType type){
         super();
