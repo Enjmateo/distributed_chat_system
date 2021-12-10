@@ -20,13 +20,15 @@ public class UDPObjectReceiver extends Thread {
     }
 
     public void run() {
+        DatagramPacket packet;
         while (isRunning()) {
             try {
                 byte[] recvBuf = new byte[5000];
-                DatagramPacket packet = new DatagramPacket(recvBuf,
+                packet = new DatagramPacket(recvBuf,
                         recvBuf.length);
+                System.out.println("[#] Waiting for more UDP packets...");
                 socket.receive(packet);
-
+                System.out.print("[+] Received message UDP from " + packet.getAddress().toString());
                 
                 ByteArrayInputStream byteStream = new ByteArrayInputStream(recvBuf);
                 ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(byteStream));
@@ -37,11 +39,12 @@ public class UDPObjectReceiver extends Thread {
                 }
 
                 if(object.getSender().equals(UsersHandler.getLocalUser().getUUID())){
+                    System.out.print(" [skiped]");
                     is.close();
                     continue;
                 }
-                System.out.println("[+] Received message UDP from " + packet.getAddress().toString());
-
+                
+                System.out.println("");
                 if (object instanceof ConfigMessage) {
                     System.out.println("   [>] Message type: Config message ");
                     ((ConfigMessage) object).setAddress(packet.getAddress());
@@ -49,8 +52,10 @@ public class UDPObjectReceiver extends Thread {
 
 
                 is.close();
+                byteStream.close();
                 ObjectHandler.handleObject(object);
             } catch (Exception e) {
+                System.out.println("Exception");
                 ExitHandler.error(e);
             }
         }
