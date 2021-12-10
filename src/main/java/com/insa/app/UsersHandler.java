@@ -9,6 +9,7 @@ public class UsersHandler {
     static private ArrayList<User> users;
 
     public synchronized static void init() {
+        users = new ArrayList<User>();
         self = new User(null, Data.getUUID());
     }
 
