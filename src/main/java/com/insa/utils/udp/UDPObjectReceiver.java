@@ -27,25 +27,30 @@ public class UDPObjectReceiver extends Thread {
                 socket.receive(packet);
 
                 System.out.println("[+] Received message UDP from " + packet.getAddress().toString());
-                // int byteCount = packet.getLength();
+                
                 ByteArrayInputStream byteStream = new ByteArrayInputStream(recvBuf);
                 ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(byteStream));
                 ObjectMessage object = (ObjectMessage) is.readObject();
+
                 if (object instanceof ConfigMessage) {
+                    System.out.println("   [>] Message type: Config message ");
                     ((ConfigMessage) object).setAddress(packet.getAddress());
                 }
+
+                if (object == null){
+                    System.out.println("   [!] The message is null!");
+                }
+
                 is.close();
                 ObjectHandler.handleObject(object);
-            } catch (IOException e) {
-                System.err.println("Exception:  " + e);
-                ExitHandler.error(e);
-            } catch (ClassNotFoundException e) {
+            } catch (Exception e) {
                 ExitHandler.error(e);
             }
         }
         try {
             close(true);
         } catch (Exception e) {
+            ExitHandler.error(e);
         }
     }
 

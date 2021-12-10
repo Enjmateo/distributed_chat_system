@@ -8,6 +8,7 @@ public class ObjectHandler {
     //Permet d'appeler la méthode action sur l'objet objectMessage avec en argument l'objet associé à la classe de objectMessage
     public static void handleObject(ObjectMessage objectMessage){
         if (objectMessage instanceof ConfigMessage) {
+            System.out.println("   [>] Handling config message...");
             handleInitiateConnectionMessage((ConfigMessage)objectMessage); 
         }
     }
@@ -35,6 +36,7 @@ public class ObjectHandler {
 
         // S'il y a une modification de pseudo : 
         if (obj.getPseudo()!= null) {
+            System.out.println("[+] Updating pseudo for " + obj.getPseudo());
             user.setPseudo(obj.getPseudo());
         }
     }
