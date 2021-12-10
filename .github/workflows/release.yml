@@ -53,7 +53,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} 
-        asset_path: ./target/distributed_chat_system-${{ steps.project.outputs.version }}.jar
+        asset_path: ./target/distributed_chat_system-${{ steps.project.outputs.version }}-jar-with-dependencies.jar
         asset_name: release.jar
         asset_content_type: application/jar
 
@@ -96,7 +96,7 @@ jobs:
         release_name: Release ${{ steps.project.outputs.version }}-nightly
         prerelease: true
         draft: false
-        body: Nightly release (${{ steps.date.outputs.date }}). This version is not intended to be used in production. For development purposes.\n(${{ github.event.head_commit.message }})
+        body: "Nightly release (${{ steps.date.outputs.date }}). This version is not intended to be used in production. For development purposes.\nLogs: ${{ github.event.head_commit.message }}"
 
     - name: Upload release asset to GitHub
       id: upload-release-asset 
@@ -105,7 +105,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} 
-        asset_path: ./target/distributed_chat_system-${{ steps.project.outputs.version }}.jar
+        asset_path: ./target/distributed_chat_system-${{ steps.project.outputs.version }}-jar-with-dependencies.jar
         asset_name: nightly.jar
         asset_content_type: application/jar
 
