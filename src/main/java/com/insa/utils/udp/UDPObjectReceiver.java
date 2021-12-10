@@ -26,7 +26,7 @@ public class UDPObjectReceiver extends Thread {
                         recvBuf.length);
                 socket.receive(packet);
 
-                System.out.println("[+] Received message UDP ");
+                System.out.println("[+] Received message UDP from " + packet.getAddress().toString());
                 // int byteCount = packet.getLength();
                 ByteArrayInputStream byteStream = new ByteArrayInputStream(recvBuf);
                 ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(byteStream));
@@ -38,9 +38,9 @@ public class UDPObjectReceiver extends Thread {
                 ObjectHandler.handleObject(object);
             } catch (IOException e) {
                 System.err.println("Exception:  " + e);
-                e.printStackTrace();
+                ExitHandler.error(e);
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                ExitHandler.error(e);
             }
         }
         try {
