@@ -1,5 +1,6 @@
 package com.insa.app;
 
+import com.insa.utils.Consts;
 import com.insa.utils.ObjectMessage;
 import com.insa.utils.udp.*;
 
@@ -27,7 +28,8 @@ public class ObjectHandler {
             //TODO Renvoyer un objet avec le pseudo et l'adresse
             //ATTENTION - A OPERER SUR LE THREAD PRINCIPAL (OU INITILISER L'ENVOYEUR DANS LE RECEVEUR UDP)
             try {
-                if(obj.getType() == ConfigMessage.MessageType.NOTIFY) UDPObjectSender.sendMessage( new ConfigMessage(UsersHandler.getLocalUser().getPseudo(),ConfigMessage.MessageType.NOTIFY_REPLY),obj.getAddress(),1234);
+                if(obj.getType() == ConfigMessage.MessageType.NOTIFY) UDPObjectSender.sendMessage( 
+                    new ConfigMessage(UsersHandler.getLocalUser().getPseudo(),ConfigMessage.MessageType.NOTIFY_REPLY),obj.getAddress(),Consts.udpPort);
                 else ; //GERER LA CREATION DE PSEUDO
             }catch (Exception e2){}
         }
