@@ -5,7 +5,7 @@ import com.insa.communication.*;
 
 
 public abstract class ObjectMessage implements Serializable {
-    protected transient UUID sender;
+    protected UUID sender;
     protected UUID receiver;
     protected Date date;
 
