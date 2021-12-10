@@ -36,7 +36,7 @@ public class App
             UDPObjectSender.broadcastMessage(new ConfigMessage(), Consts.udpPort);
 
             System.out.println( "[+] Wainting responses..." );
-            //Thread.sleep(Consts.discoveryTimeoutMs);
+            Thread.sleep(Consts.discoveryTimeoutMs);
         } catch (Exception e) {ExitHandler.error(e);}
 
         UsersHandler.listUsers();        
