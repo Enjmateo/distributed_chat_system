@@ -20,6 +20,7 @@ public class App
     public static void main( String[] args )
     {
         System.out.println( "[+] Launching app" );
+        System.out.println( "[+] Reading config file");
 
         Data.reloadData();
         UsersHandler.init();
@@ -45,8 +46,6 @@ public class App
         System.out.println( "[+] Printing welcome windows" );
         ww = new WelcomeWindows();
 
-        System.out.println( "[+] Reading config file");
-        Data.reloadData();
     }
 
     /**
@@ -65,14 +64,14 @@ public class App
         UsersHandler.listUsers();
         
         //UsersHandler.getPseudos().stream().
-        
+        /*
         System.out.println( "[+] Connecting to DB");
         DB =  new Database();
         try {
             //DB.connect();
             System.out.println( "[!] Skiping DB co.");
         } catch (Exception e) {ExitHandler.error(e);}
-        
+        */
         //ArrayList<ObjectMessage> messagesList = DB.getMessages(localUser.getUUID());
 
         

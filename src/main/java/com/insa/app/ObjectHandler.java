@@ -19,6 +19,7 @@ public class ObjectHandler {
 
     private static void handleInitiateConnectionMessage(ConfigMessage obj){
         User user;
+        if(obj.getSender().equals(UsersHandler.getLocalUser().getUUID()))return;
         System.out.println("   [>] Handling config message ("+obj.getType()+")...");
         try{
             user = UsersHandler.getUserByUUID(obj.getSender());
@@ -43,7 +44,6 @@ public class ObjectHandler {
                         }}
                      }
                     );
-                else ; //GERER LA CREATION DE PSEUDO
             }catch (Exception e2){}
         }
         //On mets à jour l'adresse IP de l'utilisateur
