@@ -39,6 +39,11 @@ public class App
             System.out.println( "[+] Wainting responses..." );
             Thread.sleep(Consts.discoveryTimeoutMs);
         } catch (Exception e) {ExitHandler.error(e);}
+
+        System.out.println( "[1] List of received pseudos: " );
+        for (String i : UsersHandler.getPseudos()) {
+            System.out.println( "    [>] Pseudo : " + i );
+        }
         
         //ArrayList<String> pseudoList = UsersHandler.getPseudos();
 
@@ -62,7 +67,7 @@ public class App
             UDPObjectSender.broadcastMessage(new ConfigMessage(UsersHandler.getLocalUser().getPseudo(), ConfigMessage.MessageType.PSEUDO_SET), Consts.udpPort);
         } catch (Exception e) {ExitHandler.error(e);}
 
-        System.out.println( "[+] List of received pseudos: " );
+        System.out.println( "[2] List of received pseudos: " );
         for (String i : UsersHandler.getPseudos()) {
             System.out.println( "    [>] Pseudo : " + i );
         }

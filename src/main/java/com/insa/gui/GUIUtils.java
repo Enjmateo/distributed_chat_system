@@ -1,6 +1,9 @@
 package com.insa.gui;
 
 import javax.swing.UIManager;
+
+import com.insa.utils.ExitHandler;
+
 import java.awt.*;
 import java.net.URL;
 
@@ -12,9 +15,9 @@ public class GUIUtils {
     
     static void initGTK() {
         try {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+            //UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
         } catch (Exception e) {
-            e.printStackTrace();
+            ExitHandler.error(e);
         }
     }
 

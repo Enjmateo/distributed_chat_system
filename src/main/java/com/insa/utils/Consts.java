@@ -9,5 +9,5 @@ public class Consts {
 
     public static final int udpPort = 4444;
 
-    public static final int discoveryTimeoutMs = 1000;
+    public static final int discoveryTimeoutMs = 2000;
 }
