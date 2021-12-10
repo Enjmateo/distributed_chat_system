@@ -19,7 +19,6 @@ public class ObjectHandler {
 
     private static void handleInitiateConnectionMessage(ConfigMessage obj){
         User user;
-        if(obj.getSender().equals(UsersHandler.getLocalUser().getUUID()))return;
         System.out.println("   [>] Handling config message ("+obj.getType()+")...");
         try{
             user = UsersHandler.getUserByUUID(obj.getSender());
@@ -28,24 +27,25 @@ public class ObjectHandler {
             user.setStatus(User.Status.WAITING);
             UsersHandler.addUser(user);
 
-            //TODO Renvoyer un objet avec le pseudo et l'adresse
-            //ATTENTION - A OPERER SUR LE THREAD PRINCIPAL (OU INITILISER L'ENVOYEUR DANS LE RECEVEUR UDP)
-            try {
-                if(obj.getType() == ConfigMessage.MessageType.NOTIFY) 
-                SwingUtilities.invokeLater(
-                    new Runnable() {
-                        public void run() {
-                        try {
-                            System.out.println("Sending my pseudo ("+UsersHandler.getLocalUser().getPseudo()+") to "+obj.getAddress());
-                            UDPObjectSender.sendMessage( 
-                            new ConfigMessage(UsersHandler.getLocalUser().getPseudo(),ConfigMessage.MessageType.NOTIFY_REPLY),obj.getAddress(),Consts.udpPort);
-                        } catch (Exception e) {
-                            ExitHandler.error(e);
-                        }}
-                     }
-                    );
-            }catch (Exception e2){}
+ 
         }
+        try {
+            //TODO Renvoyer un objet avec le pseudo et l'adresse
+            //ATTENTION - A OPERER SUR LE THREAD PRINCIPAL (OU INITILISER L'ENVOYEUR DANS LE RECEVEUR UDP)  
+            if(obj.getType() == ConfigMessage.MessageType.NOTIFY) 
+            SwingUtilities.invokeLater(
+                new Runnable() {
+                    public void run() {
+                    try {
+                        System.out.println("Sending my pseudo ("+UsersHandler.getLocalUser().getPseudo()+") to "+obj.getAddress());
+                        UDPObjectSender.sendMessage( 
+                        new ConfigMessage(UsersHandler.getLocalUser().getPseudo(),ConfigMessage.MessageType.NOTIFY_REPLY),obj.getAddress(),Consts.udpPort);
+                    } catch (Exception e) {
+                        ExitHandler.error(e);
+                    }}
+                 }
+                );
+        }catch (Exception e2){}
         //On mets à jour l'adresse IP de l'utilisateur
         user.setInetAddress(obj.getAddress());
 
