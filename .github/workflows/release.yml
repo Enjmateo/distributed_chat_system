@@ -112,7 +112,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    if: "github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, '[release]') && !contains(github.event.head_commit.message, '[nightly]') && !contains(github.event.head_commit.message, '[nocheck]')"
+    if: "github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, '[release]') && !contains(github.event.head_commit.message, '[nightly]') && contains(github.event.head_commit.message, '[build]')"
 
     steps:
     - uses: actions/checkout@v2
