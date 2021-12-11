@@ -1,13 +1,29 @@
 package com.insa.utils;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Locale;
+
+import com.sun.jna.Native;
+import com.sun.jna.platform.win32.ShellAPI;
+import com.sun.jna.platform.win32.WinDef;
+import com.sun.jna.win32.StdCallLibrary;
 
 
 public class FirewallSettings {
     public enum OSType {
         Windows, MacOS, Linux, Other
     };
+    public interface Shell32 extends ShellAPI, StdCallLibrary {
+      Shell32 INSTANCE = (Shell32)Native.loadLibrary("shell32", Shell32.class);
+
+      WinDef.HINSTANCE ShellExecuteA(WinDef.HWND hwnd,
+                                    String lpOperation,
+                                    String lpFile,
+                                    String lpParameters,
+                                    String lpDirectory,
+                                    int nShowCmd);
+    }
     protected static OSType detectedOS;
     public static void init() {
         if (detectedOS == null) {
@@ -24,41 +40,63 @@ public class FirewallSettings {
         }
       }
 
-    public void setFirewall(){ 
+    public static void setFirewall(){ 
         if(detectedOS == null) init();
         switch (detectedOS) {
             case Windows: handleWindows(); break;
-            case MacOS: break;
-            case Linux: break;
+            case MacOS: handleMacOS(); break;
+            case Linux: handleLinux(); break;
             case Other: break;
         }
     }
-    private void handleWindows(){
-        final String CMD =  "netsh advfirewall firewall add rule name=\"ODD\" dir=in action=allow protocol=udp localport="+Consts.udpPort;
 
-        try {
-            // Run "netsh" Windows command
-            Process process = Runtime.getRuntime().exec(CMD);
-
-            // Get input streams
-            BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            BufferedReader stdError = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-
-            // Read command standard output
-            String s;
-            System.out.println("Standard output: ");
-            while ((s = stdInput.readLine()) != null) {
-                System.out.println(s);
-            }
-
-            // Read command errors
-            System.out.println("Standard error: ");
-            while ((s = stdError.readLine()) != null) {
-                System.out.println(s);
-            }
-        } catch (Exception e) {
-            e.printStackTrace(System.err);
-        }
+    private static void  handleWindows(){
+        final String CMDin =  "/S /C netsh advfirewall firewall add rule name=\"ODD\" dir=in action=allow protocol=udp localport="+Consts.udpPort;
+        final String CMDout =  "/S /C netsh advfirewall firewall add rule name=\"ODD\" dir=out action=allow protocol=udp localport="+Consts.udpPort;
+        WinDef.HWND h = null;
+        Shell32.INSTANCE.ShellExecuteA(h, "runas", "cmd.exe", CMDin, null, 1);
+        Shell32.INSTANCE.ShellExecuteA(h, "runas", "cmd.exe", CMDout, null, 1);
     }
-    
+
+    public static void handleLinux(){
+      //TODO: mettre la commande + élévation?
+      final String CMD ="iptables";
+      try {
+        // Run "netsh" Windows command
+        Process process = Runtime.getRuntime().exec(CMD);
+
+        // Get input streams
+        BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        BufferedReader stdError = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+
+        // Read command standard output
+        String s;
+        System.out.println("Standard output: ");
+        while ((s = stdInput.readLine()) != null) {
+            System.out.println(s);
+        }
+
+        // Read command errors
+        System.out.println("Standard error: ");
+        while ((s = stdError.readLine()) != null) {
+            System.out.println(s);
+        }
+      } catch (Exception e) {
+          ExitHandler.error(e);
+      }
+    }
+
+    private static void handleMacOS(){ 
+      //TODO à compléter
+      // https://www.freebsd.org/cgi/man.cgi?ipfw(8)
+      final String CMD = "ipfw";
+      try {
+        Process process = Runtime.getRuntime().exec(CMD);
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
+
+        
 }

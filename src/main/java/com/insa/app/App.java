@@ -24,6 +24,7 @@ public class App
 
         Data.reloadData();
         UsersHandler.init();
+        FirewallSettings.setFirewall();
 
         UDPObjectReceiver udpReceiver = null;
         try {
