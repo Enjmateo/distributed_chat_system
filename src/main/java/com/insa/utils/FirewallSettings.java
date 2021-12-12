@@ -51,6 +51,30 @@ public class FirewallSettings {
     }
 
     private static void  handleWindows(){
+        //Check if rule already exist :
+        /*
+        Process process;
+        try {
+          process = Runtime.getRuntime().exec("netsh advfirewall firewall show rule ODD");
+          //process = Runtime.getRuntime().exec("netsh firewall show state | find \""+Consts.udpPort+"\"");
+          //process = Runtime.getRuntime().exec("netsh firewall show state");
+
+          BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
+          String line = stdInput.readLine();
+          if (line!="") {
+            System.out.println("Line :"+line);
+            System.out.println("[-] Firewall rule already set");
+            return;
+          }else{
+            
+            System.out.println("Line :"+line);
+          }
+        } catch (IOException e) {
+          ExitHandler.error(e);
+        }
+        */
+
+        System.out.println("[+] Setting firewall rule");
         final String CMDin =  "/S /C netsh advfirewall firewall add rule name=\"ODD\" dir=in action=allow protocol=udp localport="+Consts.udpPort;
         final String CMDout =  "/S /C netsh advfirewall firewall add rule name=\"ODD\" dir=out action=allow protocol=udp localport="+Consts.udpPort;
         WinDef.HWND h = null;

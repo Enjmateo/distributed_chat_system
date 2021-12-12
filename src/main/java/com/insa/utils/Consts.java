@@ -7,7 +7,7 @@ public class Consts {
 
     public static String dBTableName = "messages";
 
-    public static final int udpPort = 4444;
+    public static final Integer udpPort = 4444;
 
     public static final int discoveryTimeoutMs = 2000;
 }

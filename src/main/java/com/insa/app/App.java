@@ -24,7 +24,7 @@ public class App
 
         Data.reloadData();
         UsersHandler.init();
-        FirewallSettings.setFirewall();
+        //FirewallSettings.setFirewall();
 
         UDPObjectReceiver udpReceiver = null;
         try {
@@ -80,6 +80,9 @@ public class App
 
         mw.setStatus("Idle (Debug)");
         mw.setPseudo(pseudo);
+        for(String u : UsersHandler.getPseudos()){
+            mw.addUser(u);
+        }
         //mw.addUser(pseudo);
 
         /*
