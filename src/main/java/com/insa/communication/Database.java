@@ -61,23 +61,38 @@ public class Database {
         Random seed = new Random();
 
         try {
-            while (rs.next()) 
+            while (rs.next())
                 idList.add(Integer.parseInt(rs.getString(1)));
-        } catch (Exception e) {ExitHandler.error(e);} 
+        } catch (Exception e) {
+            ExitHandler.error(e);
+        }
 
         Integer id = seed.nextInt(Integer.MAX_VALUE);
-        while (idList.contains(id)){
+        while (idList.contains(id)) {
             id = seed.nextInt(Integer.MAX_VALUE);
         }
 
         return id;
     }
 
+    public String getTextContent(int id) {
+        String textContent = "";
+        ResultSet ts = executeQuery("SELECT * FROM text_message WHERE messageID=" + id);
+
+        // AJOUTER MESSAGE PLUSIEURS SEGMENTS
+        try {
+            if (ts.next()) {
+                textContent = ts.getString(3);
+            } 
+        } catch (SQLException e) {ExitHandler.error(e);}
+        return textContent;
+    }
+
     public ArrayList<ObjectMessage> getMessages(UUID uuid) {
         ResultSet rs = executeQuery("SELECT * from messages");
         ArrayList<ObjectMessage> messageList = new ArrayList<ObjectMessage>();
 
-        int id;
+        int id, contentId;
         UUID sender, receiver;
         long timestamp;
         int messageType;
@@ -89,13 +104,14 @@ public class Database {
                 sender = UUID.fromString(rs.getString(2));
                 receiver = UUID.fromString(rs.getString(3));
                 timestamp = Long.parseLong(rs.getString(4));
-                messageType = Integer.parseInt(rs.getString(5));
+                contentId = Integer.parseInt(rs.getString(5));
+                messageType = Integer.parseInt(rs.getString(6));
 
                 switch (messageType) {
                     case 0:
                         textContent = "Auto-generated debug message";
                     case 1:
-                        ResultSet ts = executeQuery("SELECT * FROM text_message WHERE messageID=" + id);
+                        ResultSet ts = executeQuery("SELECT * FROM text_message WHERE messageID=" + contentId);
                         if (ts.next()) {
                             textContent = ts.getString(3);
                         }
@@ -103,7 +119,15 @@ public class Database {
                         TextMessage msg = new TextMessage(sender, receiver, textContent);
                         messageList.add(msg);
 
-                        System.out.println("   [>] Text message found from " + sender + " to " + receiver + ": " + textContent + " (id=" + id + ", date: " + timestamp + ").");
+                        System.out.println("   [>] Text message found from "
+                                + sender + " to "
+                                + receiver + ": "
+                                + textContent
+                                + " (id="
+                                + id
+                                + ", date: "
+                                + timestamp + ").");
+
                         break;
                     case 2:
                     case 3:
@@ -112,7 +136,9 @@ public class Database {
                         break;
                 }
             }
-        } catch (SQLException e) {ExitHandler.error(e);}
+        } catch (SQLException e) {
+            ExitHandler.error(e);
+        }
         return messageList;
     }
 }
