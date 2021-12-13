@@ -31,7 +31,7 @@ public class ObjectHandler {
             //TODO Renvoyer un objet avec le pseudo et l'adresse
             //ATTENTION - A OPERER SUR LE THREAD PRINCIPAL (OU INITILISER L'ENVOYEUR DANS LE RECEVEUR UDP)  
             if(obj.getType() == ConfigMessage.MessageType.NOTIFY){
-            SwingUtilities.invokeLater(
+            UDPObjectSender.invokeLater(
                 new Runnable() {
                     public void run() {
                     try {

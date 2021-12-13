@@ -81,7 +81,7 @@ public class UsersHandler extends Thread {
     }
 
     private void notifyAlive(){
-        SwingUtilities.invokeLater(
+        UDPObjectSender.invokeLater(
                 new Runnable() {
                     public void run() {
                     try {

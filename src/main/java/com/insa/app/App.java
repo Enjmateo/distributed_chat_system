@@ -11,60 +11,68 @@ import java.util.*;
 public class App 
 {
     public static Database DB;
-    //private UDPObjectReceiver udpReceiver;
     private static WelcomeWindows ww;
     private  static UsersHandler uh;
-
-
+    private static UDPObjectSender udpos;
+    private static UDPObjectReceiver udpor;
+    
+    
     /**
-     * Entry point
-     * @param args
-     */
+    * Entry point
+    * @param args
+    */
     public static void main( String[] args )
     {
         System.out.println( "[+] Launching app" );
         System.out.println( "[+] Reading config file");
-
+        
         Data.reloadData();
         uh = new UsersHandler(); 
-                //FirewallSettings.setFirewall();
-
-        UDPObjectReceiver udpReceiver = null;
+        udpos = new UDPObjectSender();
+        //FirewallSettings.setFirewall();
+        
         try {
             System.out.println( "[+] Discovery existing clients" );
-            UDPObjectSender.init();
-            udpReceiver = new UDPObjectReceiver();
+            udpor = new UDPObjectReceiver();
         } catch (Exception e) {ExitHandler.error(e);}
-
+        
         try {
             UDPObjectSender.broadcastMessage(new ConfigMessage(), Consts.udpPort);
-
+            
             System.out.println( "[+] Wainting responses..." );
             Thread.sleep(Consts.discoveryTimeoutMs);
         } catch (Exception e) {ExitHandler.error(e);}
-
+        
         UsersHandler.listUsers();        
         
         //ArrayList<String> pseudoList = UsersHandler.getPseudos();
-
+        
         System.out.println( "[+] Printing welcome windows" );
         ww = new WelcomeWindows();
-
+        
     }
-
+    
     /**
-     * Main thread launch after welcome windows
-     * @param Pseudo
-     */
+    * Main thread launch after welcome windows
+    * @param Pseudo
+    */
     public static void mainThread ()
     {
         String pseudo = UsersHandler.getLocalUser().getPseudo();
         System.out.println( "[+] Pseudo: " + pseudo );
-
-        try {
-            UDPObjectSender.broadcastMessage(new ConfigMessage(UsersHandler.getLocalUser().getPseudo(), ConfigMessage.MessageType.KEEP_ALIVE), Consts.udpPort);
-        } catch (Exception e) {ExitHandler.error(e);}
-
+        
+        //On envoie un notify avec le pseude
+        UDPObjectSender.invokeLater(
+        new Runnable() {
+            public void run() {
+                try {
+                    UDPObjectSender.broadcastMessage(new ConfigMessage(UsersHandler.getLocalUser().getPseudo(), ConfigMessage.MessageType.KEEP_ALIVE), Consts.udpPort);
+                } catch (Exception e) {
+                    ExitHandler.error(e);
+                }
+            }
+        });
+        
         UsersHandler.listUsers();
         
         //UsersHandler.getPseudos().stream().
@@ -73,7 +81,7 @@ public class App
         DB =  new Database();
         try {
             DB.connect();
-
+            
             // DEBUG - TO REMOVE
             System.out.println( "[!] Testing DB.");
             TextMessage msg = new TextMessage(UUID.randomUUID(), "Ce message na pas de compte rond");
@@ -82,9 +90,9 @@ public class App
         } catch (Exception e) {ExitHandler.error(e);}
         
         ArrayList<ObjectMessage> messagesList = DB.getMessages(UsersHandler.getLocalUser().getUUID());
-
+        
         MainWindows mw = new MainWindows();
-
+        
         mw.setStatus("Idle (Debug)");
         mw.setPseudo(pseudo);
         
@@ -93,7 +101,7 @@ public class App
                 mw.addMessage(message.getSender().toString(), ((TextMessage)message).getContent());
             }
         }
-
+        
         // LISTE DES OBJETS A INITIALISER
         /* 
         -UDP Object Sender 

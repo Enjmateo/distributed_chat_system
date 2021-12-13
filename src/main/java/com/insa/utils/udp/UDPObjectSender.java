@@ -4,20 +4,36 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-public class UDPObjectSender {
+public class UDPObjectSender extends Thread {
     private static DatagramSocket socket = null;
+    private static ArrayList<Runnable> tasks = new ArrayList<Runnable>();
+
+    public void run() {
+        try {
+            socket = new DatagramSocket();
+        } catch (SocketException e) {
+            ExitHandler.error(e);
+        }
+        Runnable r;
+        while (true) {
+            synchronized (this){
+                r=tasks.remove(0);
+            }
+            r.run();
+        }
+    }
+
+    public static synchronized void invokeLater(Runnable runnable) {
+        tasks.add(runnable);
+    }
 
     /**
-     * @deprecated
      * @throws Exception
      */
-    public UDPObjectSender() throws Exception {
-        socket = new DatagramSocket();
+    public UDPObjectSender() {
+        start();
     }
 
-    public static void init() throws Exception {
-        socket = new DatagramSocket();
-    }
 
     private static void send(ObjectMessage message, InetAddress address, int port) throws Exception {
         DatagramPacket packet = objectToDatagramPacket(message, address, port);
