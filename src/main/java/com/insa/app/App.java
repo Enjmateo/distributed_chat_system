@@ -76,7 +76,7 @@ public class App
 
             // DEBUG - TO REMOVE
             System.out.println( "[!] Testing DB.");
-            TextMessage msg = new TextMessage(UUID.randomUUID(), "ça doit fonctionner maintenant");
+            TextMessage msg = new TextMessage(UUID.randomUUID(), "Ce message na pas de compte rond");
             msg.sendToDatabase(DB);
             
         } catch (Exception e) {ExitHandler.error(e);}
@@ -93,11 +93,6 @@ public class App
                 mw.addMessage(message.getSender().toString(), ((TextMessage)message).getContent());
             }
         }
-        
-
-        // Test
-        mw.addUser("Alias");
-        mw.addUser("Lambda");
 
         // LISTE DES OBJETS A INITIALISER
         /* 

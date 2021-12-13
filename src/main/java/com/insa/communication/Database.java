@@ -3,6 +3,7 @@ package com.insa.communication;
 import java.sql.*;
 import java.util.*;
 
+import com.insa.utils.Consts;
 import com.insa.utils.ExitHandler;
 import com.insa.utils.ObjectMessage;
 
@@ -50,13 +51,13 @@ public class Database {
             stmt.executeUpdate(q);
             System.out.println("[+] Query executed: " + q);
         } catch (SQLException e) {
-            System.out.println("[!] DB query failed: " + q);
+            System.out.println("[-] DB query failed: " + q);
             ExitHandler.error(e);
         }
     }
 
     public int newContentId() {
-        ResultSet rs = executeQuery("SELECT contentID from messages");
+        ResultSet rs = executeQuery("SELECT contentID from " + Consts.DB_MAIN_TABLE);
         ArrayList<Integer> idList = new ArrayList<Integer>();
         Random seed = new Random();
 
@@ -76,8 +77,8 @@ public class Database {
     }
 
     public String getTextContent(int id) {
-        String textContent = "";
-        ResultSet ts = executeQuery("SELECT * FROM text_message WHERE messageID=" + id);
+        String textContent = null;
+        ResultSet ts = executeQuery("SELECT * FROM " + Consts.DB_TEXT_TABLE + " WHERE messageID=" + id);
 
         // AJOUTER MESSAGE PLUSIEURS SEGMENTS
         try {
@@ -89,7 +90,7 @@ public class Database {
     }
 
     public ArrayList<ObjectMessage> getMessages(UUID uuid) {
-        ResultSet rs = executeQuery("SELECT * from messages");
+        ResultSet rs = executeQuery("SELECT * from " + Consts.DB_MAIN_TABLE);
         ArrayList<ObjectMessage> messageList = new ArrayList<ObjectMessage>();
 
         int id, contentId;
@@ -111,10 +112,7 @@ public class Database {
                     case 0:
                         textContent = "Auto-generated debug message";
                     case 1:
-                        ResultSet ts = executeQuery("SELECT * FROM text_message WHERE messageID=" + contentId);
-                        if (ts.next()) {
-                            textContent = ts.getString(3);
-                        }
+                        textContent = ((textContent = getTextContent(contentId)) != null) ? textContent : getTextContent(contentId);
 
                         TextMessage msg = new TextMessage(sender, receiver, textContent);
                         messageList.add(msg);
@@ -123,10 +121,8 @@ public class Database {
                                 + sender + " to "
                                 + receiver + ": "
                                 + textContent
-                                + " (id="
-                                + id
-                                + ", date: "
-                                + timestamp + ").");
+                                + " (id=" + id
+                                + ", date: " + timestamp + ").");
 
                         break;
                     case 2:
