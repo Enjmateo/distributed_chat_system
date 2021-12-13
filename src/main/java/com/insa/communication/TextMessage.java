@@ -34,7 +34,7 @@ public class TextMessage extends ObjectMessage implements Message {
                 + super.receiver.toString() + "' ,"
                 + super.date.getTime()
                 + ", " + Integer.toString(contentId)
-                + ", 0);");
+                + ", 0);", false);
 
         // Adding message into Text message DB
         int partId = 0;
@@ -45,14 +45,14 @@ public class TextMessage extends ObjectMessage implements Message {
                 database.executeUpdate("INSERT INTO text_message (messageID, messagePart,content) VALUES("
                         + Integer.toString(contentId) + ", "
                         + partId + ",'"
-                        + part + "')");
+                        + part + "')", false);
                 partId++;
             } catch (Exception e) {
                 // Adding last part
                 database.executeUpdate("INSERT INTO text_message (messageID, messagePart,content) VALUES("
                 + Integer.toString(contentId) + ", "
                 + partId + ",'"
-                + content + "')");
+                + content + "')", false);
                 break;
             }
         }

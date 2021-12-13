@@ -84,7 +84,8 @@ public class App
             
             // DEBUG - TO REMOVE
             System.out.println( "[!] Testing DB.");
-            TextMessage msg = new TextMessage(UUID.randomUUID(), "Ce message na pas de compte rond");
+            //DB.resetDB();
+            TextMessage msg = new TextMessage(UUID.randomUUID(), "Bon injection maintenant");
             msg.sendToDatabase(DB);
             
         } catch (Exception e) {ExitHandler.error(e);}

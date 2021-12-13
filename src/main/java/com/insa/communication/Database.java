@@ -18,7 +18,10 @@ public class Database {
         }
     }
 
-    public int connect() {
+    /**
+     * Connect to DB using Data's info
+     */
+    public void connect() {
         System.out.print("   [>] Connection...");
         try {
             conn = DriverManager.getConnection("jdbc:" + Data.getDBUrl(), Data.getDBUsername(), Data.getDBPassword());
@@ -27,10 +30,9 @@ public class Database {
             ExitHandler.error(e);
         }
         System.out.println("ok.");
-        return 0;
     }
 
-    public ResultSet executeQuery(String q) {
+    protected ResultSet executeQuery(String q) {
         Statement stmt;
         ResultSet rs = null;
         try {
@@ -44,7 +46,7 @@ public class Database {
         return rs;
     }
 
-    public void executeUpdate(String q) {
+    protected void executeUpdate(String q, boolean ignore) {
         Statement stmt;
         try {
             stmt = conn.createStatement();
@@ -52,6 +54,7 @@ public class Database {
             System.out.println("[+] Query executed: " + q);
         } catch (SQLException e) {
             System.out.println("[-] DB query failed: " + q);
+            if (ignore) return;
             ExitHandler.error(e);
         }
     }
@@ -67,7 +70,7 @@ public class Database {
         return list;
     }
 
-    public int newContentId() {
+    protected int newContentId() {
         ArrayList<Integer> idList = getRowInt(Consts.DB_MAIN_TABLE, "contentID");
         Random seed = new Random();
 
@@ -79,19 +82,33 @@ public class Database {
         return id;
     }
 
-    public String getTextContent(int id) {
-        String textContent = null;
-        ResultSet ts = executeQuery("SELECT * FROM " + Consts.DB_TEXT_TABLE + " WHERE messageID=" + id);
+    private String getTextContent(int id) {
+        String textContent = "";
+        ResultSet ts = executeQuery("SELECT * FROM " + Consts.DB_TEXT_TABLE + " WHERE messageID=" + id + " ORDER BY messagePart");
 
-        // AJOUTER MESSAGE PLUSIEURS SEGMENTS
         try {
-            if (ts.next()) {
-                textContent = ts.getString(3);
+            while (ts.next()) {
+                textContent += ts.getString(3);
             } 
         } catch (SQLException e) {ExitHandler.error(e);}
         return textContent;
     }
 
+    public void resetDB() {
+        executeUpdate("DROP TABLE " + Consts.DB_MAIN_TABLE, true);
+        executeUpdate("DROP TABLE " + Consts.DB_TEXT_TABLE, true);
+        executeUpdate("DROP TABLE " + Consts.DB_FILE_TABLE, true);
+
+        executeUpdate("create table " + Consts.DB_MAIN_TABLE + "(messageID integer not null auto_increment, sender char(36) not null, receiver char(36) not null, sendDate bigint not null, contentID integer not null, messageType integer, PRIMARY KEY (messageID));", false);
+        executeUpdate("create table " + Consts.DB_TEXT_TABLE + "(messageID integer not null, messagePart integer, content varchar(512));", false);
+        executeUpdate("create table " + Consts.DB_FILE_TABLE + "(messageID integer not null, fileName varchar(128) not null, fileID char(36), size integer);", false);
+    }
+
+    /**
+     * Get message in DB from a given UUID
+     * @param uuid
+     * @return ArrayList<ObjectMessage>
+     */
     public ArrayList<ObjectMessage> getMessages(UUID uuid) {
         ResultSet rs = executeQuery("SELECT * from " + Consts.DB_MAIN_TABLE);
         ArrayList<ObjectMessage> messageList = new ArrayList<ObjectMessage>();
@@ -130,14 +147,13 @@ public class Database {
                         break;
                     case 2:
                     case 3:
+                    default:
                         // TODO lorsqu'on aura implémenté FileMessage.java
                         System.out.println("   [>] Not implemented message found (id: " + id + ").");
                         break;
                 }
             }
-        } catch (SQLException e) {
-            ExitHandler.error(e);
-        }
+        } catch (SQLException e) {ExitHandler.error(e);}
         return messageList;
     }
 }
