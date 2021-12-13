@@ -69,7 +69,7 @@ public class User {
     public boolean isAlive(){
         return this.alive;
     }
-    public void setAlive(boolean alive){ this.alive = alive; }
+    public synchronized void setAlive(boolean alive){ this.alive = alive; }
 
     public void setStatus(Status status) {
         this.status = status;

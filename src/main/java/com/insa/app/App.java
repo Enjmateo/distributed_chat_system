@@ -61,7 +61,7 @@ public class App
         System.out.println( "[+] Pseudo: " + pseudo );
 
         try {
-            UDPObjectSender.broadcastMessage(new ConfigMessage(UsersHandler.getLocalUser().getPseudo(), ConfigMessage.MessageType.PSEUDO_SET), Consts.udpPort);
+            UDPObjectSender.broadcastMessage(new ConfigMessage(UsersHandler.getLocalUser().getPseudo(), ConfigMessage.MessageType.KEEP_ALIVE), Consts.udpPort);
         } catch (Exception e) {ExitHandler.error(e);}
 
         UsersHandler.listUsers();

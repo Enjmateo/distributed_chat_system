@@ -2,9 +2,14 @@ package com.insa.app;
 import java.util.*;
 import java.net.*;
 import java.util.stream.*;
+
+import javax.swing.SwingUtilities;
+
 import com.insa.communication.*;
 import com.insa.utils.Consts;
 import com.insa.utils.ExitHandler;
+import com.insa.utils.udp.ConfigMessage;
+import com.insa.utils.udp.UDPObjectSender;
 
 public class UsersHandler extends Thread {
     static private User self;
@@ -65,9 +70,19 @@ public class UsersHandler extends Thread {
         }
     }
 
-    //TODO envoyer un notify
     private void notifyAlive(){
-
+        SwingUtilities.invokeLater(
+                new Runnable() {
+                    public void run() {
+                    try {
+                        System.out.println("[+] Broadcast KEEP_ALIVE");
+                        UDPObjectSender.broadcastMessage( 
+                        new ConfigMessage(null,ConfigMessage.MessageType.KEEP_ALIVE),Consts.udpPort);
+                    } catch (Exception e) {
+                        ExitHandler.error(e);
+                    }}
+                 }
+                );
     }
 
     //TODO: gerer la fermeture

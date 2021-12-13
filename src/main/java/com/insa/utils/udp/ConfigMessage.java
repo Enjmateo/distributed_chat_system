@@ -5,7 +5,7 @@ public class ConfigMessage extends ObjectMessage {
     InetAddress address;
     String pseudo;
     MessageType type;
-    public enum MessageType {NOTIFY, NOTIFY_REPLY, PSEUDO_SET}
+    public enum MessageType {NOTIFY, NOTIFY_REPLY, KEEP_ALIVE}
     public void setAddress(InetAddress address) {
         this.address = address;
     }

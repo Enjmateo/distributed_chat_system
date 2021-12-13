@@ -26,27 +26,30 @@ public class ObjectHandler {
             user = new User(null,obj.getSender());
             user.setStatus(User.Status.WAITING);
             UsersHandler.addUser(user);
-
- 
         }
         try {
             //TODO Renvoyer un objet avec le pseudo et l'adresse
             //ATTENTION - A OPERER SUR LE THREAD PRINCIPAL (OU INITILISER L'ENVOYEUR DANS LE RECEVEUR UDP)  
-            if(obj.getType() == ConfigMessage.MessageType.NOTIFY) 
+            if(obj.getType() == ConfigMessage.MessageType.NOTIFY){
             SwingUtilities.invokeLater(
                 new Runnable() {
                     public void run() {
                     try {
                         System.out.println("Sending my pseudo ("+UsersHandler.getLocalUser().getPseudo()+") to "+obj.getAddress());
                         UDPObjectSender.sendMessage( 
-                        new ConfigMessage(UsersHandler.getLocalUser().getPseudo(),ConfigMessage.MessageType.NOTIFY_REPLY),obj.getAddress(),Consts.udpPort);
+                        new ConfigMessage(UsersHandler.getLocalUser().getPseudo(),ConfigMessage.MessageType.KEEP_ALIVE),obj.getAddress(),Consts.udpPort);
                     } catch (Exception e) {
                         ExitHandler.error(e);
                     }}
                  }
                 );
-        }catch (Exception e2){}
-        //On mets à jour l'adresse IP de l'utilisateur
+            }else if (obj.getType()== ConfigMessage.MessageType.KEEP_ALIVE){
+                UsersHandler.getUserByUUID(obj.getSender()).setAlive(true);
+            }
+        }catch (Exception e){
+            ExitHandler.error(e);
+        }
+        //On mets à jour l'adresse IP de l'utilisateur 
         user.setInetAddress(obj.getAddress());
 
         // S'il y a une modification de pseudo : 
