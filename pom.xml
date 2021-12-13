@@ -5,7 +5,7 @@
 
     <groupId>com.insa.app</groupId>
     <artifactId>distributed_chat_system</artifactId>
-    <version>0.0.6</version>
+    <version>0.0.7</version>
     <packaging>jar</packaging>
 
     <name>distributed_chat_system</name>
@@ -34,6 +34,16 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20210307</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>3.0.9</version>
+          </dependency>
+          <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>platform</artifactId>
+            <version>3.5.2</version>
         </dependency>
     </dependencies>
 
