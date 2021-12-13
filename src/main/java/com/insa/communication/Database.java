@@ -56,17 +56,20 @@ public class Database {
         }
     }
 
-    public int newContentId() {
-        ResultSet rs = executeQuery("SELECT contentID from " + Consts.DB_MAIN_TABLE);
-        ArrayList<Integer> idList = new ArrayList<Integer>();
-        Random seed = new Random();
-
+    private ArrayList<Integer> getRowInt(String table, String column) {
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        ResultSet rs = executeQuery("SELECT " + column + " from " + table);
         try {
             while (rs.next())
-                idList.add(Integer.parseInt(rs.getString(1)));
-        } catch (Exception e) {
-            ExitHandler.error(e);
-        }
+                    list.add(Integer.parseInt(rs.getString(1)));
+        } catch (Exception e) {ExitHandler.error(e);} 
+        
+        return list;
+    }
+
+    public int newContentId() {
+        ArrayList<Integer> idList = getRowInt(Consts.DB_MAIN_TABLE, "contentID");
+        Random seed = new Random();
 
         Integer id = seed.nextInt(Integer.MAX_VALUE);
         while (idList.contains(id)) {
