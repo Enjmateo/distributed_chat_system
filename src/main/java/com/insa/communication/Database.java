@@ -62,7 +62,7 @@ public class Database {
 
         int id;
         UUID sender, receiver;
-        int timestamp;
+        long timestamp;
         int messageType;
         String textContent = "";
 
@@ -71,7 +71,7 @@ public class Database {
                 id = Integer.parseInt(rs.getString(1));
                 sender = UUID.fromString(rs.getString(2));
                 receiver = UUID.fromString(rs.getString(3));
-                timestamp = Integer.parseInt(rs.getString(4));
+                timestamp = Long.parseLong(rs.getString(4));
                 messageType = Integer.parseInt(rs.getString(5));
 
                 switch (messageType) {

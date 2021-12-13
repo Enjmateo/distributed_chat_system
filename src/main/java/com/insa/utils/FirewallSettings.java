@@ -7,14 +7,12 @@ import java.util.Locale;
 import com.sun.jna.Native;
 import com.sun.jna.platform.win32.ShellAPI;
 import com.sun.jna.platform.win32.WinDef;
-import com.sun.jna.win32.StdCallLibrary;
-
 
 public class FirewallSettings {
     public enum OSType {
         Windows, MacOS, Linux, Other
     };
-    public interface Shell32 extends ShellAPI, StdCallLibrary {
+    public interface Shell32 extends ShellAPI {
       Shell32 INSTANCE = (Shell32)Native.loadLibrary("shell32", Shell32.class);
 
       WinDef.HINSTANCE ShellExecuteA(WinDef.HWND hwnd,

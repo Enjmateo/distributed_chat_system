@@ -4,16 +4,6 @@ import com.insa.utils.*;
 import java.util.*;
 
 public class TextMessage extends ObjectMessage implements Message {
-    /*
-    public static void main(String[] args) {
-        
-        Data data = new Data();
-        TextMessage msg = new TextMessage(UUID.randomUUID(),UUID.randomUUID(),"Salut c'est un test");
-        Database database = new Database();
-        database.connect();
-        msg.sendToDatabase(database);
-    }
-    */
 
     private String content;
 
@@ -32,12 +22,14 @@ public class TextMessage extends ObjectMessage implements Message {
     public void display(){}
 
     public void sendToDatabase(Database database) {
-        //database.executeUpdate("alter table messages alter column sendDate mediumint");
-        //database.executeUpdate("INSERT INTO messages (sender, receiver, sendDate, contentID, messageType) VALUES ('"+super.sender.toString()+"', '"+super.recepter.toString()+"' ,"+super.date.getTime()+", (SELECT max(messageID) FROM text_message)+1 "+",0);");
-        //System.out.println("Seconde requette");
+        database.executeUpdate("INSERT INTO messages (messageID, sender, receiver, sendDate, contentID, messageType) VALUES (@id := ifnull(@id, 0) + 1, '" 
+            + super.sender.toString()+"', '" 
+            + super.receiver.toString()+"' ," 
+            + super.date.getTime() 
+            + ", 0" 
+            + ", 0);");
         //database.executeUpdate("INSERT INTO text_message (messageID, messagePart,content) VALUES((SELECT max(messageID) FROM text_message)+1,null,'"+content+"')");
-        // TODO...
-
+        // INSERT INTO messages (messageID, sender, receiver, sendDate, contentID, messageType) VALUES (0, '5cc3661c-441e-4293-a37f-a40fd4ff3374', 'b0cfc92e-97f9-4d2d-b230-b1bb8d116a8e' ,1639391150521, 0 ,0);
     }
 
 

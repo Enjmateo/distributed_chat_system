@@ -5,6 +5,8 @@ import com.insa.gui.*;
 import com.insa.utils.*;
 import com.insa.utils.udp.*;
 
+import java.util.*;
+
 
 public class App 
 {
@@ -65,27 +67,26 @@ public class App
         UsersHandler.listUsers();
         
         //UsersHandler.getPseudos().stream().
-        /*
+        
         System.out.println( "[+] Connecting to DB");
         DB =  new Database();
         try {
-            //DB.connect();
-            System.out.println( "[!] Skiping DB co.");
-        } catch (Exception e) {ExitHandler.error(e);}
-        */
-        //ArrayList<ObjectMessage> messagesList = DB.getMessages(localUser.getUUID());
+            DB.connect();
 
+            // DEBUG - TO REMOVE
+            System.out.println( "[!] Testing DB.");
+            TextMessage msg = new TextMessage(UUID.randomUUID(), "J'adore debug le SQL !");
+            msg.sendToDatabase(DB);
+            
+        } catch (Exception e) {ExitHandler.error(e);}
         
+        ArrayList<ObjectMessage> messagesList = DB.getMessages(UsersHandler.getLocalUser().getUUID());
+
         MainWindows mw = new MainWindows();
 
         mw.setStatus("Idle (Debug)");
         mw.setPseudo(pseudo);
-        for(String u : UsersHandler.getPseudos()){
-            mw.addUser(u);
-        }
-        //mw.addUser(pseudo);
-
-        /*
+        
         for (ObjectMessage message : messagesList) {
             if (message.getClass() == TextMessage.class) {
                 mw.addMessage(message.getSender().toString(), ((TextMessage)message).getContent());
@@ -98,9 +99,6 @@ public class App
         mw.addUser("Lambda");
 
         // LISTE DES OBJETS A INITIALISER
-
-        */
-
         /* 
         -UDP Object Sender 
         */
