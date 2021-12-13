@@ -11,11 +11,15 @@ public class User {
 
     private InetAddress address;
 
-    private boolean connected = false;
+    private boolean alive = false;
     private TCPObjectSender sender;
     private TCPObjectReceiver receiver;
 
-    enum Status {WAITING, IDLE, CONNECTED, DISCONNECTED};
+    //WAITING = phase de connexion UDP
+    //DEAD = ne donne pas de signe de vie (surement crash)
+    //ALIVE = connectable
+    //CONNECTED = connecté en TCP
+    enum Status {WAITING, DEAD, ALIVE, CONNECTED};
     Status status;
 
     /**
@@ -27,21 +31,19 @@ public class User {
     public User(String pseudo, UUID uuid) {
         this.pseudo = pseudo;
         this.uuid = uuid;
-        this.status = Status.IDLE;
+        this.status = Status.ALIVE;
     }
 
     public void connect(Socket socket) throws Exception {
         this.sender = new TCPObjectSender(socket);
         this.receiver = new TCPObjectReceiver(socket);
-        this.connected = true;
         this.status = Status.CONNECTED;
     }
 
     public void disconnect() throws Exception {
         this.sender.close();
         this.receiver.close(true);
-        this.connected = false;
-        this.status = Status.DISCONNECTED;
+        this.status = Status.ALIVE;
     }
 
     public void setPseudo(String pseudo) {
@@ -64,27 +66,23 @@ public class User {
         return this.uuid;
     }
 
-    public boolean isConnected(){
-        return this.connected;
+    public boolean isAlive(){
+        return this.alive;
     }
+    public void setAlive(boolean alive){ this.alive = alive; }
 
-    public void setIdle() {
-        this.status = Status.IDLE;
-    }
     public void setStatus(Status status) {
         this.status = status;
     }
 
     public String getStatusString() {
         switch(status) {
-            case DISCONNECTED:
-                return "Disconnected";
+            case ALIVE: return "ALIVE";
+            case DEAD: return "DEAD";
             case CONNECTED:
                 return "Connected";
-            case WAITING:
+            default: 
                 return "Waiting";
-            default:
-                return "Idle";
         }
     }
     public String toString(){

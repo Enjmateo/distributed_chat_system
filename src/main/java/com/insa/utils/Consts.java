@@ -10,4 +10,6 @@ public class Consts {
     public static final int udpPort = 4444;
 
     public static final int discoveryTimeoutMs = 2000;
+    public static final int NOTIFY_ALIVE_PERIOD = 500;
+    
 }
