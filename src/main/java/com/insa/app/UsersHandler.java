@@ -50,7 +50,13 @@ public class UsersHandler extends Thread {
         //Update dead users
         users.stream().filter(x->!x.isAlive()).forEach(e->e.setStatus(User.Status.DEAD));
         //Reset alive variable for all alive users
-        getAliveUsers().stream().forEach(e -> e.setAlive(false));
+        getAliveUsers().stream().forEach(e -> 
+            {e.setAlive(false);
+                if(e.getStatus() == User.Status.DEAD){
+                    e.setStatus(User.Status.ALIVE);
+                }
+            }
+            );
     }
 
     public synchronized static ArrayList<String> getPseudos(){
@@ -62,7 +68,7 @@ public class UsersHandler extends Thread {
         return self;
     }
     
-    public static void listUsers() {
+    public synchronized static void listUsers() {
         System.out.println( "[+] Local user: " + self.toString() );
         System.out.println( "[+] List of received users: " );
         for (User user : users) {
@@ -94,6 +100,7 @@ public class UsersHandler extends Thread {
                 notifyAlive();
                 updateDeadUsers();
                 Thread.sleep(Consts.NOTIFY_ALIVE_PERIOD);
+                listUsers();
             }
         }catch(Exception e){
             ExitHandler.error(e);

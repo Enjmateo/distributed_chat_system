@@ -75,7 +75,10 @@ public class User {
         this.status = status;
     }
 
-    public String getStatusString() {
+    public Status getStatus() {
+        return this.status;
+    }
+/*     public String getStatusString() {
         switch(status) {
             case ALIVE: return "ALIVE";
             case DEAD: return "DEAD";
@@ -84,7 +87,7 @@ public class User {
             default: 
                 return "Waiting";
         }
-    }
+    } */
     public String toString(){
         return (this.pseudo == null? "undefined" : this.pseudo) + " (" + this.uuid.toString() + ") : "+this.status;
     }
