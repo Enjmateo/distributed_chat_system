@@ -1,8 +1,7 @@
 package com.insa.communication;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.UUID;
+import java.util.*;
 
 import com.insa.utils.ExitHandler;
 import com.insa.utils.ObjectMessage;
@@ -54,6 +53,24 @@ public class Database {
             System.out.println("[!] DB query failed: " + q);
             ExitHandler.error(e);
         }
+    }
+
+    public int newContentId() {
+        ResultSet rs = executeQuery("SELECT contentID from messages");
+        ArrayList<Integer> idList = new ArrayList<Integer>();
+        Random seed = new Random();
+
+        try {
+            while (rs.next()) 
+                idList.add(Integer.parseInt(rs.getString(1)));
+        } catch (Exception e) {ExitHandler.error(e);} 
+
+        Integer id = seed.nextInt(Integer.MAX_VALUE);
+        while (idList.contains(id)){
+            id = seed.nextInt(Integer.MAX_VALUE);
+        }
+
+        return id;
     }
 
     public ArrayList<ObjectMessage> getMessages(UUID uuid) {

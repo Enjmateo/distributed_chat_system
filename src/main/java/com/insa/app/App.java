@@ -75,7 +75,7 @@ public class App
 
             // DEBUG - TO REMOVE
             System.out.println( "[!] Testing DB.");
-            TextMessage msg = new TextMessage(UUID.randomUUID(), "J'adore debug le SQL !");
+            TextMessage msg = new TextMessage(UUID.randomUUID(), "ça doit fonctionner maintenant");
             msg.sendToDatabase(DB);
             
         } catch (Exception e) {ExitHandler.error(e);}
