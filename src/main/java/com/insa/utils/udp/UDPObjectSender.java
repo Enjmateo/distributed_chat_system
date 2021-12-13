@@ -14,12 +14,13 @@ public class UDPObjectSender extends Thread {
         } catch (SocketException e) {
             ExitHandler.error(e);
         }
-        Runnable r;
+        Runnable r = null;
         while (true) {
             synchronized (this){
-                r=tasks.remove(0);
+
+                if(!tasks.isEmpty())r=tasks.remove(0);
             }
-            r.run();
+            if(r!=null)r.run();
         }
     }
 
