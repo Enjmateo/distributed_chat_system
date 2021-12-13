@@ -13,6 +13,7 @@ public class App
     public static Database DB;
     //private UDPObjectReceiver udpReceiver;
     private static WelcomeWindows ww;
+    private  static UsersHandler uh;
 
 
     /**
@@ -25,8 +26,8 @@ public class App
         System.out.println( "[+] Reading config file");
 
         Data.reloadData();
-        UsersHandler.init();
-        //FirewallSettings.setFirewall();
+        uh = new UsersHandler(); 
+                //FirewallSettings.setFirewall();
 
         UDPObjectReceiver udpReceiver = null;
         try {

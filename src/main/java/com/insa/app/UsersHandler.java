@@ -15,6 +15,10 @@ public class UsersHandler extends Thread {
     static private User self;
     static private ArrayList<User> users;
 
+    public UsersHandler() {
+        init();
+        start();
+    }
     public synchronized static void init() {
         users = new ArrayList<User>();
         self = new User(null, Data.getUUID());
