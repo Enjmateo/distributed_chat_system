@@ -47,16 +47,21 @@ public class Database {
     }
 
     protected void executeUpdate(String q, boolean ignore) {
-        Statement stmt;
-        try {
-            stmt = conn.createStatement();
-            stmt.executeUpdate(q);
-            System.out.println("[+] Query executed: " + q);
-        } catch (SQLException e) {
-            System.out.println("[-] DB query failed: " + q);
-            if (ignore) return;
-            ExitHandler.error(e);
-        }
+        new Thread(new Runnable() {
+            public void run() {
+                Statement stmt;
+                try {
+                    stmt = conn.createStatement();
+                    stmt.executeUpdate(q);
+                    System.out.println("[+] Query executed: " + q);
+                } catch (SQLException e) {
+                    System.out.println("[-] DB query failed: " + q);
+                    if (ignore)
+                        return;
+                    ExitHandler.error(e);
+                }
+            }
+        }).start();
     }
 
     private ArrayList<Integer> getRowInt(String table, String column) {
@@ -64,9 +69,11 @@ public class Database {
         ResultSet rs = executeQuery("SELECT " + column + " from " + table);
         try {
             while (rs.next())
-                    list.add(Integer.parseInt(rs.getString(1)));
-        } catch (Exception e) {ExitHandler.error(e);} 
-        
+                list.add(Integer.parseInt(rs.getString(1)));
+        } catch (Exception e) {
+            ExitHandler.error(e);
+        }
+
         return list;
     }
 
@@ -84,16 +91,22 @@ public class Database {
 
     private String getTextContent(int id) {
         String textContent = "";
-        ResultSet ts = executeQuery("SELECT * FROM " + Consts.DB_TEXT_TABLE + " WHERE messageID=" + id + " ORDER BY messagePart");
+        ResultSet ts = executeQuery(
+                "SELECT * FROM " + Consts.DB_TEXT_TABLE + " WHERE messageID=" + id + " ORDER BY messagePart");
 
         try {
             while (ts.next()) {
                 textContent += ts.getString(3);
-            } 
-        } catch (SQLException e) {ExitHandler.error(e);}
+            }
+        } catch (SQLException e) {
+            ExitHandler.error(e);
+        }
         return textContent;
     }
 
+    /**
+     * Reset remote database. Can be used as init. function.
+     */
     public void resetDB() {
         executeUpdate("DROP TABLE " + Consts.DB_MAIN_TABLE, true);
         executeUpdate("DROP TABLE " + Consts.DB_TEXT_TABLE, true);
@@ -106,6 +119,7 @@ public class Database {
 
     /**
      * Get message in DB from a given UUID
+     * 
      * @param uuid
      * @return ArrayList<ObjectMessage>
      */
@@ -153,7 +167,9 @@ public class Database {
                         break;
                 }
             }
-        } catch (SQLException e) {ExitHandler.error(e);}
+        } catch (SQLException e) {
+            ExitHandler.error(e);
+        }
         return messageList;
     }
 }

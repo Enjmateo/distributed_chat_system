@@ -10,7 +10,7 @@ public class UDPObjectSender extends Thread {
 
     public void run() {
         try {
-            socket = new DatagramSocket();
+            socket = new DatagramSocket(Consts.UDP_PORT);
         } catch (SocketException e) {
             ExitHandler.error(e);
         }
@@ -20,7 +20,10 @@ public class UDPObjectSender extends Thread {
 
                 if(!tasks.isEmpty())r=tasks.remove(0);
             }
-            if(r!=null)r.run();
+            if(r!=null){
+                r.run();
+                r = null;
+            }
         }
     }
 

@@ -13,6 +13,6 @@ public class Consts {
     public static final Integer UDP_PORT = 4444;
 
     public static final int DISCOVERY_TIMEOUT_MS = 1000;
-    public static final int NOTIFY_ALIVE_PERIOD = 1000;
+    public static final int NOTIFY_ALIVE_PERIOD = 5000;
 
 }

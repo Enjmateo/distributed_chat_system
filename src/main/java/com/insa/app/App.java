@@ -31,6 +31,7 @@ public class App
         udpos = new UDPObjectSender();
         //FirewallSettings.setFirewall();
         
+        /*
         try {
             System.out.println( "[+] Discovery existing clients" );
             udpor = new UDPObjectReceiver();
@@ -43,6 +44,7 @@ public class App
             Thread.sleep(Consts.DISCOVERY_TIMEOUT_MS);
         } catch (Exception e) {ExitHandler.error(e);}
         
+        */
         UsersHandler.listUsers();        
         
         //ArrayList<String> pseudoList = UsersHandler.getPseudos();
@@ -61,6 +63,7 @@ public class App
         String pseudo = UsersHandler.getLocalUser().getPseudo();
         System.out.println( "[+] Pseudo: " + pseudo );
         
+        /*
         //On envoie un notify avec le pseude
         UDPObjectSender.invokeLater(
         new Runnable() {
@@ -72,6 +75,7 @@ public class App
                 }
             }
         });
+        */
         
         UsersHandler.listUsers();
         
