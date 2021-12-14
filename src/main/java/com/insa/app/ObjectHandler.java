@@ -11,10 +11,9 @@ public class ObjectHandler {
     //Permet d'appeler la méthode action sur l'objet objectMessage avec en argument l'objet associé à la classe de objectMessage
     public static void handleObject(ObjectMessage objectMessage){
         if (objectMessage instanceof ConfigMessage) {
-            handleInitiateConnectionMessage((ConfigMessage)objectMessage); 
+            new Thread(new Runnable() { public void run() {handleInitiateConnectionMessage((ConfigMessage)objectMessage); }}).start();
         }
     }
-
 
 
     private static void handleInitiateConnectionMessage(ConfigMessage obj){
@@ -37,7 +36,7 @@ public class ObjectHandler {
                     try {
                         System.out.println("Sending my pseudo ("+UsersHandler.getLocalUser().getPseudo()+") to "+obj.getAddress());
                         UDPObjectSender.sendMessage( 
-                        new ConfigMessage(UsersHandler.getLocalUser().getPseudo(),ConfigMessage.MessageType.KEEP_ALIVE),obj.getAddress(),Consts.udpPort);
+                        new ConfigMessage(UsersHandler.getLocalUser().getPseudo(),ConfigMessage.MessageType.KEEP_ALIVE),obj.getAddress(),Consts.UDP_PORT);
                     } catch (Exception e) {
                         ExitHandler.error(e);
                     }}

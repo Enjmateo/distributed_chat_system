@@ -120,13 +120,13 @@ public class WelcomeWindows extends JFrame implements ActionListener {
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            File oldConfigFile = new File(Consts.configFile);
+            File oldConfigFile = new File(Consts.CONFIG_FILE);
 
             String newConfigFile = selectedFile.getAbsolutePath();
             System.out.println("[+] Config. file: " + newConfigFile);
 
             oldConfigFile.delete();
-            selectedFile.renameTo(new File(Consts.configFile)); 
+            selectedFile.renameTo(new File(Consts.CONFIG_FILE)); 
 
             Data.reloadData();
         }

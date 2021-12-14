@@ -1,11 +1,11 @@
 package com.insa.app;
 
+import java.util.*;
+
 import com.insa.communication.*;
 import com.insa.gui.*;
 import com.insa.utils.*;
 import com.insa.utils.udp.*;
-
-import java.util.*;
 
 
 public class App 
@@ -37,10 +37,10 @@ public class App
         } catch (Exception e) {ExitHandler.error(e);}
         
         try {
-            UDPObjectSender.broadcastMessage(new ConfigMessage(), Consts.udpPort);
+            UDPObjectSender.broadcastMessage(new ConfigMessage(), Consts.UDP_PORT);
             
             System.out.println( "[+] Wainting responses..." );
-            Thread.sleep(Consts.discoveryTimeoutMs);
+            Thread.sleep(Consts.DISCOVERY_TIMEOUT_MS);
         } catch (Exception e) {ExitHandler.error(e);}
         
         UsersHandler.listUsers();        
@@ -66,7 +66,7 @@ public class App
         new Runnable() {
             public void run() {
                 try {
-                    UDPObjectSender.broadcastMessage(new ConfigMessage(UsersHandler.getLocalUser().getPseudo(), ConfigMessage.MessageType.KEEP_ALIVE), Consts.udpPort);
+                    UDPObjectSender.broadcastMessage(new ConfigMessage(UsersHandler.getLocalUser().getPseudo(), ConfigMessage.MessageType.KEEP_ALIVE), Consts.UDP_PORT);
                 } catch (Exception e) {
                     ExitHandler.error(e);
                 }

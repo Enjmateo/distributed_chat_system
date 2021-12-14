@@ -16,7 +16,7 @@ public class Data {
     private static UUID uuid = null;
 
     public static void init() {
-        File newConfig = new File(Consts.configFile);
+        File newConfig = new File(Consts.CONFIG_FILE);
         try {
             newConfig.createNewFile();
         } catch (IOException e) {
@@ -25,19 +25,7 @@ public class Data {
 
         FileWriter configWriter;
         try {
-            configWriter = new FileWriter(Consts.configFile);
-
-            /*
-             * if (dbURL != null){
-             * configWriter.write("{\"uuid\":\"" + UUID.randomUUID().toString() +
-             * "\",\"dbAddr\":\"" + dbURL + "\",\"dbUser\":\"" + dbUsername +
-             * "\",\"dbPassword\":\"" + dbPassword + "\"}");
-             * } else {
-             * configWriter.write("{\"uuid\":\"" + UUID.randomUUID().toString() +
-             * "\",\"dbAddr\":\"localhost\",\"dbUser\":\"admin\",\"dbPassword\":\"admin\"}")
-             * ;
-             * }
-             */
+            configWriter = new FileWriter(Consts.CONFIG_FILE);
 
             configWriter.write("{\"uuid\":\"" + UUID.randomUUID().toString()
                     + "\",\"dbAddr\":\"localhost\",\"dbUser\":\"admin\",\"dbPassword\":\"admin\"}");
@@ -52,7 +40,7 @@ public class Data {
         String text = "";
 
         try {
-            InputStream fileInput = new FileInputStream(Consts.configFile);
+            InputStream fileInput = new FileInputStream(Consts.CONFIG_FILE);
             text = new String(fileInput.readAllBytes());
             fileInput.close();
         } catch (IOException e) {
@@ -68,7 +56,7 @@ public class Data {
             uuid = UUID.randomUUID();
             json.put("uuid", uuid.toString());
             try {
-                OutputStream fileOutput = new FileOutputStream(Consts.configFile);
+                OutputStream fileOutput = new FileOutputStream(Consts.CONFIG_FILE);
                 fileOutput.write(json.toString().getBytes());
                 fileOutput.close();
             } catch (Exception e) {ExitHandler.error(e);}

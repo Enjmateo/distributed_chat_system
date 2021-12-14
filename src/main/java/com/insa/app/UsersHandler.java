@@ -87,7 +87,7 @@ public class UsersHandler extends Thread {
                     try {
                         System.out.println("[+] Broadcast KEEP_ALIVE");
                         UDPObjectSender.broadcastMessage( 
-                        new ConfigMessage(null,ConfigMessage.MessageType.KEEP_ALIVE),Consts.udpPort);
+                        new ConfigMessage(null, ConfigMessage.MessageType.KEEP_ALIVE), Consts.UDP_PORT);
                     } catch (Exception e) {
                         ExitHandler.error(e);
                     }}

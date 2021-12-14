@@ -11,7 +11,7 @@ public class UDPObjectReceiver extends Thread {
     boolean running = true;
 
     public UDPObjectReceiver() throws Exception {
-        socket = new DatagramSocket(Consts.udpPort);
+        socket = new DatagramSocket(Consts.UDP_PORT);
         start();
     }
 
@@ -53,10 +53,7 @@ public class UDPObjectReceiver extends Thread {
                 is.close();
                 byteStream.close();
                 ObjectHandler.handleObject(object);
-            } catch (Exception e) {
-                System.out.println("Exception");
-                ExitHandler.error(e);
-            }
+            } catch (Exception e) {ExitHandler.error(e);}
         }
         try {
             close(true);

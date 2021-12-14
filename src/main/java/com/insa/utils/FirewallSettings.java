@@ -73,8 +73,8 @@ public class FirewallSettings {
         */
 
         System.out.println("[+] Setting firewall rule");
-        final String CMDin =  "/S /C netsh advfirewall firewall add rule name=\"ODD\" dir=in action=allow protocol=udp localport="+Consts.udpPort;
-        final String CMDout =  "/S /C netsh advfirewall firewall add rule name=\"ODD\" dir=out action=allow protocol=udp localport="+Consts.udpPort;
+        final String CMDin =  "/S /C netsh advfirewall firewall add rule name=\"ODD\" dir=in action=allow protocol=udp localport=" + Consts.UDP_PORT;
+        final String CMDout =  "/S /C netsh advfirewall firewall add rule name=\"ODD\" dir=out action=allow protocol=udp localport=" + Consts.UDP_PORT;
         WinDef.HWND h = null;
         Shell32.INSTANCE.ShellExecuteA(h, "runas", "cmd.exe", CMDin, null, 1);
         Shell32.INSTANCE.ShellExecuteA(h, "runas", "cmd.exe", CMDout, null, 1);
@@ -114,11 +114,6 @@ public class FirewallSettings {
       final String CMD = "ipfw";
       try {
         Process process = Runtime.getRuntime().exec(CMD);
-      } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-    }
-
-        
+      } catch (IOException e) {ExitHandler.error(e);} 
+    }        
 }
