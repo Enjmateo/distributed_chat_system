@@ -47,21 +47,17 @@ public class Database {
     }
 
     protected void executeUpdate(String q, boolean ignore) {
-        new Thread(new Runnable() {
-            public void run() {
-                Statement stmt;
-                try {
-                    stmt = conn.createStatement();
-                    stmt.executeUpdate(q);
-                    System.out.println("[+] Query executed: " + q);
-                } catch (SQLException e) {
-                    System.out.println("[-] DB query failed: " + q);
-                    if (ignore)
-                        return;
-                    ExitHandler.error(e);
-                }
-            }
-        }).start();
+        Statement stmt;
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate(q);
+            System.out.println("[+] Query executed: " + q);
+        } catch (SQLException e) {
+            System.out.println("[-] DB query failed: " + q);
+            if (ignore)
+                return;
+            ExitHandler.error(e);
+        }
     }
 
     private ArrayList<Integer> getRowInt(String table, String column) {
@@ -112,9 +108,9 @@ public class Database {
         executeUpdate("DROP TABLE " + Consts.DB_TEXT_TABLE, true);
         executeUpdate("DROP TABLE " + Consts.DB_FILE_TABLE, true);
 
-        executeUpdate("create table " + Consts.DB_MAIN_TABLE + "(messageID integer not null auto_increment, sender char(36) not null, receiver char(36) not null, sendDate bigint not null, contentID integer not null, messageType integer, PRIMARY KEY (messageID));", false);
+        executeUpdate("create table " + Consts.DB_MAIN_TABLE + "(messageID integer not null auto_increment, sender char(36) not null, receiver char(36) not null, sendDate bigint not null, contentID integer not null, messageType integer, PRIMARY KEY (messageID));",false);
         executeUpdate("create table " + Consts.DB_TEXT_TABLE + "(messageID integer not null, messagePart integer, content varchar(512));", false);
-        executeUpdate("create table " + Consts.DB_FILE_TABLE + "(messageID integer not null, fileName varchar(128) not null, fileID char(36), size integer);", false);
+        executeUpdate("create table " + Consts.DB_FILE_TABLE + "(messageID integer not null, fileName varchar(128) not null, fileID char(36), size integer);",false);
     }
 
     /**
@@ -146,7 +142,8 @@ public class Database {
                     case 0:
                         textContent = "Auto-generated debug message";
                     case 1:
-                        textContent = ((textContent = getTextContent(contentId)) != null) ? textContent : getTextContent(contentId);
+                        textContent = ((textContent = getTextContent(contentId)) != null) ? textContent
+                                : getTextContent(contentId);
 
                         TextMessage msg = new TextMessage(sender, receiver, textContent);
                         messageList.add(msg);

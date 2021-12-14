@@ -59,7 +59,7 @@ public class WelcomeWindows extends JFrame implements ActionListener {
 
         contentPane.add(image, BorderLayout.CENTER);
         contentPane.add(login, BorderLayout.SOUTH);
-        ;
+        getRootPane().setDefaultButton(buttonGo);
     }
 
     public WelcomeWindows() {
