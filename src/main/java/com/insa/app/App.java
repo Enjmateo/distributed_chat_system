@@ -10,7 +10,7 @@ import com.insa.utils.udp.*;
 
 public class App 
 {
-    public static Database DB;
+    public static DatabaseHandler DB;
     private static WelcomeWindows ww;
     private  static UsersHandler uh;
     private static UDPObjectSender udpos;
@@ -82,7 +82,7 @@ public class App
         //UsersHandler.getPseudos().stream().
         
         System.out.println( "[+] Connecting to DB");
-        DB =  new Database();
+        DB =  new DatabaseHandler();
         try {
             DB.connect();
             
@@ -90,20 +90,20 @@ public class App
             System.out.println( "[!] Testing DB.");
             //DB.resetDB();
             TextMessage msg = new TextMessage(UUID.randomUUID(), "Bon injection maintenant");
-            msg.sendToDatabase(DB);
+            msg.sendToDatabase();
             
         } catch (Exception e) {ExitHandler.error(e);}
         
-        ArrayList<ObjectMessage> messagesList = DB.getMessages(UsersHandler.getLocalUser().getUUID());
+        ArrayList<Message> messagesList = DatabaseHandler.getMessages(UsersHandler.getLocalUser().getUUID());
         
         MainWindows mw = new MainWindows();
         
         mw.setStatus("Idle (Debug)");
         mw.setPseudo(pseudo);
         
-        for (ObjectMessage message : messagesList) {
+        for (Message message : messagesList) {
             if (message.getClass() == TextMessage.class) {
-                mw.addMessage(message.getSender().toString(), ((TextMessage)message).getContent());
+                mw.addMessage(((ObjectMessage) message).getSender().toString(), ((TextMessage)message).getContent());
             }
         }
         

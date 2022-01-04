@@ -2,6 +2,7 @@ package com.insa.app;
 
 import java.util.UUID;
 
+import com.insa.utils.Consts;
 import com.insa.utils.ExitHandler;
 import com.insa.utils.ObjectMessage;
 import com.insa.utils.tcp.*;
@@ -39,10 +40,26 @@ public class User {
     }
 
     public void connect(Socket socket) throws Exception {
-        this.sender = new TCPObjectSender(socket);
-        this.receiver = new TCPObjectReceiver(socket);
-        this.status = Status.CONNECTED;
+        if(socket.getLocalPort()==Consts.TCP_PORT_A){
+            receiver = new TCPObjectReceiver(socket);
+        }else{
+            sender = new TCPObjectSender(socket);
+        }
+        if(receiver != null & sender != null) this.status = Status.CONNECTED;
     }
+    
+    public void connect() throws Exception {
+        Socket socketA = new Socket();
+        SocketAddress sAdressA = new InetSocketAddress(address, Consts.TCP_PORT_A);
+        socketA.connect(sAdressA, Consts.TCP_TIMEOUT);
+        this.sender = new TCPObjectSender(socketA);
+
+        Socket socketB = new Socket();
+        SocketAddress sAdressB = new InetSocketAddress(address, Consts.TCP_PORT_A);
+        socketB.connect(sAdressB, Consts.TCP_TIMEOUT);
+        this.receiver = new TCPObjectReceiver(socketB);
+    }
+
 
     public void disconnect() throws Exception {
         this.sender.close();
