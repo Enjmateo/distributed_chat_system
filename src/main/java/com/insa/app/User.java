@@ -2,7 +2,10 @@ package com.insa.app;
 
 import java.util.UUID;
 
+import com.insa.utils.ExitHandler;
+import com.insa.utils.ObjectMessage;
 import com.insa.utils.tcp.*;
+import com.insa.communication.*;
 import java.net.*;
 
 public class User {
@@ -14,6 +17,7 @@ public class User {
     private boolean alive = false;
     private TCPObjectSender sender;
     private TCPObjectReceiver receiver;
+    private Discussion discussion;
 
     //WAITING = phase de connexion UDP
     //DEAD = ne donne pas de signe de vie (surement crash)
@@ -90,5 +94,16 @@ public class User {
     } */
     public String toString(){
         return (this.pseudo == null? "undefined" : this.pseudo) + " (" + this.uuid.toString() + ") : "+this.status;
+    }
+
+    public void sendMessage(Message message) {
+        try{ 
+            sender.sendMessageObject((ObjectMessage) message);
+        }catch(Exception e){
+            ExitHandler.error(e);
+        }
+        discussion.addMessage(message);
+        message.sendToDatabase();
+        
     }
 }

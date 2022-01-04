@@ -28,7 +28,7 @@ public class TCPObjectSender {
         objectOutputStream = new ObjectOutputStream(outputStream);
     }
 
-    synchronized void sendMessageObject(ObjectMessage message) throws Exception{
+    public synchronized void sendMessageObject(ObjectMessage message) throws Exception{
         if(running){
             try {
                 objectOutputStream.writeObject(message);

@@ -7,10 +7,10 @@ import com.insa.utils.Consts;
 import com.insa.utils.ExitHandler;
 import com.insa.utils.ObjectMessage;
 
-public class Database {
-    private Connection conn;
+public class DatabaseHandler {
+    private static Connection conn;
 
-    public Database() {
+    public DatabaseHandler() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -32,7 +32,7 @@ public class Database {
         System.out.println("ok.");
     }
 
-    protected ResultSet executeQuery(String q) {
+    protected static ResultSet executeQuery(String q) {
         Statement stmt;
         ResultSet rs = null;
         try {
@@ -46,7 +46,7 @@ public class Database {
         return rs;
     }
 
-    protected void executeUpdate(String q, boolean ignore) {
+    protected static void executeUpdate(String q, boolean ignore) {
         Statement stmt;
         try {
             stmt = conn.createStatement();
@@ -60,7 +60,7 @@ public class Database {
         }
     }
 
-    private ArrayList<Integer> getRowInt(String table, String column) {
+    private static ArrayList<Integer> getRowInt(String table, String column) {
         ArrayList<Integer> list = new ArrayList<Integer>();
         ResultSet rs = executeQuery("SELECT " + column + " from " + table);
         try {
@@ -73,7 +73,7 @@ public class Database {
         return list;
     }
 
-    protected int newContentId() {
+    protected static int newContentId() {
         ArrayList<Integer> idList = getRowInt(Consts.DB_MAIN_TABLE, "contentID");
         Random seed = new Random();
 
@@ -85,7 +85,7 @@ public class Database {
         return id;
     }
 
-    private String getTextContent(int id) {
+    private static String getTextContent(int id) {
         String textContent = "";
         ResultSet ts = executeQuery(
                 "SELECT * FROM " + Consts.DB_TEXT_TABLE + " WHERE messageID=" + id + " ORDER BY messagePart");
@@ -119,9 +119,9 @@ public class Database {
      * @param uuid
      * @return ArrayList<ObjectMessage>
      */
-    public ArrayList<ObjectMessage> getMessages(UUID uuid) {
+    public static ArrayList<Message> getMessages(UUID uuid) {
         ResultSet rs = executeQuery("SELECT * from " + Consts.DB_MAIN_TABLE);
-        ArrayList<ObjectMessage> messageList = new ArrayList<ObjectMessage>();
+        ArrayList<Message> messageList = new ArrayList<Message>();
 
         int id, contentId;
         UUID sender, receiver;

@@ -29,7 +29,6 @@ public class UsersHandler extends Thread {
     }
     
     /**
-     * @deprecated
      * @param inetAddress
      * @return
      * @throws Exception
