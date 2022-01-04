@@ -92,7 +92,7 @@ public class WelcomeWindows extends JFrame implements ActionListener {
      */
     public void skipWindows() {
         System.out.println("[!] Skipping...");
-        App.mainThread();
+        //App.mainThread();
         this.dispose();
     }
 
@@ -107,7 +107,7 @@ public class WelcomeWindows extends JFrame implements ActionListener {
         }
 
         UsersHandler.getLocalUser().setPseudo(pseudo);
-        App.mainThread();
+        //App.mainThread();
         this.dispose();
     }
 

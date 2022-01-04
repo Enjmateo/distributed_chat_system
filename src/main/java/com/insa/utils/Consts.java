@@ -19,4 +19,9 @@ public class Consts {
 
     public static final int TCP_TIMEOUT = 1000;
 
+    final static public double SCENE_PADDING = 20;
+	final static public double FIELDS_GAP = 10;
+	final static public double ELEMENTS_GAP = 20;
+	final static public double IP_ADRESS_FIELD_SIZE = 350;
+	final static public double PORT_FIELD_SIZE = 75;
 }
