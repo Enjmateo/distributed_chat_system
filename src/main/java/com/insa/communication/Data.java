@@ -97,7 +97,7 @@ public class Data {
         } catch (IOException e) {
             ExitHandler.error(e);
         }
-        LogHandler.display(4,"      [+] New UUID: " + uuid.toString());
+        LogHandler.display(1,"      [+] New UUID: " + uuid.toString());
     }
 
     private static void reloadUUID(){ 
@@ -108,7 +108,7 @@ public class Data {
             text = new String(fileInput.readAllBytes());
             fileInput.close();
         } catch (IOException e) {
-            LogHandler.display(4,"      [!] ID file not found, creating new one...");
+            LogHandler.display(1,"      [!] ID file not found, creating new one...");
             createUUID();
             return;
         }

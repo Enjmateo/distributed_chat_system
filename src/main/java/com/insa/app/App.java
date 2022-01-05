@@ -1,7 +1,10 @@
 package com.insa.app;
 
 import com.insa.communication.Data;
+import com.insa.gui.ConnexionWindow;
+import com.insa.gui.MainWindow;
 import com.insa.utils.Consts;
+import com.insa.utils.ExitHandler;
 import com.insa.utils.LogHandler;
 import com.insa.utils.udp.ConfigMessage;
 import com.insa.utils.udp.UDPObjectReceiver;
@@ -12,6 +15,7 @@ import javafx.stage.Stage;
 
 public class App extends Application {
     ConnexionWindow connexionWindow = new ConnexionWindow();
+    MainWindow mainWindow = new MainWindow();
     private  static UsersHandler uh;
     private static UDPObjectSender udpos;
     private static UDPObjectReceiver udpor;
@@ -38,8 +42,10 @@ public class App extends Application {
         UsersHandler.listUsers();
         LogHandler.display(1,"[+] Printing connexion window");
         connexionWindow.start();
-        
-        
+        LogHandler.display(1,"[+] Sending pseudo choosen");
+        UsersHandler.updateSelfPseudo(UsersHandler.getLocalUser().getPseudo());
+        mainWindow.start();
+              
     }
     @Override
 	public void stop() throws Exception{

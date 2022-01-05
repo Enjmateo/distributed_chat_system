@@ -25,6 +25,20 @@ public class UsersHandler extends Thread {
         self = new User(null, Data.getUUID());
     }
 
+    public static void updateSelfPseudo(String pseudo){
+        self.setPseudo(pseudo);
+        UDPObjectSender.invokeLater(
+            new Runnable() {
+                public void run() {
+                    try {
+                        UDPObjectSender.broadcastMessage(new ConfigMessage(pseudo, ConfigMessage.MessageType.KEEP_ALIVE), Consts.UDP_PORT);
+                    } catch (Exception e) {
+                        ExitHandler.error(e);
+                    }
+                }
+            });
+    }
+
     public synchronized static void addUser(User user) {
         users.add(user);
     }

@@ -20,13 +20,19 @@ public class Consts {
 
     public static final int TCP_TIMEOUT = 1000;
 
-    //Graphics
+    //Graphics 
     final static public double PSEUDO_FIELD_SIZE = 100;
     final static public double IMAGE_CONNECTION_WINDOW_SIZE = 300;
 
+    //Main window
+    final static public double MW_MIN_HEIGHT = 200;
+    final static public double MW_MIN_WIDTH = 300;
 
+    final static public double IM_AND_PSEU_MIN_HEIGHT = 300;
+    final static public double IM_AND_PSEU_MIN_WIDTH = 200;
+
+    final static public double MW_IMAGE_SIZE = 200;
     final static public double SCENE_PADDING = 20;
 	final static public double FIELDS_GAP = 10;
 	final static public double ELEMENTS_GAP = 20;
-	final static public double IP_ADRESS_FIELD_SIZE = 350;
 }
