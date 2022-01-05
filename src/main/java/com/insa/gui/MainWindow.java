@@ -21,6 +21,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -50,7 +51,7 @@ public class MainWindow {
             Button validatePseudoButton = new Button("✔");
 
         //Connected users 
-        ListView<Label> listView = new ListView<Label>();
+        static ListView<Label> listView = new ListView<Label>();
 
         Button connectButton = new Button("Connect");
 
@@ -59,7 +60,7 @@ public class MainWindow {
 
 
 
-    User targetUser = null;
+    static User targetUser = null;
     public void start() {
         window.setTitle("ODD");
         window.setMinHeight(Consts.MW_MIN_HEIGHT);
@@ -114,12 +115,18 @@ public class MainWindow {
         ExitHandler.exit();
     }
 
-    private void updateList() {
-        for(User user : UsersHandler.getAliveUsers()) {
-            Label label = new Label(user.getPseudo());
-            label.setOnMouseClicked(e->{targetUser=user;});
-            listView.getItems().add(label);
-        }
+    public synchronized static void updateList() {
+        Platform.runLater(new Runnable() {
+            public void run() {
+                listView.getItems().clear();
+                for(User user : UsersHandler.getAliveUsers()) {
+                    Label label = new Label(user.getPseudo());
+                    label.setOnMouseClicked(e->{targetUser=user;});
+                    listView.getItems().add(label);
+                }
+            }
+        });
+        
     }
 
     private void editPseudo(){

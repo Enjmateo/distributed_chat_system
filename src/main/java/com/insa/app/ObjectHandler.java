@@ -1,10 +1,14 @@
 package com.insa.app;
 
+import com.insa.gui.MainWindow;
 import com.insa.utils.Consts;
 import com.insa.utils.ExitHandler;
 import com.insa.utils.LogHandler;
 import com.insa.utils.ObjectMessage;
 import com.insa.utils.udp.*;
+
+import javafx.application.Platform;
+
 import javax.swing.*;
 
 public class ObjectHandler {
@@ -56,6 +60,7 @@ public class ObjectHandler {
         if (obj.getPseudo()!= null) {
             LogHandler.display(2,"[+] Updating pseudo for " + obj.getPseudo());
             user.setPseudo(obj.getPseudo());
+            MainWindow.updateList();
         }
 
         UsersHandler.listUsers();
