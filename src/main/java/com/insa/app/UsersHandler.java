@@ -69,16 +69,18 @@ public class UsersHandler extends Thread {
     }
     public synchronized static void updateDeadUsers(){
         //Update dead users
-        users.stream().filter(x->!x.isAlive()).forEach(e->e.setStatus(User.Status.DEAD));
+        users.stream().filter(x->!x.isAlive()).forEach(e->{
+            e.setStatus(User.Status.DEAD);
+            MainWindow.updateList();});
         //Reset alive variable for all alive users
         getAliveUsers().stream().forEach(e -> 
             {e.setAlive(false);
                 if(e.getStatus() == User.Status.DEAD){
                     e.setStatus(User.Status.ALIVE);
+                    MainWindow.updateList();
                 }
             }
             );
-        MainWindow.updateList();
     }
 
     public synchronized static ArrayList<String> getPseudos(){

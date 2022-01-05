@@ -57,7 +57,7 @@ public class ObjectHandler {
         user.setInetAddress(obj.getAddress());
 
         // S'il y a une modification de pseudo : 
-        if (obj.getPseudo()!= null) {
+        if (obj.getPseudo()!= null && !obj.getPseudo().equals(user.getPseudo())) {
             LogHandler.display(2,"[+] Updating pseudo for " + obj.getPseudo());
             user.setPseudo(obj.getPseudo());
             MainWindow.updateList();

@@ -118,6 +118,7 @@ public class MainWindow {
     public synchronized static void updateList() {
         Platform.runLater(new Runnable() {
             public void run() {
+                LogHandler.display(1,"[+] Updating connected list");
                 listView.getItems().clear();
                 for(User user : UsersHandler.getAliveUsers()) {
                     Label label = new Label(user.getPseudo());
