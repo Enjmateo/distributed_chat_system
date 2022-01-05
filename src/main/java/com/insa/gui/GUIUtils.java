@@ -4,7 +4,8 @@ import javax.swing.UIManager;
 
 import com.insa.utils.ExitHandler;
 
-import java.awt.*;
+import javafx.scene.image.Image;
+
 import java.net.URL;
 
 public class GUIUtils {
@@ -23,11 +24,11 @@ public class GUIUtils {
 
     private static Image getImage(final String pathAndFileName) {
         final URL url = Thread.currentThread().getContextClassLoader().getResource(pathAndFileName);
-        return Toolkit.getDefaultToolkit().getImage(url);
+        return new Image(url.toString());
     }
 
     public static Image getLogo() {
-        return getImage("logo_s.png");
+        return getImage("logo.png");
     }
 
     public static int getMWWidth(double proportion) {

@@ -2,6 +2,7 @@ package com.insa.communication;
 
 import com.insa.utils.Consts;
 import com.insa.utils.ExitHandler;
+import com.insa.utils.LogHandler;
 
 import java.io.*;
 import org.json.*;
@@ -15,26 +16,6 @@ public class Data {
 
     private static UUID uuid = null;
 
-    public static void init() {
-        File newConfig = new File(Consts.CONFIG_FILE);
-        try {
-            newConfig.createNewFile();
-        } catch (IOException e) {
-            ExitHandler.error(e);
-        }
-
-        FileWriter configWriter;
-        try {
-            configWriter = new FileWriter(Consts.CONFIG_FILE);
-
-            configWriter.write("{\"uuid\":\"" + UUID.randomUUID().toString()
-                    + "\",\"dbAddr\":\"localhost\",\"dbUser\":\"admin\",\"dbPassword\":\"admin\"}");
-
-            configWriter.close();
-        } catch (IOException e) {
-            ExitHandler.error(e);
-        }
-    }
 
     public static void reloadData() {
         String text = "";
@@ -44,25 +25,11 @@ public class Data {
             text = new String(fileInput.readAllBytes());
             fileInput.close();
         } catch (IOException e) {
-            System.out.println("[!] Config file not found, creating new one...");
-            init();
-            reloadData();
-            return;
+            LogHandler.display(5,"[!] Config File not found");
+            ExitHandler.error(new Exception("Config file not found"));
         }
 
         JSONObject json = new JSONObject(text);
-
-        if (json.isNull("uuid")) {
-            uuid = UUID.randomUUID();
-            json.put("uuid", uuid.toString());
-            try {
-                OutputStream fileOutput = new FileOutputStream(Consts.CONFIG_FILE);
-                fileOutput.write(json.toString().getBytes());
-                fileOutput.close();
-            } catch (Exception e) {ExitHandler.error(e);}
-        } else {
-            uuid = UUID.fromString(json.getString("uuid"));
-        }
 
         dbURL = json.getString("dbAddr");
         dbUsername = json.getString("dbUser");
@@ -71,19 +38,11 @@ public class Data {
         printConfig();
     }
 
-    /**
-     * @deprecated
-     */
-    public Data() {
-        reloadData();
-    }
-
     public static void printConfig() {
-        System.out.println("[+] Loaded config: ");
-        System.out.println("   [>] UUID: " + uuid.toString());
-        System.out.println("   [>] DB Addr: " + dbURL);
-        System.out.println("   [>] DB User: " + dbUsername);
-        System.out.println("   [>] DB passwd: " + dbPassword);
+        LogHandler.display(4,"[+] Loaded config: ");
+        LogHandler.display(4,"   [>] DB Addr: " + dbURL);
+        LogHandler.display(4,"   [>] DB User: " + dbUsername);
+        LogHandler.display(4,"   [>] DB passwd: " + dbPassword);
     }
 
     protected static String getDBUrl() {
@@ -115,10 +74,48 @@ public class Data {
 
     public static UUID getUUID() {
         if (uuid == null) {
-            reloadData();
+            reloadUUID();
             return getUUID();
         } else {
             return uuid;
         }
+    }
+
+    private static void createUUID(){
+        File newConfig = new File(Consts.UUID_FILE);
+        try {
+            newConfig.createNewFile();
+        } catch (IOException e) {
+            ExitHandler.error(e);
+        }
+        uuid = UUID.randomUUID();
+        FileWriter UUIDWriter;
+        try {
+            UUIDWriter = new FileWriter(Consts.UUID_FILE);
+            UUIDWriter.write("{\"uuid\":\"" + uuid.toString()+"\"}");
+            UUIDWriter.close();
+        } catch (IOException e) {
+            ExitHandler.error(e);
+        }
+        LogHandler.display(4,"      [+] New UUID: " + uuid.toString());
+    }
+
+    private static void reloadUUID(){ 
+        String text = "";
+
+        try {
+            InputStream fileInput = new FileInputStream(Consts.UUID_FILE);
+            text = new String(fileInput.readAllBytes());
+            fileInput.close();
+        } catch (IOException e) {
+            LogHandler.display(4,"      [!] ID file not found, creating new one...");
+            createUUID();
+            return;
+        }
+
+        JSONObject json = new JSONObject(text);
+        uuid = UUID.fromString(json.getString("uuid"));
+        LogHandler.display(1,"      [+] UUID parsed : "+uuid.toString());
+
     }
 }

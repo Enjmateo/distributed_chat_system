@@ -2,6 +2,7 @@ package com.insa.app;
 
 import com.insa.utils.Consts;
 import com.insa.utils.ExitHandler;
+import com.insa.utils.LogHandler;
 import com.insa.utils.ObjectMessage;
 import com.insa.utils.udp.*;
 import javax.swing.*;
@@ -18,7 +19,7 @@ public class ObjectHandler {
 
     private static void handleInitiateConnectionMessage(ConfigMessage obj){
         User user;
-        System.out.println("   [>] Handling config message ("+obj.getType()+")...");
+        LogHandler.display(2,"   [>] Handling config message ("+obj.getType()+")...");
         try{
             user = UsersHandler.getUserByUUID(obj.getSender());
         }catch(Exception e){
@@ -34,7 +35,7 @@ public class ObjectHandler {
                 new Runnable() {
                     public void run() {
                     try {
-                        System.out.println("Sending my pseudo ("+UsersHandler.getLocalUser().getPseudo()+") to "+obj.getAddress());
+                        LogHandler.display(2,"Sending my pseudo ("+UsersHandler.getLocalUser().getPseudo()+") to "+obj.getAddress());
                         UDPObjectSender.sendMessage( 
                         new ConfigMessage(UsersHandler.getLocalUser().getPseudo(),ConfigMessage.MessageType.KEEP_ALIVE),obj.getAddress(),Consts.UDP_PORT);
                     } catch (Exception e) {
@@ -53,7 +54,7 @@ public class ObjectHandler {
 
         // S'il y a une modification de pseudo : 
         if (obj.getPseudo()!= null) {
-            System.out.println("[+] Updating pseudo for " + obj.getPseudo());
+            LogHandler.display(2,"[+] Updating pseudo for " + obj.getPseudo());
             user.setPseudo(obj.getPseudo());
         }
 

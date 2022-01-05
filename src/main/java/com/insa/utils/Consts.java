@@ -3,7 +3,8 @@ package com.insa.utils;
 public class Consts {
     public static final int MAX_UDP_PACKET_SIZE = 5000;
 
-    public static String CONFIG_FILE = "./.data.json";
+    public static String CONFIG_FILE = "./.data";
+    public static String UUID_FILE = "./.ID";
 
     public static final String DB_MAIN_TABLE = "messages";
     public static final String DB_TEXT_TABLE = "text_message";
@@ -19,9 +20,13 @@ public class Consts {
 
     public static final int TCP_TIMEOUT = 1000;
 
+    //Graphics
+    final static public double PSEUDO_FIELD_SIZE = 100;
+    final static public double IMAGE_CONNECTION_WINDOW_SIZE = 300;
+
+
     final static public double SCENE_PADDING = 20;
 	final static public double FIELDS_GAP = 10;
 	final static public double ELEMENTS_GAP = 20;
 	final static public double IP_ADRESS_FIELD_SIZE = 350;
-	final static public double PORT_FIELD_SIZE = 75;
 }

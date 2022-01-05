@@ -26,26 +26,26 @@ public class UDPObjectReceiver extends Thread {
                 byte[] recvBuf = new byte[5000];
                 packet = new DatagramPacket(recvBuf,
                         recvBuf.length);
-                System.out.println("[#] Waiting for more UDP packets...");
+                LogHandler.display(6,"[#] Waiting for more UDP packets...");
                 socket.receive(packet);
-                System.out.println("[+] Received message UDP from " + packet.getAddress().toString());
+                LogHandler.display(6,"[+] Received message UDP from " + packet.getAddress().toString());
                 
                 ByteArrayInputStream byteStream = new ByteArrayInputStream(recvBuf);
                 ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(byteStream));
                 ObjectMessage object = (ObjectMessage) is.readObject();
                 
                 if (object == null){
-                    System.out.println("   [!] The message is null!");
+                    LogHandler.display(5,"   [!] The message is null!");
                 }
 
                 if(object.getSender().equals(UsersHandler.getLocalUser().getUUID())){
-                    System.out.println(" [skiped]");
+                    LogHandler.display(6," [skiped]");
                     is.close();
                     continue;
                 }
                 
                 if (object instanceof ConfigMessage) {
-                    System.out.println("   [>] Message type: Config message ");
+                    LogHandler.display(2,"   [>] Message type: Config message ");
                     ((ConfigMessage) object).setAddress(packet.getAddress());
                 }
 

@@ -8,19 +8,20 @@ import javax.swing.SwingUtilities;
 import com.insa.communication.*;
 import com.insa.utils.Consts;
 import com.insa.utils.ExitHandler;
+import com.insa.utils.LogHandler;
 import com.insa.utils.udp.ConfigMessage;
 import com.insa.utils.udp.UDPObjectSender;
 
 public class UsersHandler extends Thread {
     static private User self;
-    static private ArrayList<User> users;
+    static private ArrayList<User> users  = new ArrayList<User>();
 
     public UsersHandler() {
-        init();
         start();
+        init();
     }
     public synchronized static void init() {
-        users = new ArrayList<User>();
+        LogHandler.display(1,"  [+] Creating self user" );
         self = new User(null, Data.getUUID());
     }
 
@@ -72,10 +73,10 @@ public class UsersHandler extends Thread {
     }
     
     public synchronized static void listUsers() {
-        System.out.println( "[+] Local user: " + self.toString() );
-        System.out.println( "[+] List of received users: " );
+        LogHandler.display(4, "[+] Local user: " + self.toString() );
+        LogHandler.display(4, "[+] List of received users: " );
         for (User user : users) {
-            System.out.println( "    [>] Users : " + user.toString() );
+            LogHandler.display(4, "    [>] Users : " + user.toString() );
         }
     }
 
@@ -84,7 +85,7 @@ public class UsersHandler extends Thread {
                 new Runnable() {
                     public void run() {
                     try {
-                        System.out.println("[+] Broadcast KEEP_ALIVE");
+                        LogHandler.display(2,"[+] Broadcast KEEP_ALIVE");
                         UDPObjectSender.broadcastMessage( 
                         new ConfigMessage(null, ConfigMessage.MessageType.KEEP_ALIVE), Consts.UDP_PORT);
                     } catch (Exception e) {

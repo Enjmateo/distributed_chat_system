@@ -2,6 +2,6 @@ package com.insa.app;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        App.main(args);
+        App.begin(args);
     }
 }

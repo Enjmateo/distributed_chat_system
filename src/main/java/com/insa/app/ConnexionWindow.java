@@ -1,24 +1,43 @@
 package com.insa.app;
 
+import com.insa.communication.Data;
+import com.insa.gui.ErrorWindow;
+import com.insa.gui.GUIUtils;
 import com.insa.utils.*;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.geometry.Insets;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 
 import java.net.Socket;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.ServerSocket;
 
 public class ConnexionWindow {
 	Stage window = new Stage();
 
-	Label connectLabel = new Label("Enter IP and port to connect to the stock exchange :");
+	Label connectLabel = new Label("Enter a pseudo to connect to ODD");
+
+	Label pseudoLabel = new Label("Pseudo : ");
+	TextField pseudoField = new TextField();
+
+	Image logo = GUIUtils.getLogo();
+	ImageView logoView = new ImageView(logo);
+	
+	/*
 	Label ipAdressFieldLabel = new Label("IP : ");
 	TextField ipAdressField = new TextField("localhost");
 	Label portInFieldLabel = new Label("Input port : ");
@@ -26,18 +45,40 @@ public class ConnexionWindow {
 	Label portOutFieldLabel = new Label("Output port : ");
 	TextField portOutField = new TextField("7778");
 	Button connectButton = new Button("Connect");
+	*/
+	Button connectButton = new Button("Connect");
+	Button configButton = new Button("Change config file");
+	FileChooser fileChooser = new FileChooser();
+
+	boolean pseudoSet = false;
 
 	public void start(){
-		window.setTitle("Stock Exchange Client - Connect");
+		window.setTitle("ODD - Connect");
+		window.setResizable(false);
 
-		//connectButton.setOnAction(e->connectButtonHandler());
-		ipAdressField.setPromptText("IP adress");
-		ipAdressField.setMaxWidth(Consts.IP_ADRESS_FIELD_SIZE);
-		portInField.setPromptText("In-port");
-		portInField.setMaxWidth(Consts.PORT_FIELD_SIZE);
-		portOutField.setPromptText("Out-port");
-		portOutField.setMaxWidth(Consts.PORT_FIELD_SIZE);
+		logoView.setPreserveRatio(true);
+		logoView.setFitWidth(Consts.IMAGE_CONNECTION_WINDOW_SIZE);
+		
+		pseudoField.setMaxWidth(Consts.PSEUDO_FIELD_SIZE);
 
+		HBox pseudoLayout = new HBox(Consts.ELEMENTS_GAP);
+		pseudoLayout.getChildren().addAll(pseudoLabel,pseudoField);
+		pseudoLayout.setAlignment(Pos.CENTER);
+
+		HBox buttonsLayout= new HBox(Consts.ELEMENTS_GAP);
+		buttonsLayout.getChildren().addAll(configButton,connectButton);
+		buttonsLayout.setAlignment(Pos.CENTER);
+
+		VBox connectLayout = new VBox(Consts.ELEMENTS_GAP);
+		connectLayout.getChildren().addAll(logoView,connectLabel,pseudoLayout,buttonsLayout);
+		connectLayout.setAlignment(Pos.CENTER);
+		connectLayout.setPadding(new Insets(Consts.SCENE_PADDING,Consts.SCENE_PADDING,Consts.SCENE_PADDING,Consts.SCENE_PADDING));
+
+		pseudoField.setOnAction(e->connectButtonHandler());
+		configButton.setOnAction(e -> setConfigFile());
+		connectButton.setOnAction(e-> connectButtonHandler());
+
+		/*
 		GridPane gridpane = new GridPane();
 		gridpane.add(ipAdressFieldLabel, 0, 0);
 		gridpane.add(ipAdressField, 1, 0);
@@ -49,15 +90,59 @@ public class ConnexionWindow {
 		gridpane.setHgap(Consts.FIELDS_GAP); 
 		gridpane.setVgap(Consts.FIELDS_GAP); 
 
-		VBox connectLayout = new VBox(Consts.ELEMENTS_GAP);
-		connectLayout.getChildren().addAll(connectLabel,gridpane,connectButton);
-		connectLayout.setAlignment(Pos.CENTER);
-		connectLayout.setPadding(new Insets(Consts.SCENE_PADDING,Consts.SCENE_PADDING,Consts.SCENE_PADDING,Consts.SCENE_PADDING));
+		*/
+		
 
 		Scene scene = new Scene(connectLayout);
 
 		window.setScene(scene);
 		window.showAndWait();
+
+		//Si la fermeture n'est pas due au fait de mettre un pseudo on quitte l'application
+		if(!pseudoSet){
+			ExitHandler.exit();
+		}
+		
+	}
+
+	void setConfigFile(){ 
+		fileChooser.setTitle("Open Resource File");
+		fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+		File selectedFile = fileChooser.showOpenDialog(window);
+		if(selectedFile != null){
+			File oldConfigFile = new File(Consts.CONFIG_FILE);
+
+            String newConfigFile = selectedFile.getAbsolutePath();
+            System.out.println("[+] Config. file: " + newConfigFile);
+
+            oldConfigFile.delete();
+            selectedFile.renameTo(new File(Consts.CONFIG_FILE)); 
+
+            Data.reloadData();
+		}
+	}
+	private void connectButtonHandler(){
+		String pseudo = pseudoField.getText();
+		if(pseudo.equals("")){
+			new ErrorWindow("Please enter a Pseudo.");
+			return;
+		}
+		if(UsersHandler.getPseudos().contains(pseudo)){ 
+			new ErrorWindow(pseudo+" is already used, please choose another pseudo.");
+			return;
+		}
+		try {
+            InputStream fileInput = new FileInputStream(Consts.CONFIG_FILE);
+            fileInput.close();
+        } catch (IOException e) {
+            new ErrorWindow("No valid configuration found, please select the configuration file.");
+            return;
+        }
+		Data.reloadData();
+		
+		UsersHandler.getLocalUser().setPseudo(pseudo);
+		pseudoSet = true;
+		window.close();
 	}
     /*
 	private void connectButtonHandler(){
