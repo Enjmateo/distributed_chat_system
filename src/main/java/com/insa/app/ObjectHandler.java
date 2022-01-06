@@ -7,9 +7,6 @@ import com.insa.utils.LogHandler;
 import com.insa.utils.ObjectMessage;
 import com.insa.utils.udp.*;
 
-import javafx.application.Platform;
-
-import javax.swing.*;
 
 public class ObjectHandler {
 
@@ -32,7 +29,7 @@ public class ObjectHandler {
             UsersHandler.addUser(user);
         }
         try {
-            //TODO Renvoyer un objet avec le pseudo et l'adresse
+            //Renvoyer un objet avec le pseudo et l'adresse
             //ATTENTION - A OPERER SUR LE THREAD PRINCIPAL (OU INITILISER L'ENVOYEUR DANS LE RECEVEUR UDP)  
             if(obj.getType() == ConfigMessage.MessageType.NOTIFY){
             UDPObjectSender.invokeLater(
@@ -48,7 +45,7 @@ public class ObjectHandler {
                  }
                 );
             }else if (obj.getType()== ConfigMessage.MessageType.KEEP_ALIVE){
-                UsersHandler.getUserByUUID(obj.getSender()).setAlive(true);
+                UsersHandler.getUserByUUID(obj.getSender()).setInstantAlive(true);
             }
         }catch (Exception e){
             ExitHandler.error(e);
@@ -58,6 +55,7 @@ public class ObjectHandler {
 
         // S'il y a une modification de pseudo : 
         if (obj.getPseudo()!= null && !obj.getPseudo().equals(user.getPseudo())) {
+            user.setStatus(User.Status.AVAILABLE);
             LogHandler.display(2,"[+] Updating pseudo for " + obj.getPseudo());
             user.setPseudo(obj.getPseudo());
             MainWindow.updateList();

@@ -15,17 +15,21 @@ public class User {
 
     private InetAddress address;
 
-    private boolean alive = false;
+    private boolean instantAlive = false;    
+    //Permet de détecter si l'utilisateur s'est notifié vivant 
+
+    private boolean alive = true;
+    //si =false -> ne donne pas de signe de vie (surement crash)
+
     private TCPObjectSender sender;
     private TCPObjectReceiver receiver;
     private Discussion discussion;
-
+    private Status status = Status.WAITING;
+    
     //WAITING = phase de connexion UDP
-    //DEAD = ne donne pas de signe de vie (surement crash)
-    //ALIVE = connectable
+    //AVAILABLE = connectable
     //CONNECTED = connecté en TCP
-    enum Status {WAITING, DEAD, ALIVE, CONNECTED};
-    Status status;
+    enum Status {WAITING,AVAILABLE,CONNECTED}
 
     /**
      * Public class user
@@ -36,7 +40,6 @@ public class User {
     public User(String pseudo, UUID uuid) {
         this.pseudo = pseudo;
         this.uuid = uuid;
-        this.status = Status.ALIVE;
     }
 
     public void connect(Socket socket) throws Exception {
@@ -61,10 +64,14 @@ public class User {
     }
 
 
-    public void disconnect() throws Exception {
+    public void disconnect(boolean quit) throws Exception {
         this.sender.close();
         this.receiver.close(true);
-        this.status = Status.ALIVE;
+        if(quit){
+            alive =false;
+        }else{
+            this.status = Status.AVAILABLE;
+        }
     }
 
     public void setPseudo(String pseudo) {
@@ -87,10 +94,28 @@ public class User {
         return this.uuid;
     }
 
-    public boolean isAlive(){
+    public synchronized boolean isAlive(){
         return this.alive;
     }
-    public synchronized void setAlive(boolean alive){ this.alive = alive; }
+
+    //mofify state -> if change return true
+    public synchronized boolean setAlive(boolean newState){ 
+        /*
+        if(this.alive == newState){
+            return false;
+        }else{
+            this.alive = newState;
+            return true;
+        }*/
+        boolean oldState = this.alive;
+        this.alive = newState; 
+        return newState=!oldState;
+    }
+
+    public synchronized boolean isInstantAlive(){
+        return this.instantAlive;
+    }
+    public synchronized void setInstantAlive(boolean alive){ this.instantAlive = alive; }
 
     public void setStatus(Status status) {
         this.status = status;
@@ -110,7 +135,7 @@ public class User {
         }
     } */
     public String toString(){
-        return (this.pseudo == null? "undefined" : this.pseudo) + " (" + this.uuid.toString() + ") : "+this.status;
+        return (this.pseudo == null? "undefined" : this.pseudo) + " (" + this.uuid.toString() + ") : "+this.status+ (this.alive?"":"(DEAD)");
     }
 
     public void sendMessage(Message message) {

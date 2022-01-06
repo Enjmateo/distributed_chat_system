@@ -65,8 +65,8 @@ public class MainWindow {
         window.setTitle("ODD");
         window.setMinHeight(Consts.MW_MIN_HEIGHT);
         window.setMinWidth(Consts.MW_MIN_WIDTH);
-        window.setMaxHeight(Consts.MW_MIN_HEIGHT);
-        window.setMaxWidth(Consts.MW_MIN_WIDTH);
+        //window.setMaxHeight(Consts.MW_MIN_HEIGHT);
+        //window.setMaxWidth(Consts.MW_MIN_WIDTH);
         //LogoView
         logoView.setPreserveRatio(true);
 		logoView.setFitWidth(Consts.MW_IMAGE_SIZE);

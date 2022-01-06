@@ -25,8 +25,8 @@ public class Consts {
     final static public double IMAGE_CONNECTION_WINDOW_SIZE = 300;
 
     //Main window
-    final static public double MW_MIN_HEIGHT = 200;
-    final static public double MW_MIN_WIDTH = 300;
+    final static public double MW_MIN_HEIGHT = 500;
+    final static public double MW_MIN_WIDTH = 600;
 
     final static public double IM_AND_PSEU_MIN_HEIGHT = 300;
     final static public double IM_AND_PSEU_MIN_WIDTH = 200;

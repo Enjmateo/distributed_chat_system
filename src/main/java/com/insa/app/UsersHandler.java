@@ -64,23 +64,23 @@ public class UsersHandler extends Thread {
         }
         throw new Exception("No user found with this UUID");
     }
+
     public synchronized static ArrayList<User> getAliveUsers(){
         return new ArrayList<User>(users.stream().filter(x->x.isAlive()).collect(Collectors.toList()));
     }
     public synchronized static void updateDeadUsers(){
         //Update dead users
-        users.stream().filter(x->!x.isAlive()).forEach(e->{
-            e.setStatus(User.Status.DEAD);
-            MainWindow.updateList();});
-        //Reset alive variable for all alive users
-        getAliveUsers().stream().forEach(e -> 
-            {e.setAlive(false);
-                if(e.getStatus() == User.Status.DEAD){
-                    e.setStatus(User.Status.ALIVE);
-                    MainWindow.updateList();
-                }
+        boolean modify = false;
+        for(User user : users){
+            if(user.isInstantAlive()){
+                modify |= user.setAlive(true);
+                user.setInstantAlive(false);
+            }else{
+                modify |= user.setAlive(false);
             }
-            );
+        }
+    
+        if(modify)MainWindow.updateList();
     }
 
     public synchronized static ArrayList<String> getPseudos(){
