@@ -1,9 +1,9 @@
+USE `my_DB`;
+
 --
 -- Message database initialization script
 -- ODD - 2022
 --
-
-USE `my_DB`;
 
 DROP TABLE IF EXISTS `messages`;
 DROP TABLE IF EXISTS `text_message`;
