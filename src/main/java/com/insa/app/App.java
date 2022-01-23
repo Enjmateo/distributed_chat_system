@@ -22,7 +22,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //Affiche tout sauf l'UDP
+        //Affiche tout sauf l'UDP&
         LogHandler.set(1,3,4,5);
 
         LogHandler.display(1,"[+] Launching app" );
