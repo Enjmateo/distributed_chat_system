@@ -6,6 +6,7 @@ import com.insa.gui.MainWindow;
 import com.insa.utils.Consts;
 import com.insa.utils.ExitHandler;
 import com.insa.utils.LogHandler;
+import com.insa.utils.tcp.TCPConnectionReceiver;
 import com.insa.utils.udp.ConfigMessage;
 import com.insa.utils.udp.UDPObjectReceiver;
 import com.insa.utils.udp.UDPObjectSender;
@@ -19,6 +20,8 @@ public class App extends Application {
     private  static UsersHandler uh;
     private static UDPObjectSender udpos;
     private static UDPObjectReceiver udpor;
+    private TCPConnectionReceiver tcpcrA;
+    private TCPConnectionReceiver tcpcrB;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -40,10 +43,13 @@ public class App extends Application {
         Thread.sleep(Consts.DISCOVERY_TIMEOUT_MS);
         LogHandler.display(1,"[+] Discovery finished");
         UsersHandler.listUsers();
+        LogHandler.display(1,"[+] Starting TCPConnexionReceivers");
+        tcpcrA = new TCPConnectionReceiver(true);
+        tcpcrB = new TCPConnectionReceiver(false);
+
         LogHandler.display(1,"[+] Printing connexion window");
         connexionWindow.start();
-        LogHandler.display(1,"[+] Sending pseudo choosen");
-        UsersHandler.updateSelfPseudo(UsersHandler.getLocalUser().getPseudo());
+
         mainWindow.start();
               
     }

@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.net.ServerSocket;
 import com.insa.app.*;
+import com.insa.utils.Consts;
 
 
 public class TCPConnectionReceiver extends Thread{
@@ -12,8 +13,16 @@ public class TCPConnectionReceiver extends Thread{
 
 	private boolean running = true;
 
-	public TCPConnectionReceiver(ServerSocket serverSocket){
-		this.serverSocket = serverSocket;
+	// if true -> create receiver socket (port A)
+	// else -> create sender socket (port B)
+	private boolean receiver;
+
+
+
+	public TCPConnectionReceiver(boolean type) throws Exception{
+		receiver = type;
+		this.serverSocket = new ServerSocket(type?Consts.TCP_PORT_A:Consts.TCP_PORT_B);
+		this.start();
 	}
     private synchronized boolean isRunning(){return running;}
 

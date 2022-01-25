@@ -113,7 +113,8 @@ public class ConnexionWindow {
         }
 		Data.reloadData();
 
-		UsersHandler.getLocalUser().setPseudo(pseudo);
+        LogHandler.display(1,"[+] Sending pseudo choosen");
+        UsersHandler.updateSelfPseudo(pseudo);
 		pseudoSet = true;
 		window.close();
 	}

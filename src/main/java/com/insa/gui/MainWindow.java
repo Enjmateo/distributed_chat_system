@@ -110,7 +110,16 @@ public class MainWindow {
 
         updateList();
 
-        connectButton.setOnAction(e->{if(targetUser!=null)tabs.getTabs().add(new UserTab(targetUser));});
+        connectButton.setOnAction(e->{
+            if(targetUser!=null){
+                tabs.getTabs().add(new UserTab(targetUser));
+                try {
+                    targetUser.connect();
+                } catch (Exception e1) {
+                    ExitHandler.error(e1);
+                }
+            }
+        });
 		window.setScene(scene);
 		window.showAndWait();
         ExitHandler.exit();
