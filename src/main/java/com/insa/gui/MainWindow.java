@@ -3,6 +3,7 @@ package com.insa.gui;
 import com.insa.app.User;
 import com.insa.app.UsersHandler;
 import com.insa.communication.Data;
+import com.insa.gui.chattabs.UserTab;
 import com.insa.utils.*;
 
 import javafx.scene.Cursor;
@@ -104,12 +105,12 @@ public class MainWindow {
 
         //test: 
         for (int i = 0; i < 4; i++) {
-            tabs.getTabs().add(new Tab("tab "+i));
+            tabs.getTabs().add(new UserTab(UsersHandler.getLocalUser()));
         }
 
         updateList();
 
-        connectButton.setOnAction(e->{if(targetUser!=null)tabs.getTabs().add(new Tab(targetUser.getPseudo()));});
+        connectButton.setOnAction(e->{if(targetUser!=null)tabs.getTabs().add(new UserTab(targetUser));});
 		window.setScene(scene);
 		window.showAndWait();
         ExitHandler.exit();

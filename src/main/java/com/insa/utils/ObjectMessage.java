@@ -15,6 +15,8 @@ public abstract class ObjectMessage implements Serializable {
         this.receiver = receiver;
 
     }
+
+
     public ObjectMessage(UUID sender, UUID receiver) {
         this.sender = Data.getUUID();
         date = new Date();
@@ -26,7 +28,10 @@ public abstract class ObjectMessage implements Serializable {
         this.sender = Data.getUUID();
         date = new Date();
     }
-
+    
+    public Date getSendTime() {
+        return date;
+    }
     public UUID getSender(){
         return sender;
     }

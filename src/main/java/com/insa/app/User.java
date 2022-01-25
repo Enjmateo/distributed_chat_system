@@ -2,15 +2,20 @@ package com.insa.app;
 
 import java.util.UUID;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import com.insa.utils.Consts;
 import com.insa.utils.ExitHandler;
 import com.insa.utils.ObjectMessage;
 import com.insa.utils.tcp.*;
 import com.insa.communication.*;
+import com.insa.gui.chattabs.UserTab;
+
 import java.net.*;
 
 public class User {
-    private String pseudo;
+    private StringProperty pseudo = new SimpleStringProperty();
+    
     private UUID uuid;
 
     private InetAddress address;
@@ -25,6 +30,11 @@ public class User {
     private TCPObjectReceiver receiver;
     private Discussion discussion;
     private Status status = Status.WAITING;
+
+    //TODO implementMVC
+    private UserTab tab;
+    public UserTab getTab() {return this.tab;}
+    public void setTab(UserTab tab) {this.tab = tab;}
     
     //WAITING = phase de connexion UDP
     //AVAILABLE = connectable
@@ -38,7 +48,7 @@ public class User {
      * @param local True if the user is local 
      */
     public User(String pseudo, UUID uuid) {
-        this.pseudo = pseudo;
+        this.pseudo.setValue(pseudo);
         this.uuid = uuid;
     }
 
@@ -75,7 +85,7 @@ public class User {
     }
 
     public void setPseudo(String pseudo) {
-        this.pseudo = pseudo;
+        this.pseudo.setValue(pseudo);
     }
 
     public InetAddress getInetAddress() {return address;}
@@ -83,6 +93,10 @@ public class User {
     public void setInetAddress(InetAddress address){ this.address = address; }
     
     public String getPseudo() {
+        return this.pseudo.getValue();
+    }
+
+    public StringProperty getPseudoProperty() {
         return this.pseudo;
     }
 
@@ -135,7 +149,7 @@ public class User {
         }
     } */
     public String toString(){
-        return (this.pseudo == null? "undefined" : this.pseudo) + " (" + this.uuid.toString() + ") : "+this.status+ (this.alive?"":"(DEAD)");
+        return (this.pseudo == null? "undefined" : this.pseudo.getValue()) + " (" + this.uuid.toString() + ") : "+this.status+ (this.alive?"":"(DEAD)");
     }
 
     public void sendMessage(Message message) {
@@ -145,6 +159,7 @@ public class User {
             ExitHandler.error(e);
         }
         discussion.addMessage(message);
+        tab.addMessage(message,true);
         message.sendToDatabase();
         
     }

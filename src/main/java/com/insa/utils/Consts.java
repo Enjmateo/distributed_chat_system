@@ -1,5 +1,10 @@
 package com.insa.utils;
 
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+
+import javafx.scene.paint.Color;
+
 public class Consts {
     public static final int MAX_UDP_PACKET_SIZE = 5000;
 
@@ -35,4 +40,16 @@ public class Consts {
     final static public double SCENE_PADDING = 20;
 	final static public double FIELDS_GAP = 10;
 	final static public double ELEMENTS_GAP = 20;
+
+    //Messages view
+    final static public Color BACKGROUND_COLOR=Color.BLACK;
+    final static public Color SENT_MESSAGE_BACKGROUND_COLOR= Color.GREY;
+    final static public Color RECEIVED_MESSAGE_BACKGROUND_COLOR= Color.BLUE;
+
+    final static public double MESSAGES_ROUNDING=13;
+    final static public double MESSAGES_WIDTH=300;
+    
+    final static public double MESSAGE_PADDING = 7;
+
+    final static public SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm - dd/MM");
 }
