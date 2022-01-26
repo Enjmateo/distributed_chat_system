@@ -21,6 +21,7 @@ public class ObjectHandler {
 
     }
     private static void handleTextMessage(TextMessage message) {
+        LogHandler.display(3,"[+] Handling a text message");
         try {
          UsersHandler.getUserByUUID(message.getSender()).addMessage(message);
         }catch(Exception e){

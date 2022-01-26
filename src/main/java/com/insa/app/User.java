@@ -10,6 +10,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import com.insa.utils.Consts;
 import com.insa.utils.ExitHandler;
+import com.insa.utils.LogHandler;
 import com.insa.utils.ObjectMessage;
 import com.insa.utils.tcp.*;
 import com.insa.communication.*;
@@ -175,6 +176,7 @@ public class User {
     }
 
     public void sendMessage(Message message) {
+        LogHandler.display(3,"[+] Sending a new text message to "+this.address);
         try{ 
             sender.sendMessageObject((ObjectMessage) message);
         }catch(Exception e){

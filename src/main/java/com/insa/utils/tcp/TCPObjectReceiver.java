@@ -35,6 +35,7 @@ public class TCPObjectReceiver extends Thread {
         while(isRunning()){
             try {
                 ObjectMessage objectMessage = (ObjectMessage) objectInputStream.readObject();
+                LogHandler.display(3,"[+] Receiving a TCP message");
                 ObjectHandler.handleObject(objectMessage);
             }catch(Exception e){
                 //TODO Gestion de l'echec de reception de message
