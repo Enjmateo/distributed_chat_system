@@ -10,12 +10,17 @@ import javafx.scene.layout.HBox;
 public class SendBar extends HBox{
     TextField textField = new TextField("Texte à  envoyer");
     Button sendButton = new Button("Send");
+    User user;
 
     public SendBar(User user){
         super();
         super.getChildren().addAll(textField,sendButton);
-        sendButton.setOnAction(e->{ 
-            if(textField.getText()!=null)user.sendMessage(new TextMessage(user.getUUID(),textField.getText()));
-        });
+        this.user = user;
+        sendButton.setOnAction(e->buttonHandler());
+        textField.setOnAction(e->buttonHandler());
+    }
+
+    private void buttonHandler() {
+        if(textField.getText()!=null)user.sendMessage(new TextMessage(user.getUUID(),textField.getText()));
     }
 }

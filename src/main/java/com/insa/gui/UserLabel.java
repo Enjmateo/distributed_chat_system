@@ -7,6 +7,7 @@ import com.insa.utils.Consts;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
@@ -28,7 +29,7 @@ public class UserLabel extends HBox {
         super.setSpacing(3);
         messageCount.setPadding(new Insets(2));
         messageCount.setTextFill(Color.WHITE);
-        
+        super.setCursor(Cursor.HAND);
 
         //Modify color if connected or not
         ObjectProperty<Background> background = messageCount.backgroundProperty();

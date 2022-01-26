@@ -44,6 +44,8 @@ public class UsersHandler extends Thread {
 
     public synchronized static void addUser(User user) {
         users.add(user);
+        //TODO MVC
+        MainWindow.addUser(user);
     }
     
     /**
@@ -70,18 +72,15 @@ public class UsersHandler extends Thread {
     }
     public synchronized static void updateDeadUsers(){
         //Update dead users
-        boolean modify = false;
         for(User user : users){
             if(user.isInstantAlive()){
-                modify |= user.setAlive(true);
+                user.setAlive(true);
                 user.setInstantAlive(false);
             }else{
-                modify |= user.setAlive(false);
+                user.setAlive(false);
             }
         }
-    
-        if(modify)MainWindow.updateList();
-    }
+        }
 
     public synchronized static ArrayList<String> getPseudos(){
         if (users!= null) return new ArrayList<String>(users.stream().map(e -> e.getPseudo()).collect(Collectors.toList()));

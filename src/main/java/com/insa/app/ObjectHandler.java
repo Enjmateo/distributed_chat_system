@@ -69,7 +69,6 @@ public class ObjectHandler {
             user.setStatus(User.Status.AVAILABLE);
             LogHandler.display(2,"[+] Updating pseudo for " + obj.getPseudo());
             user.setPseudo(obj.getPseudo());
-            MainWindow.updateList();
         }
 
         UsersHandler.listUsers();

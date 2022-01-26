@@ -2,6 +2,7 @@ package com.insa.app;
 
 import java.util.UUID;
 
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -20,9 +21,9 @@ import java.net.*;
 
 public class User {
     private StringProperty pseudo = new SimpleStringProperty();
-    private IntegerProperty unreadMessagesCount = new SimpleIntegerProperty(12);
+    private IntegerProperty unreadMessagesCount = new SimpleIntegerProperty(0);
     
-    private BooleanProperty aliveProperty = new SimpleBooleanProperty(true);
+    private BooleanProperty aliveProperty = new SimpleBooleanProperty(false);
     private boolean alive = true;
     //si =false -> ne donne pas de signe de vie (surement crash)
 
@@ -107,19 +108,24 @@ public class User {
         }
     }
 
-    public void setPseudo(String pseudo) {
-        this.pseudo.setValue(pseudo);
+    public synchronized void setPseudo(String newpseudo) {
+        Platform.runLater(new Runnable() {
+            public void run() {
+                pseudo.setValue(newpseudo);
+            }
+        });
+        
     }
 
     public InetAddress getInetAddress() {return address;}
 
     public void setInetAddress(InetAddress address){ this.address = address; }
     
-    public String getPseudo() {
+    public synchronized String getPseudo() {
         return this.pseudo.getValue();
     }
 
-    public StringProperty getPseudoProperty() {
+    public synchronized StringProperty getPseudoProperty() {
         return this.pseudo;
     }
 
@@ -132,21 +138,12 @@ public class User {
     }
 
     public synchronized boolean isAlive(){
-        return this.alive;
+        return this.aliveProperty.getValue();
     }
 
     //mofify state -> if change return true
-    public synchronized boolean setAlive(boolean newState){ 
-        /*
-        if(this.alive == newState){
-            return false;
-        }else{
-            this.alive = newState;
-            return true;
-        }*/
-        boolean oldState = this.alive;
-        this.alive = newState; 
-        return newState=!oldState;
+    public synchronized void setAlive(boolean newState){ 
+       aliveProperty.set(newState);
     }
 
     public synchronized boolean isInstantAlive(){
@@ -191,5 +188,11 @@ public class User {
     }
     public void addMessage(Message message) {
         getUserDiscussionView().addMessage(message,false);
+        Platform.runLater(new Runnable() {
+            public void run() {
+                unreadMessagesCount.set(unreadMessagesCount.getValue()+1);
+            }
+        });
+        
     }
 }

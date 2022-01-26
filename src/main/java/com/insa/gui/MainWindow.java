@@ -112,6 +112,29 @@ public class MainWindow {
         ExitHandler.exit();
     }
 
+    public static void addUser(User user){
+        Platform.runLater(new Runnable() {
+            public void run() {
+                LogHandler.display(1,"[+] Adding new user to list");
+                    UserLabel label = new UserLabel(user);
+                    label.setOnMouseClicked(e->{
+                        targetUser=user;
+                        try {
+                            targetUser.connect();
+                        } catch (Exception e1) {
+                            ExitHandler.error(e1);
+                        }
+                        discussionHolder.getChildren().setAll(targetUser.getUserDiscussionView());
+                        targetUser.resetUnreadMessagesCount();
+                        
+                    });
+                    listView.getItems().add(label);
+                }
+            
+        });
+
+    }
+
     public synchronized static void updateList() {
         Platform.runLater(new Runnable() {
             public void run() {
