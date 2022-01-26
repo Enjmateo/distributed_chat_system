@@ -158,10 +158,14 @@ public class User {
         }catch(Exception e){
             ExitHandler.error(e);
         }
-        //TODO avec la base de données
+        //TODO avec la base de données ----------------------------------------------------
         //discussion.addMessage(message);
+        //message.sendToDatabase();
         tab.addMessage(message,true);
-        message.sendToDatabase();
         
+        
+    }
+    public void addMessage(Message message) {
+        tab.addMessage(message,false);
     }
 }

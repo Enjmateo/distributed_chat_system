@@ -1,5 +1,6 @@
 package com.insa.app;
 
+import com.insa.communication.TextMessage;
 import com.insa.gui.MainWindow;
 import com.insa.utils.Consts;
 import com.insa.utils.ExitHandler;
@@ -14,9 +15,18 @@ public class ObjectHandler {
     public static void handleObject(ObjectMessage objectMessage){
         if (objectMessage instanceof ConfigMessage) {
             new Thread(new Runnable() { public void run() {handleInitiateConnectionMessage((ConfigMessage)objectMessage); }}).start();
+        }else if(objectMessage instanceof TextMessage) {
+            new Thread(new Runnable() { public void run() {handleTextMessage((TextMessage)objectMessage); }}).start();
+        }
+
+    }
+    private static void handleTextMessage(TextMessage message) {
+        try {
+         UsersHandler.getUserByUUID(message.getSender()).addMessage(message);
+        }catch(Exception e){
+            ExitHandler.error(e);
         }
     }
-
 
     private static void handleInitiateConnectionMessage(ConfigMessage obj){
         User user;
