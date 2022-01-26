@@ -26,6 +26,7 @@ public class TCPObjectSender {
         this.outputSocket = socket;
         this.outputStream = outputSocket.getOutputStream();
         objectOutputStream = new ObjectOutputStream(outputStream);
+        running = true;
     }
 
     public synchronized void sendMessageObject(ObjectMessage message) throws Exception{

@@ -107,7 +107,7 @@ public class UsersHandler extends Thread {
                     try {
                         LogHandler.display(2,"[+] Broadcast KEEP_ALIVE");
                         UDPObjectSender.broadcastMessage( 
-                        new ConfigMessage(null, ConfigMessage.MessageType.KEEP_ALIVE), Consts.UDP_PORT);
+                        new ConfigMessage(UsersHandler.getLocalUser().getPseudo(), ConfigMessage.MessageType.KEEP_ALIVE), Consts.UDP_PORT);
                     } catch (Exception e) {
                         ExitHandler.error(e);
                     }}
