@@ -3,7 +3,7 @@ package com.insa.gui;
 import com.insa.app.User;
 import com.insa.app.UsersHandler;
 import com.insa.communication.Data;
-import com.insa.gui.chattabs.UserTab;
+import com.insa.gui.chattabs.UserDiscussionView;
 import com.insa.utils.*;
 
 import javafx.scene.Cursor;
@@ -52,14 +52,12 @@ public class MainWindow {
             Button validatePseudoButton = new Button("✔");
 
         //Connected users 
-        static ListView<Label> listView = new ListView<Label>();
+        static ListView<UserLabel> listView = new ListView<UserLabel>();
 
-        Button connectButton = new Button("Connect");
+        //Button connectButton = new Button("Connect");
 
-    //Rights
-        TabPane tabs = new TabPane();
-
-
+    //Right
+        static HBox discussionHolder = new HBox();
 
     static User targetUser = null;
     public void start() {
@@ -92,34 +90,23 @@ public class MainWindow {
         listView.setMinHeight(300);
 
         VBox leftLayout = new VBox(Consts.ELEMENTS_GAP);
-        leftLayout.getChildren().addAll(pseudoAndLogoLayout,listView,connectButton);
-
-        tabs.setMinHeight(400);
-        tabs.setMinWidth(600);
+        leftLayout.getChildren().addAll(pseudoAndLogoLayout,listView);
 
 
         HBox mainlayout = new HBox(Consts.ELEMENTS_GAP);
-        mainlayout.getChildren().addAll(leftLayout,tabs);
+        mainlayout.getChildren().addAll(leftLayout,discussionHolder);
 
         Scene scene = new Scene(mainlayout);
 
-        //test: 
-        for (int i = 0; i < 4; i++) {
-            tabs.getTabs().add(new UserTab(UsersHandler.getLocalUser()));
-        }
-
+        discussionHolder.getChildren().setAll(new UserDiscussionView(UsersHandler.getLocalUser()));
+    
         updateList();
-
+        /*
         connectButton.setOnAction(e->{
             if(targetUser!=null){
-                tabs.getTabs().add(new UserTab(targetUser));
-                try {
-                    targetUser.connect();
-                } catch (Exception e1) {
-                    ExitHandler.error(e1);
-                }
+                
             }
-        });
+        });*/
 		window.setScene(scene);
 		window.showAndWait();
         ExitHandler.exit();
@@ -131,8 +118,18 @@ public class MainWindow {
                 LogHandler.display(1,"[+] Updating connected list");
                 listView.getItems().clear();
                 for(User user : UsersHandler.getAliveUsers()) {
-                    Label label = new Label(user.getPseudo());
-                    label.setOnMouseClicked(e->{targetUser=user;});
+                    UserLabel label = new UserLabel(user);
+                    label.setOnMouseClicked(e->{
+                        targetUser=user;
+                        try {
+                            targetUser.connect();
+                        } catch (Exception e1) {
+                            ExitHandler.error(e1);
+                        }
+                        discussionHolder.getChildren().setAll(targetUser.getUserDiscussionView());
+                        targetUser.resetUnreadMessagesCount();
+                        
+                    });
                     listView.getItems().add(label);
                 }
             }

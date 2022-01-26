@@ -5,22 +5,22 @@ import java.util.UUID;
 import com.insa.app.User;
 import com.insa.communication.Message;
 import com.insa.communication.TextMessage;
+import com.insa.gui.UserLabel;
 import com.insa.gui.chattabs.messagesField.MessagesField;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
-public class UserTab extends Tab{
+public class UserDiscussionView extends VBox{
     User user;
     TopBar topBar;
     SendBar sendbar;
     MessagesField messagesField;
     VBox mainLayout = new VBox();
-    public UserTab(User user) {
-        super.textProperty().bind(user.getPseudoProperty());
+    public UserDiscussionView(User user) {
         
         //TODO MVC
-        user.setTab(this);
+        user.setUserDiscussionView(this);
 
         this.user = user;
 
@@ -32,8 +32,11 @@ public class UserTab extends Tab{
         messagesField.addTextMessage(new TextMessage(UUID.randomUUID(), "ceci est un autre test avec un texte tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres long"),false);
         messagesField.addTextMessage(new TextMessage(UUID.randomUUID(), "ceci est encore un autre test\navec un espace au milieu cette foi"),false);
 
-        mainLayout.getChildren().addAll(topBar, messagesField,sendbar);
-        super.setContent(mainLayout);
+        //TODO move to constants
+        super.setMinHeight(400);
+        super.setMinWidth(600);
+
+        super.getChildren().addAll(topBar, messagesField,sendbar);
 
 
     }

@@ -2,6 +2,10 @@ package com.insa.app;
 
 import java.util.UUID;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import com.insa.utils.Consts;
@@ -9,13 +13,18 @@ import com.insa.utils.ExitHandler;
 import com.insa.utils.ObjectMessage;
 import com.insa.utils.tcp.*;
 import com.insa.communication.*;
-import com.insa.gui.chattabs.UserTab;
+import com.insa.gui.chattabs.UserDiscussionView;
 
 import java.net.*;
 
 public class User {
     private StringProperty pseudo = new SimpleStringProperty();
+    private IntegerProperty unreadMessagesCount = new SimpleIntegerProperty(12);
     
+    private BooleanProperty aliveProperty = new SimpleBooleanProperty(true);
+    private boolean alive = true;
+    //si =false -> ne donne pas de signe de vie (surement crash)
+
     private UUID uuid;
 
     private InetAddress address;
@@ -23,18 +32,30 @@ public class User {
     private boolean instantAlive = false;    
     //Permet de détecter si l'utilisateur s'est notifié vivant 
 
-    private boolean alive = true;
-    //si =false -> ne donne pas de signe de vie (surement crash)
+
 
     private TCPObjectSender sender;
     private TCPObjectReceiver receiver;
-    private Discussion discussion;
     private Status status = Status.WAITING;
 
-    //TODO implementMVC
-    private UserTab tab;
-    public UserTab getTab() {return this.tab;}
-    public void setTab(UserTab tab) {this.tab = tab;}
+    public BooleanProperty getAliveProperty() {
+        return aliveProperty;
+    }
+    public IntegerProperty getUnreadMessagesCount(){ 
+        return unreadMessagesCount;
+    }
+    public void resetUnreadMessagesCount() {
+        unreadMessagesCount.set(0);
+    }
+    //TODO implementMVC and rename
+    private UserDiscussionView tab;
+    public UserDiscussionView getUserDiscussionView() {
+        if(tab == null) {
+            tab = new UserDiscussionView(this);
+        }
+        return this.tab
+        ;}
+    public void setUserDiscussionView(UserDiscussionView tab) {this.tab = tab;}
     
     //WAITING = phase de connexion UDP
     //AVAILABLE = connectable
@@ -62,6 +83,7 @@ public class User {
     }
     
     public void connect() throws Exception {
+        if(receiver != null & sender != null) {return;}
         Socket socketA = new Socket();
         SocketAddress sAdressA = new InetSocketAddress(address, Consts.TCP_PORT_A);
         socketA.connect(sAdressA, Consts.TCP_TIMEOUT);
@@ -161,11 +183,11 @@ public class User {
         //TODO avec la base de données ----------------------------------------------------
         //discussion.addMessage(message);
         //message.sendToDatabase();
-        tab.addMessage(message,true);
+        getUserDiscussionView().addMessage(message,true);
         
         
     }
     public void addMessage(Message message) {
-        tab.addMessage(message,false);
+        getUserDiscussionView().addMessage(message,false);
     }
 }
