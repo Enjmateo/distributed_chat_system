@@ -86,11 +86,16 @@ public class User {
     }
 
     private void retrieveHistory() {
-        historyRetrieved = true;
+      try {
         ArrayList<Message> messageList = DatabaseHandler.getMessages(uuid);
         for(Message message : messageList) {
             addMessage(message);
         }
+        historyRetrieved = true;
+      }
+      catch (Exception e) {
+        DatabaseHandler.errorDB();
+      }
     }
     
     public void connect() throws Exception {
