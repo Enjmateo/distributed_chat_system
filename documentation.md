@@ -1,9 +1,6 @@
 ## Documentation
 ***Disclamer:*** **This documentation is a technical documentation about the messages database. It is recommended to refer to the administrator manual for more general documentation (See [report.pdf](rapport.pdf)).**
 
-### Configuration file
-The configuration data is kept in a configuration file in the same directory as the `.jar` under the name of `.data.json`. This file is in JSON format and contains the message database connection information as well as the user's UUID. This file can be distributed by the administrator to clients and imported from the program. 
-
 ### Database
 #### Main table
 * Table name: `messages`
