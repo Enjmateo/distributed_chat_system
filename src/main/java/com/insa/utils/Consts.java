@@ -43,8 +43,8 @@ public class Consts {
 
     //Messages view
     final static public Color BACKGROUND_COLOR=Color.BLACK;
-    final static public Color SENT_MESSAGE_BACKGROUND_COLOR= Color.GREY;
-    final static public Color RECEIVED_MESSAGE_BACKGROUND_COLOR= Color.BLUE;
+    final static public Color SENT_MESSAGE_BACKGROUND_COLOR= Color.BLUE;
+    final static public Color RECEIVED_MESSAGE_BACKGROUND_COLOR= Color.GREY;
 
     final static public double MESSAGES_ROUNDING=13;
     final static public double MESSAGES_WIDTH=300;

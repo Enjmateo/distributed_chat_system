@@ -15,8 +15,10 @@ import com.insa.utils.LogHandler;
 import com.insa.utils.ObjectMessage;
 import com.insa.utils.tcp.*;
 import com.insa.communication.*;
+import com.insa.gui.ErrorWindow;
 import com.insa.gui.chattabs.UserDiscussionView;
 
+import java.io.IOException;
 import java.net.*;
 
 public class User {
@@ -62,7 +64,7 @@ public class User {
     //WAITING = phase de connexion UDP
     //AVAILABLE = connectable
     //CONNECTED = connecté en TCP
-    enum Status {WAITING,AVAILABLE,CONNECTED}
+    public enum Status {WAITING,AVAILABLE,CONNECTED}
 
     /**
      * Public class user
@@ -85,26 +87,26 @@ public class User {
     }
     
     public void connect() throws Exception {
-        if(receiver != null & sender != null) {return;}
-        Socket socketA = new Socket();
-        SocketAddress sAdressA = new InetSocketAddress(address, Consts.TCP_PORT_A);
-        socketA.connect(sAdressA, Consts.TCP_TIMEOUT);
-        this.sender = new TCPObjectSender(socketA);
+            //if(receiver != null & sender != null) {return;}
+            Socket socketA = new Socket();
+            SocketAddress sAdressA = new InetSocketAddress(address, Consts.TCP_PORT_A);
+            socketA.connect(sAdressA, Consts.TCP_TIMEOUT);
+            this.sender = new TCPObjectSender(socketA);
 
-        Socket socketB = new Socket();
-        SocketAddress sAdressB = new InetSocketAddress(address, Consts.TCP_PORT_A);
-        socketB.connect(sAdressB, Consts.TCP_TIMEOUT);
-        this.receiver = new TCPObjectReceiver(socketB);
+            Socket socketB = new Socket();
+            SocketAddress sAdressB = new InetSocketAddress(address, Consts.TCP_PORT_A);
+            socketB.connect(sAdressB, Consts.TCP_TIMEOUT);
+            this.receiver = new TCPObjectReceiver(socketB);
+            this.status = Status.CONNECTED;
     }
 
 
     public void disconnect(boolean quit) throws Exception {
         this.sender.close();
         this.receiver.close(true);
+        this.status = Status.AVAILABLE;
         if(quit){
-            alive =false;
-        }else{
-            this.status = Status.AVAILABLE;
+            setAlive(false);//TODO
         }
     }
 
@@ -158,33 +160,31 @@ public class User {
     public Status getStatus() {
         return this.status;
     }
-/*     public String getStatusString() {
-        switch(status) {
-            case ALIVE: return "ALIVE";
-            case DEAD: return "DEAD";
-            case CONNECTED:
-                return "Connected";
-            default: 
-                return "Waiting";
-        }
-    } */
+
     public String toString(){
-        return (this.pseudo == null? "undefined" : this.pseudo.getValue()) + " (" + this.uuid.toString() + ") : "+this.status+ (this.alive?"":"(DEAD)");
+        return (this.pseudo == null? "undefined" : this.pseudo.getValue()) + " (" + this.uuid.toString() + ") : "+this.status+ (this.aliveProperty.getValue()?"":"(DEAD)");
     }
 
     public void sendMessage(Message message) {
         LogHandler.display(3,"[+] Sending a new text message to "+this.address);
         try{ 
-            sender.sendMessageObject((ObjectMessage) message);
+            sender.sendMessageObject((ObjectMessage) message);          
         }catch(Exception e){
-            ExitHandler.error(e);
+            LogHandler.display(5,"[-] Failed to send message, attempt to reconnect");
+            try {
+                disconnect(false);
+                connect();
+                LogHandler.display(5,"[-] Succes");
+                sendMessage(message);
+            } catch(Exception e1){
+                new ErrorWindow("User unreachable");
+            }
+
         }
         //TODO avec la base de données ----------------------------------------------------
         //discussion.addMessage(message);
         //message.sendToDatabase();
         getUserDiscussionView().addMessage(message,true);
-        
-        
     }
     public void addMessage(Message message) {
         getUserDiscussionView().addMessage(message,false);

@@ -2,6 +2,8 @@ package com.insa.utils.tcp;
 
 import java.net.Socket;
 import java.io.*;
+
+import com.insa.gui.ErrorWindow;
 import com.insa.utils.*;
 
 public class TCPObjectSender {
