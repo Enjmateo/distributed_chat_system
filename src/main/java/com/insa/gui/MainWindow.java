@@ -65,6 +65,7 @@ public class MainWindow {
         window.setTitle("ODD");
         window.setMinHeight(Consts.MW_MIN_HEIGHT);
         window.setMinWidth(Consts.MW_MIN_WIDTH);
+        window.setWidth(Consts.MW_PREF_WIDTH);
 
         logoView.setPreserveRatio(true);
 		logoView.setFitWidth(Consts.MW_IMAGE_SIZE);
@@ -108,7 +109,7 @@ public class MainWindow {
 
         Scene scene = new Scene(mainlayout);
 
-        discussionHolder.getChildren().setAll(new UserDiscussionView(UsersHandler.getLocalUser()));
+        //discussionHolder.getChildren().setAll(new UserDiscussionView(UsersHandler.getLocalUser()));
     
         /*
         connectButton.setOnAction(e->{
@@ -135,7 +136,7 @@ public class MainWindow {
                                 new ErrorWindow("User unreachable");
                                 return;
                             }
-                        }else{ 
+                        }else if(targetUser.getStatus()==User.Status.WAITING){ 
                             new ErrorWindow("User unavailable, you can't send him messages");
                         }
                         discussionHolder.getChildren().setAll(targetUser.getUserDiscussionView());
@@ -149,6 +150,7 @@ public class MainWindow {
 
     }
 
+    /*
     public synchronized static void updateList() {
         Platform.runLater(new Runnable() {
             public void run() {
@@ -173,7 +175,7 @@ public class MainWindow {
         });
         
     }
-
+    */
     private void editPseudo(){
         pseudoField.setText(UsersHandler.getLocalUser().getPseudo());
         pseudoLayout.getChildren().setAll(pseudoField,validatePseudoButton);

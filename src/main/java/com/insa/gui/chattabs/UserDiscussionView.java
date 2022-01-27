@@ -30,10 +30,6 @@ public class UserDiscussionView extends VBox{
 
         VBox.setVgrow(messagesField, Priority.ALWAYS);
 
-        messagesField.addTextMessage(new TextMessage(UUID.randomUUID(), "ceci est un test 1"),true);
-        messagesField.addTextMessage(new TextMessage(UUID.randomUUID(), "ceci est un autre test avec un texte tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres tres long"),false);
-        messagesField.addTextMessage(new TextMessage(UUID.randomUUID(), "ceci est encore un autre test\navec un espace au milieu cette foi"),false);
-
         //TODO move to constants
         super.setMinWidth(200);
         super.setPrefWidth(600);

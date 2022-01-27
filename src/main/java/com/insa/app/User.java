@@ -175,11 +175,11 @@ public class User {
                 disconnect();
                 LogHandler.display(5,"  [-] Reconnecting");
                 connect();
-                LogHandler.display(5,"[-] Succes");
+                LogHandler.display(5,"[+] Succes");
                 sendMessage(message);
             } catch(Exception e1){
                 new ErrorWindow("User unreachable");
-                e1.printStackTrace();
+                LogHandler.display(5,"[-] Failed");
             }
 
         }
@@ -189,9 +189,10 @@ public class User {
         getUserDiscussionView().addMessage(message,true);
     }
     public void addMessage(Message message) {
-        getUserDiscussionView().addMessage(message,false);
+        
         Platform.runLater(new Runnable() {
             public void run() {
+                getUserDiscussionView().addMessage(message,false);
                 unreadMessagesCount.set(unreadMessagesCount.getValue()+1);
             }
         });

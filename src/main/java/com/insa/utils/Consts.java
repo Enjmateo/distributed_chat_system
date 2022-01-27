@@ -32,6 +32,7 @@ public class Consts {
     //Main window
     final static public double MW_MIN_HEIGHT = 300;
     final static public double MW_MIN_WIDTH = 500;
+    public static final double MW_PREF_WIDTH = 850;
 
     final static public double IM_AND_PSEU_MIN_HEIGHT = 140;
     final static public double IM_AND_PSEU_MIN_WIDTH = 200;
