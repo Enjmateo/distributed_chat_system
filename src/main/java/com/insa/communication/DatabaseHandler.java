@@ -3,6 +3,7 @@ package com.insa.communication;
 import java.sql.*;
 import java.util.*;
 
+import com.insa.app.UsersHandler;
 import com.insa.gui.ErrorWindow;
 import com.insa.utils.Consts;
 import com.insa.utils.ExitHandler;
@@ -107,13 +108,14 @@ public class DatabaseHandler {
 
     /**
      * Get message in DB from a given UUID
-     * 
      * @param uuid
      * @return ArrayList<ObjectMessage>
      */
-    public static ArrayList<Message> getMessages(UUID uuid) throws Exception {
-        ResultSet rs = executeQuery("SELECT * from " + Consts.DB_MAIN_TABLE + " WHERE sender='" + uuid.toString()
-                + "' OR receiver='" + uuid.toString() + "' ORDER BY sendDate ASC");
+    public static ArrayList<Message> getMessages(UUID uuidOther) throws Exception {
+        UUID uuidSelf = UsersHandler.getLocalUser().getUUID();
+        ResultSet rs = executeQuery("SELECT * from " + Consts.DB_MAIN_TABLE + " WHERE (sender='" + uuidSelf.toString()
+                + "' AND receiver='" + uuidOther.toString() + "') OR (sender='" + uuidOther.toString()
+                + "' AND receiver='" + uuidSelf.toString() + "') ORDER BY sendDate ASC");
         ArrayList<Message> messageList = new ArrayList<Message>();
 
         int id, contentId;
