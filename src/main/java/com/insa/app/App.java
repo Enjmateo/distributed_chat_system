@@ -1,7 +1,7 @@
 package com.insa.app;
 
 import com.insa.communication.DatabaseHandler;
-import com.insa.gui.ConnexionWindow;
+import com.insa.gui.ConnectionWindow;
 import com.insa.gui.MainWindow;
 import com.insa.utils.Consts;
 import com.insa.utils.LogHandler;
@@ -14,7 +14,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class App extends Application {
-    ConnexionWindow connexionWindow = new ConnexionWindow();
+    ConnectionWindow connexionWindow = new ConnectionWindow();
     MainWindow mainWindow = new MainWindow();
     private static UsersHandler uh;
     private static UDPObjectSender udpos;

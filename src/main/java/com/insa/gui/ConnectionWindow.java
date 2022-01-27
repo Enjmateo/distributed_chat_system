@@ -5,6 +5,7 @@ import com.insa.communication.Data;
 import com.insa.communication.DatabaseHandler;
 import com.insa.utils.*;
 
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -24,7 +25,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ConnexionWindow {
+public class ConnectionWindow {
 	Stage window = new Stage();
 
 	Label connectLabel = new Label("Enter a pseudo to connect to ODD");
@@ -33,7 +34,6 @@ public class ConnexionWindow {
 	TextField pseudoField = new TextField();
 
 	CheckBox useDatabaseCheckBox = new CheckBox("Recover message history and save my messages");
-
 
 	Image logo = GUIUtils.getLogo();
 	ImageView logoView = new ImageView(logo);
@@ -68,6 +68,7 @@ public class ConnexionWindow {
 		connectLayout.setPadding(new Insets(Consts.SCENE_PADDING,Consts.SCENE_PADDING,Consts.SCENE_PADDING,Consts.SCENE_PADDING));
 
 		useDatabaseCheckBox.setSelected(true);
+        useDatabaseCheckBox.setCursor(Cursor.HAND);
 
 		pseudoField.setOnAction(e->connectButtonHandler());
 		configButton.setOnAction(e -> setConfigFile());
