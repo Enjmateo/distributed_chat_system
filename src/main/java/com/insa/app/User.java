@@ -79,7 +79,7 @@ public class User {
 
     public void connect(Socket socket) throws Exception {
         if(socket.getLocalPort()==Consts.TCP_PORT_A){
-            receiver = new TCPObjectReceiver(socket);
+            receiver = new TCPObjectReceiver(socket,this);
         }else{
             sender = new TCPObjectSender(socket);
         }
@@ -88,6 +88,7 @@ public class User {
     
     public void connect() throws Exception {
             //if(receiver != null & sender != null) {return;}
+            if(status == Status.CONNECTED) {return;}
             Socket socketA = new Socket();
             SocketAddress sAdressA = new InetSocketAddress(address, Consts.TCP_PORT_A);
             socketA.connect(sAdressA, Consts.TCP_TIMEOUT);
@@ -96,18 +97,16 @@ public class User {
             Socket socketB = new Socket();
             SocketAddress sAdressB = new InetSocketAddress(address, Consts.TCP_PORT_A);
             socketB.connect(sAdressB, Consts.TCP_TIMEOUT);
-            this.receiver = new TCPObjectReceiver(socketB);
+            this.receiver = new TCPObjectReceiver(socketB,this);
             this.status = Status.CONNECTED;
     }
 
 
-    public void disconnect(boolean quit) throws Exception {
+    public void disconnect() throws Exception {
         this.sender.close();
         this.receiver.close(true);
         this.status = Status.AVAILABLE;
-        if(quit){
-            setAlive(false);//TODO
-        }
+        setAlive(false);
     }
 
     public synchronized void setPseudo(String newpseudo) {
@@ -172,12 +171,15 @@ public class User {
         }catch(Exception e){
             LogHandler.display(5,"[-] Failed to send message, attempt to reconnect");
             try {
-                disconnect(false);
+                LogHandler.display(5,"  [-] Deconnecting");
+                disconnect();
+                LogHandler.display(5,"  [-] Reconnecting");
                 connect();
                 LogHandler.display(5,"[-] Succes");
                 sendMessage(message);
             } catch(Exception e1){
                 new ErrorWindow("User unreachable");
+                e1.printStackTrace();
             }
 
         }

@@ -3,6 +3,7 @@ import java.io.*;
 import java.net.*;
 
 import com.insa.app.ObjectHandler;
+import com.insa.app.User;
 import com.insa.utils.*;
 
 public class TCPObjectReceiver extends Thread {
@@ -10,16 +11,19 @@ public class TCPObjectReceiver extends Thread {
     InputStream inputStream;
     ObjectInputStream objectInputStream;
 
+    User user;
+
     private boolean running = true;
 
-    public TCPObjectReceiver(Socket socket){
+    public TCPObjectReceiver(Socket socket, User user){
+        this.user = user;
         this.inputSocket = socket;
         this.start();
     }
     public synchronized boolean isRunning() {return running;}
     public synchronized void close(boolean force ) throws IOException{
         if(force){
-            objectInputStream.close();
+            if(objectInputStream!=null)objectInputStream.close();
             inputStream.close();
             inputSocket.close();
         }
@@ -30,7 +34,12 @@ public class TCPObjectReceiver extends Thread {
             inputStream = inputSocket.getInputStream();
             objectInputStream = new ObjectInputStream(inputStream);
         }catch(IOException e){
-            throw new RuntimeException("Failed to open input stream");
+            LogHandler.display(5,"[*] "+user.getPseudo()+" user got disconnected");
+            try {
+                user.disconnect();
+            }catch(Exception ignored){
+
+            }
         }
         while(isRunning()){
             try {

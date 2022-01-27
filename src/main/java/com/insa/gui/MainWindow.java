@@ -110,7 +110,6 @@ public class MainWindow {
 
         discussionHolder.getChildren().setAll(new UserDiscussionView(UsersHandler.getLocalUser()));
     
-        updateList();
         /*
         connectButton.setOnAction(e->{
             if(targetUser!=null){
