@@ -1,7 +1,8 @@
 USE `my_DB`;
 
 --
--- Message database initialization script
+-- Message database initialization script, please refer
+-- to report.pdf for more information.
 -- ODD - 2022
 --
 

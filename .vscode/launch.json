@@ -1,0 +1,14 @@
+{
+  // Application launch configuration. Similar to the default configuration. 
+  // ODD - 2022
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Launch Main",
+      "request": "launch",
+      "mainClass": "com.insa.app.Main",
+      "projectName": "distributed_chat_system"
+    }
+  ]
+}
