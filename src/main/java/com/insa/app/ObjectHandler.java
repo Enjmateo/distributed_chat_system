@@ -11,7 +11,11 @@ import com.insa.utils.udp.*;
 
 public class ObjectHandler {
 
-    //Permet d'appeler la méthode action sur l'objet objectMessage avec en argument l'objet associé à la classe de objectMessage
+    /**
+     * Permet d'appeler la méthode action sur l'objet objectMessage avec en argument l'objet associé à la classe de objectMessage
+     * Ces actions sont réalisés dans des threads secondaire afin de ne pas bloquer la reception de nouveaux messages
+     * @param objectMessage
+     */
     public static void handleObject(ObjectMessage objectMessage){
         if (objectMessage instanceof ConfigMessage) {
             new Thread(new Runnable() { public void run() {handleInitiateConnectionMessage((ConfigMessage)objectMessage); }}).start();
@@ -20,6 +24,7 @@ public class ObjectHandler {
         }
 
     }
+
     private static void handleTextMessage(TextMessage message) {
         LogHandler.display(3,"[+] Handling a text message");
         try {
@@ -39,9 +44,7 @@ public class ObjectHandler {
             user.setStatus(User.Status.WAITING);
             UsersHandler.addUser(user);
         }
-        try {
-            //Renvoyer un objet avec le pseudo et l'adresse
-            //ATTENTION - A OPERER SUR LE THREAD PRINCIPAL (OU INITILISER L'ENVOYEUR DANS LE RECEVEUR UDP)  
+        try {  
             if(obj.getType() == ConfigMessage.MessageType.NOTIFY){
             UDPObjectSender.invokeLater(
                 new Runnable() {
@@ -66,10 +69,9 @@ public class ObjectHandler {
 
         // S'il y a une modification de pseudo où la création : 
         if (obj.getPseudo()!= null && !obj.getPseudo().equals(user.getPseudo())) {
-            //Dans le cas où on reçoit pour la première fois le pseudo
+            //Dans le cas où on reçoit pour la première fois le pseudo on rajoute l'utilisateur à la liste d'utilisateurs connectés de l'interface graphique
             if(user.getStatus()==User.Status.WAITING){
                 user.setStatus(User.Status.AVAILABLE);
-                //TODO MVC (on l'ajoute à la main window)
                 MainWindow.addUser(user);
             }
             LogHandler.display(2,"[+] Updating pseudo for " + obj.getPseudo());

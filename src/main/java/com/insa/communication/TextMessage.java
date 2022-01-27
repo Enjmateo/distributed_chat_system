@@ -37,10 +37,11 @@ public class TextMessage extends ObjectMessage implements Message {
 
             // Adding message into Text message DB
             int partId = 0;
+            String copycontent = new String(this.content);
             while (true) {
                 try {
-                    part = content.substring(0, Consts.MAX_TEXT_LENGTH);
-                    content = content.substring(Consts.MAX_TEXT_LENGTH);
+                    part = copycontent.substring(0, Consts.MAX_TEXT_LENGTH);
+                    copycontent = copycontent.substring(Consts.MAX_TEXT_LENGTH);
                     DatabaseHandler.executeUpdate("INSERT INTO text_message (messageID, messagePart,content) VALUES("
                             + Integer.toString(contentId) + ", "
                             + partId + ",'"
@@ -51,7 +52,7 @@ public class TextMessage extends ObjectMessage implements Message {
                     DatabaseHandler.executeUpdate("INSERT INTO text_message (messageID, messagePart,content) VALUES("
                             + Integer.toString(contentId) + ", "
                             + partId + ",'"
-                            + content + "')");
+                            + copycontent + "')");
                     break;
                 }
             }
