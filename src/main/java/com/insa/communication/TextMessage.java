@@ -21,9 +21,6 @@ public class TextMessage extends ObjectMessage implements Message {
         this.content = content;
     }
 
-    public void display() {
-    }
-
     public void sendToDatabase() {
         int contentId = DatabaseHandler.newContentId();
         String part;

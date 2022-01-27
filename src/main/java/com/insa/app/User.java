@@ -11,15 +11,13 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import com.insa.utils.Consts;
-import com.insa.utils.ExitHandler;
 import com.insa.utils.LogHandler;
 import com.insa.utils.ObjectMessage;
 import com.insa.utils.tcp.*;
 import com.insa.communication.*;
 import com.insa.gui.ErrorWindow;
-import com.insa.gui.chattabs.UserDiscussionView;
+import com.insa.gui.chatviews.UserDiscussionView;
 
-import java.io.IOException;
 import java.net.*;
 
 public class User {
@@ -27,8 +25,7 @@ public class User {
     private IntegerProperty unreadMessagesCount = new SimpleIntegerProperty(0);
     
     private BooleanProperty aliveProperty = new SimpleBooleanProperty(false);
-    private boolean alive = true;
-    //si =false -> ne donne pas de signe de vie (surement crash)
+    //si false -> ne donne pas de signe de vie (surement crash)
 
     private UUID uuid;
 
@@ -78,7 +75,7 @@ public class User {
         this.uuid = uuid;
     }
 
-    // cas d'une connexion provoqué par l'autre
+    // Cas d'une connexion provoqué par l'autre
     public void connect(Socket socket) throws Exception {
         if(socket.getLocalPort()==Consts.TCP_PORT_A){
             receiver = new TCPObjectReceiver(socket,this);
@@ -195,9 +192,7 @@ public class User {
             }
 
         }
-        //TODO avec la base de données ----------------------------------------------------
-        //discussion.addMessage(message);
-        //message.sendToDatabase();
+
         if(DatabaseHandler.getUseDatabase())message.sendToDatabase();
         getUserDiscussionView().addMessage(message,true);
         return true;
@@ -207,7 +202,9 @@ public class User {
         Platform.runLater(new Runnable() {
             public void run() {
                 //On ajoute le message en fonction de qui il vient 
-                getUserDiscussionView().addMessage(message,((ObjectMessage)message).getSender()==UsersHandler.getLocalUser().getUUID());
+                boolean sent = ((ObjectMessage)message).getSender().equals(UsersHandler.getLocalUser().getUUID());
+                LogHandler.display(7, "Adding new message to UI from "+((ObjectMessage)message).getSender().toString()+" ("+sent+")");
+                getUserDiscussionView().addMessage(message,sent);
                 unreadMessagesCount.set(unreadMessagesCount.getValue()+1);
             }
         });

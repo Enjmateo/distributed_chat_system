@@ -1,7 +1,5 @@
-package com.insa.gui.chattabs;
+package com.insa.gui.chatviews;
 
-
-import com.insa.gui.chattabs.messagesField.MessagesField;
 
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.Label;

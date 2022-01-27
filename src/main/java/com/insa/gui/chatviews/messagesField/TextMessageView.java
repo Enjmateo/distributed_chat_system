@@ -1,4 +1,4 @@
-package com.insa.gui.chattabs.messagesField;
+package com.insa.gui.chatviews.messagesField;
 
 import com.insa.communication.TextMessage;
 import com.insa.utils.Consts;
@@ -9,10 +9,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 
 public class TextMessageView extends VBox {
     Label textLabel;

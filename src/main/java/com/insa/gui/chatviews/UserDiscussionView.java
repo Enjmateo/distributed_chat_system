@@ -1,15 +1,12 @@
-package com.insa.gui.chattabs;
+package com.insa.gui.chatviews;
 
-import java.util.UUID;
 
 import com.insa.app.User;
 import com.insa.communication.Message;
 import com.insa.communication.TextMessage;
-import com.insa.gui.UserLabel;
-import com.insa.gui.chattabs.messagesField.MessagesField;
+import com.insa.gui.chatviews.messagesField.MessagesField;
 import com.insa.utils.Consts;
 
-import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
 public class UserDiscussionView extends VBox{

@@ -1,6 +1,5 @@
 package com.insa.gui;
 
-import javax.swing.UIManager;
 
 import com.insa.utils.ExitHandler;
 

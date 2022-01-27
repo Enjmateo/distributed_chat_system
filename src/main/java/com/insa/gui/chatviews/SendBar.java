@@ -1,4 +1,4 @@
-package com.insa.gui.chattabs;
+package com.insa.gui.chatviews;
 
 import com.insa.app.User;
 import com.insa.communication.TextMessage;

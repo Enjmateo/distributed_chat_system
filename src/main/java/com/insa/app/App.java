@@ -1,11 +1,9 @@
 package com.insa.app;
 
-import com.insa.communication.Data;
 import com.insa.communication.DatabaseHandler;
 import com.insa.gui.ConnexionWindow;
 import com.insa.gui.MainWindow;
 import com.insa.utils.Consts;
-import com.insa.utils.ExitHandler;
 import com.insa.utils.LogHandler;
 import com.insa.utils.tcp.TCPConnectionReceiver;
 import com.insa.utils.udp.ConfigMessage;
@@ -27,7 +25,7 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         //Affiche tout sauf l'UDP&
-        LogHandler.set(1,3,5);
+        LogHandler.set(1,3,5,7);
 
         LogHandler.display(1,"[+] Launching app" );
         LogHandler.display(1,"[+] Creating UserHandler" );
@@ -50,7 +48,7 @@ public class App extends Application {
 
         LogHandler.display(1,"[+] Printing connexion window");
         connexionWindow.start();
-        
+
         if(DatabaseHandler.getUseDatabase()){
             LogHandler.display(1,"[+] Connecting to database");
             DatabaseHandler db = new DatabaseHandler();

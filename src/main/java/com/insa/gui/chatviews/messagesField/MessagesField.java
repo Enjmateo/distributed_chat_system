@@ -1,11 +1,9 @@
-package com.insa.gui.chattabs.messagesField;
+package com.insa.gui.chatviews.messagesField;
 
 import com.insa.communication.TextMessage;
 
 import javafx.scene.control.ListView;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 
 public class MessagesField extends ListView<VBox> {

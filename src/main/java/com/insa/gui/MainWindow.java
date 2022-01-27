@@ -2,38 +2,24 @@ package com.insa.gui;
 
 import com.insa.app.User;
 import com.insa.app.UsersHandler;
-import com.insa.communication.Data;
-import com.insa.gui.chattabs.UserDiscussionView;
 import com.insa.utils.*;
 
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-
-import java.net.Socket;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.ServerSocket;
 
 public class MainWindow {
     Stage window = new Stage();
@@ -151,32 +137,6 @@ public class MainWindow {
 
     }
 
-    /*
-    public synchronized static void updateList() {
-        Platform.runLater(new Runnable() {
-            public void run() {
-                LogHandler.display(1,"[+] Updating connected list");
-                listView.getItems().clear();
-                for(User user : UsersHandler.getAliveUsers()) {
-                    UserLabel label = new UserLabel(user);
-                    label.setOnMouseClicked(e->{
-                        targetUser=user;
-                        try {
-                            targetUser.connect();
-                        } catch (Exception e1) {
-                            ExitHandler.error(e1);
-                        }
-                        discussionHolder.getChildren().setAll(targetUser.getUserDiscussionView());
-                        targetUser.resetUnreadMessagesCount();
-                        
-                    });
-                    listView.getItems().add(label);
-                }
-            }
-        });
-        
-    }
-    */
     private void editPseudo(){
         pseudoField.setText(UsersHandler.getLocalUser().getPseudo());
         pseudoLayout.getChildren().setAll(pseudoField,validatePseudoButton);

@@ -10,7 +10,7 @@ public class LogHandler {
     // 4 Etats
     // 5 Problèmes
     // 6 SPAM
-    // 5, 6, 7, 8, 9, 10.....
+    // 6, 7, 8, 9, 10.....
     static ArrayList<Integer> logsToDisplay = new ArrayList<Integer>();
 
     public static void addAll(){

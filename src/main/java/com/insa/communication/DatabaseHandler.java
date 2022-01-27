@@ -5,7 +5,7 @@ import java.util.*;
 
 import com.insa.utils.Consts;
 import com.insa.utils.ExitHandler;
-import com.insa.utils.ObjectMessage;
+import com.insa.utils.LogHandler;
 
 public class DatabaseHandler {
     private static Connection conn;
@@ -128,7 +128,7 @@ public class DatabaseHandler {
      * @return ArrayList<ObjectMessage>
      */
     public static ArrayList<Message> getMessages(UUID uuid) {
-        ResultSet rs = executeQuery("SELECT * from " + Consts.DB_MAIN_TABLE + " WHERE `" + uuid.toString() + "`=sender OR `" + uuid.toString() + "`=receiver ORDER BY sendDate DESC");
+        ResultSet rs = executeQuery("SELECT * from " + Consts.DB_MAIN_TABLE + " WHERE sender='" + uuid.toString() + "' OR receiver='" + uuid.toString() + "' ORDER BY sendDate ASC");
         ArrayList<Message> messageList = new ArrayList<Message>();
 
         int id, contentId;
@@ -156,12 +156,14 @@ public class DatabaseHandler {
                         TextMessage msg = new TextMessage(sender, receiver, textContent);
                         messageList.add(msg);
 
-                        System.out.println("   [>] Text message found from "
+                        LogHandler.display(7, "   [>] Text message found from "
                                 + sender + " to "
                                 + receiver + ": "
                                 + textContent
                                 + " (id=" + id
                                 + ", date: " + timestamp + ").");
+
+                        LogHandler.display(7, "   [>] getSender give: " + msg.getSender().toString());
 
                         break;
                     case 2:
