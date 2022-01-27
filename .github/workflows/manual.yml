@@ -1,22 +1,15 @@
-name: Triggering a build manually 
+name: Manual build triggering 
 
 # A simple configuration file that allows you to trigger a build manually. 
 
 on: 
-  workflow_dispatch:
-    inputs:
-      comment:
-        description: 'Comment'     
-        required: false
+  workflow_dispatch
 
 jobs:
-  printInputs:
+  build:
     runs-on: ubuntu-latest
+    
     steps:
-    - run: |
-        echo "Comment: ${{ github.event.inputs.comment }}"
-  
-  steps:
     - uses: actions/checkout@v2
 
     - name: Set up JDK 11
