@@ -26,7 +26,8 @@ public class SendBar extends HBox{
     }
 
     private void buttonHandler() {
-        if(textField.getText()!=null)user.sendMessage(new TextMessage(user.getUUID(),textField.getText()));
+        if(textField.getText()!=null)
+        if(user.sendMessage(new TextMessage(user.getUUID(),textField.getText())))
         textField.clear();
     }
 }

@@ -129,15 +129,16 @@ public class MainWindow {
                     UserLabel label = new UserLabel(user);
                     label.setOnMouseClicked(e->{
                         targetUser=user;
+                        
                         if(targetUser.getStatus()==User.Status.AVAILABLE){
                             try {
                                 targetUser.connect();
                             } catch (Exception e1) {
-                                new ErrorWindow("User unreachable");
-                                return;
+                                new ErrorWindow("User unreachable, you can't send him messages");
                             }
                         }else if(targetUser.getStatus()==User.Status.WAITING){ 
-                            new ErrorWindow("User unavailable, you can't send him messages");
+                            new ErrorWindow("User unavailable yet, you can't send him messages");
+                            return;
                         }
                         discussionHolder.getChildren().setAll(targetUser.getUserDiscussionView());
                         targetUser.resetUnreadMessagesCount();

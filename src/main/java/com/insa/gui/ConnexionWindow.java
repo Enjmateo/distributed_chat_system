@@ -2,10 +2,12 @@ package com.insa.gui;
 
 import com.insa.app.UsersHandler;
 import com.insa.communication.Data;
+import com.insa.communication.DatabaseHandler;
 import com.insa.utils.*;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
@@ -29,6 +31,9 @@ public class ConnexionWindow {
 
 	Label pseudoLabel = new Label("Pseudo : ");
 	TextField pseudoField = new TextField();
+
+	CheckBox useDatabaseCheckBox = new CheckBox("Recover message history and save my messages");
+
 
 	Image logo = GUIUtils.getLogo();
 	ImageView logoView = new ImageView(logo);
@@ -58,9 +63,11 @@ public class ConnexionWindow {
 		buttonsLayout.setAlignment(Pos.CENTER);
 
 		VBox connectLayout = new VBox(Consts.ELEMENTS_GAP);
-		connectLayout.getChildren().addAll(logoView,connectLabel,pseudoLayout,buttonsLayout);
+		connectLayout.getChildren().addAll(logoView,connectLabel,pseudoLayout,useDatabaseCheckBox,buttonsLayout);
 		connectLayout.setAlignment(Pos.CENTER);
 		connectLayout.setPadding(new Insets(Consts.SCENE_PADDING,Consts.SCENE_PADDING,Consts.SCENE_PADDING,Consts.SCENE_PADDING));
+
+		useDatabaseCheckBox.setSelected(true);
 
 		pseudoField.setOnAction(e->connectButtonHandler());
 		configButton.setOnAction(e -> setConfigFile());
@@ -71,6 +78,7 @@ public class ConnexionWindow {
 		window.setScene(scene);
 		window.showAndWait();
 
+		DatabaseHandler.setDatabaseUse(useDatabaseCheckBox.isSelected());
 		//Si la fermeture n'est pas due au fait de mettre un pseudo on quitte l'application
 		if(!pseudoSet){
 			ExitHandler.exit();
@@ -104,14 +112,17 @@ public class ConnexionWindow {
 			new ErrorWindow(pseudo+" is already used, please choose another pseudo.");
 			return;
 		}
-		try {
-            InputStream fileInput = new FileInputStream(Consts.CONFIG_FILE);
-            fileInput.close();
-        } catch (IOException e) {
-            new ErrorWindow("No valid configuration found, please select the configuration file.");
-            return;
-        }
-		Data.reloadData();
+		if(useDatabaseCheckBox.isSelected()) {
+			try {
+				InputStream fileInput = new FileInputStream(Consts.CONFIG_FILE);
+				fileInput.close();
+			} catch (IOException e) {
+				new ErrorWindow("No valid configuration found, please select the configuration file.");
+				return;
+			}
+			Data.reloadData();
+		}
+		
 
         LogHandler.display(1,"[+] Sending pseudo choosen");
         UsersHandler.updateSelfPseudo(pseudo);

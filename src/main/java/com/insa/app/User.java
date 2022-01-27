@@ -1,5 +1,6 @@
 package com.insa.app;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import javafx.application.Platform;
@@ -36,7 +37,7 @@ public class User {
     private boolean instantAlive = false;    
     //Permet de détecter si l'utilisateur s'est notifié vivant 
 
-
+    private boolean historyRetrieved = false;
 
     private TCPObjectSender sender;
     private TCPObjectReceiver receiver;
@@ -77,6 +78,7 @@ public class User {
         this.uuid = uuid;
     }
 
+    // cas d'une connexion provoqué par l'autre
     public void connect(Socket socket) throws Exception {
         if(socket.getLocalPort()==Consts.TCP_PORT_A){
             receiver = new TCPObjectReceiver(socket,this);
@@ -85,9 +87,18 @@ public class User {
         }
         if(receiver != null & sender != null) this.status = Status.CONNECTED;
     }
+
+    private void retrieveHistory() {
+        historyRetrieved = true;
+        ArrayList<Message> messageList = DatabaseHandler.getMessages(uuid);
+        for(Message message : messageList) {
+            addMessage(message);
+        }
+    }
     
     public void connect() throws Exception {
             //if(receiver != null & sender != null) {return;}
+            if(DatabaseHandler.getUseDatabase() && !historyRetrieved) retrieveHistory();
             if(status == Status.CONNECTED) {return;}
             Socket socketA = new Socket();
             SocketAddress sAdressA = new InetSocketAddress(address, Consts.TCP_PORT_A);
@@ -164,7 +175,7 @@ public class User {
         return (this.pseudo == null? "undefined" : this.pseudo.getValue()) + " (" + this.uuid.toString() + ") : "+this.status+ (this.aliveProperty.getValue()?"":"(DEAD)");
     }
 
-    public void sendMessage(Message message) {
+    public boolean sendMessage(Message message) {
         LogHandler.display(3,"[+] Sending a new text message to "+this.address);
         try{ 
             sender.sendMessageObject((ObjectMessage) message);          
@@ -176,23 +187,27 @@ public class User {
                 LogHandler.display(5,"  [-] Reconnecting");
                 connect();
                 LogHandler.display(5,"[+] Succes");
-                sendMessage(message);
+                return sendMessage(message);
             } catch(Exception e1){
                 new ErrorWindow("User unreachable");
                 LogHandler.display(5,"[-] Failed");
+                return false;
             }
 
         }
         //TODO avec la base de données ----------------------------------------------------
         //discussion.addMessage(message);
         //message.sendToDatabase();
+        if(DatabaseHandler.getUseDatabase())message.sendToDatabase();
         getUserDiscussionView().addMessage(message,true);
+        return true;
     }
     public void addMessage(Message message) {
         
         Platform.runLater(new Runnable() {
             public void run() {
-                getUserDiscussionView().addMessage(message,false);
+                //On ajoute le message en fonction de qui il vient 
+                getUserDiscussionView().addMessage(message,((ObjectMessage)message).getSender()==UsersHandler.getLocalUser().getUUID());
                 unreadMessagesCount.set(unreadMessagesCount.getValue()+1);
             }
         });

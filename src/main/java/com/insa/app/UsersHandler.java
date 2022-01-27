@@ -3,17 +3,12 @@ import java.util.*;
 import java.net.*;
 import java.util.stream.*;
 
-import javax.swing.SwingUtilities;
-
 import com.insa.communication.*;
-import com.insa.gui.MainWindow;
 import com.insa.utils.Consts;
 import com.insa.utils.ExitHandler;
 import com.insa.utils.LogHandler;
 import com.insa.utils.udp.ConfigMessage;
 import com.insa.utils.udp.UDPObjectSender;
-
-import javafx.application.Platform;
 
 public class UsersHandler extends Thread {
     static private User self;
@@ -44,8 +39,7 @@ public class UsersHandler extends Thread {
 
     public synchronized static void addUser(User user) {
         users.add(user);
-        //TODO MVC
-        MainWindow.addUser(user);
+
     }
     
     /**

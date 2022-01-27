@@ -9,6 +9,7 @@ import com.insa.utils.ObjectMessage;
 
 public class DatabaseHandler {
     private static Connection conn;
+    static boolean useDatabase;
 
     public DatabaseHandler() {
         try {
@@ -44,6 +45,13 @@ public class DatabaseHandler {
             ExitHandler.error(e);
         }
         return rs;
+    }
+
+    public static void setDatabaseUse(boolean use) {
+        useDatabase = use;
+    }
+    public static boolean getUseDatabase() {
+        return useDatabase;
     }
 
     protected static void executeUpdate(String q, boolean ignore) {
@@ -120,7 +128,7 @@ public class DatabaseHandler {
      * @return ArrayList<ObjectMessage>
      */
     public static ArrayList<Message> getMessages(UUID uuid) {
-        ResultSet rs = executeQuery("SELECT * from " + Consts.DB_MAIN_TABLE);
+        ResultSet rs = executeQuery("SELECT * from " + Consts.DB_MAIN_TABLE + " WHERE `" + uuid.toString() + "`=sender OR `" + uuid.toString() + "`=receiver ORDER BY sendDate DESC");
         ArrayList<Message> messageList = new ArrayList<Message>();
 
         int id, contentId;

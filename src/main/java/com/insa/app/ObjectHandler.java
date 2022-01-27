@@ -64,9 +64,14 @@ public class ObjectHandler {
         //On mets à jour l'adresse IP de l'utilisateur 
         user.setInetAddress(obj.getAddress());
 
-        // S'il y a une modification de pseudo : 
+        // S'il y a une modification de pseudo où la création : 
         if (obj.getPseudo()!= null && !obj.getPseudo().equals(user.getPseudo())) {
-            user.setStatus(User.Status.AVAILABLE);
+            //Dans le cas où on reçoit pour la première fois le pseudo
+            if(user.getStatus()==User.Status.WAITING){
+                user.setStatus(User.Status.AVAILABLE);
+                //TODO MVC (on l'ajoute à la main window)
+                MainWindow.addUser(user);
+            }
             LogHandler.display(2,"[+] Updating pseudo for " + obj.getPseudo());
             user.setPseudo(obj.getPseudo());
         }

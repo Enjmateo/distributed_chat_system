@@ -1,6 +1,7 @@
 package com.insa.app;
 
 import com.insa.communication.Data;
+import com.insa.communication.DatabaseHandler;
 import com.insa.gui.ConnexionWindow;
 import com.insa.gui.MainWindow;
 import com.insa.utils.Consts;
@@ -49,6 +50,14 @@ public class App extends Application {
 
         LogHandler.display(1,"[+] Printing connexion window");
         connexionWindow.start();
+        
+        if(DatabaseHandler.getUseDatabase()){
+            LogHandler.display(1,"[+] Connecting to database");
+            DatabaseHandler db = new DatabaseHandler();
+            db.connect();
+        }
+        
+        
 
         mainWindow.start();
               
