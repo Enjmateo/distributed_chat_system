@@ -46,6 +46,7 @@ public class MainWindow {
         //Pseudo set
         HBox pseudoLayout = new HBox(Consts.ELEMENTS_GAP);
             Label pseudoLabel = new Label();
+            HBox pseudoLabelContainer = new HBox();
             Button settingsButton = new Button("⚙");
 
             TextField pseudoField = new TextField();
@@ -64,36 +65,45 @@ public class MainWindow {
         window.setTitle("ODD");
         window.setMinHeight(Consts.MW_MIN_HEIGHT);
         window.setMinWidth(Consts.MW_MIN_WIDTH);
-        //window.setMaxHeight(Consts.MW_MIN_HEIGHT);
-        //window.setMaxWidth(Consts.MW_MIN_WIDTH);
-        //LogoView
+
         logoView.setPreserveRatio(true);
 		logoView.setFitWidth(Consts.MW_IMAGE_SIZE);
+
+        settingsButton.setOnAction(e->editPseudo());
+        settingsButton.setCursor(Cursor.HAND);
 
         //Pseudo set
         pseudoLabel.setOnMouseClicked(e-> editPseudo());
         validatePseudoButton.setOnAction(e-> validateNewPseudo());
         pseudoField.setOnAction(e-> validateNewPseudo());
-    
-        pseudoLabel.setText(UsersHandler.getLocalUser().getPseudo());
+        
+        pseudoLabelContainer.getChildren().add(pseudoLabel);
+        HBox.setHgrow(pseudoLabelContainer, Priority.ALWAYS);
+
+        pseudoLabel.textProperty().bind(UsersHandler.getLocalUser().getPseudoProperty());
         pseudoLabel.setFont(Font.font(Font.getDefault().toString(),FontWeight.BOLD,15));
         pseudoLabel.setCursor(Cursor.HAND);
-        pseudoLayout.getChildren().addAll(pseudoLabel,settingsButton);
+        //pseudoLayout.setPrefWidth(Consts.MW_IMAGE_SIZE);
+    
+        pseudoLayout.getChildren().addAll(pseudoLabelContainer,settingsButton);
         //HBox.setHgrow(pseudoLayout, Priority.ALWAYS);
         //pseudoLayout.setAlignment(Pos.CENTER);
        
-        VBox pseudoAndLogoLayout = new VBox(Consts.ELEMENTS_GAP);
+        VBox pseudoAndLogoLayout = new VBox(Consts.FIELDS_GAP);
         pseudoAndLogoLayout.getChildren().addAll(logoView,pseudoLayout);
         pseudoAndLogoLayout.setMinHeight(Consts.IM_AND_PSEU_MIN_HEIGHT);
-        pseudoAndLogoLayout.setMinWidth(Consts.IM_AND_PSEU_MIN_WIDTH);
+        pseudoAndLogoLayout.setMinWidth(Consts.MW_IMAGE_SIZE);
 
-        listView.setMinHeight(300);
+        VBox.setVgrow(listView, Priority.ALWAYS);
+        listView.setMaxWidth(Consts.MW_IMAGE_SIZE);
 
-        VBox leftLayout = new VBox(Consts.ELEMENTS_GAP);
+        VBox leftLayout = new VBox(Consts.FIELDS_GAP);
         leftLayout.getChildren().addAll(pseudoAndLogoLayout,listView);
 
+        HBox.setHgrow(discussionHolder, Priority.ALWAYS);
 
         HBox mainlayout = new HBox(Consts.ELEMENTS_GAP);
+        mainlayout.setPadding(new Insets(10)); //TODO conts
         mainlayout.getChildren().addAll(leftLayout,discussionHolder);
 
         Scene scene = new Scene(mainlayout);
@@ -169,11 +179,10 @@ public class MainWindow {
         if(UsersHandler.getPseudos().contains(pseudo)){
             new ErrorWindow(pseudo+" is already used, please choose another pseudo.");
         }else{ 
-            pseudoLabel.setText(pseudo);
             UsersHandler.updateSelfPseudo(pseudo);
         }
         
-        pseudoLayout.getChildren().setAll(pseudoLabel,settingsButton);
+        pseudoLayout.getChildren().setAll(pseudoLabelContainer,settingsButton);
     }
 
 }

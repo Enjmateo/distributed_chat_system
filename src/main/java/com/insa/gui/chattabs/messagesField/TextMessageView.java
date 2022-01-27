@@ -20,7 +20,7 @@ public class TextMessageView extends VBox {
     boolean sent;
 
     public TextMessageView(TextMessage message, boolean sent){
-        super.setPrefWidth(Consts.MESSAGES_WIDTH);
+        super.setPrefWidth(10);
         //super.setMaxWidth(Consts.MESSAGES_WIDTH);
         this.sent = sent;
         this.textLabel = new Label(message.getContent());

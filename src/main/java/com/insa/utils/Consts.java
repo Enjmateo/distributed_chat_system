@@ -30,13 +30,13 @@ public class Consts {
     final static public double IMAGE_CONNECTION_WINDOW_SIZE = 300;
 
     //Main window
-    final static public double MW_MIN_HEIGHT = 500;
-    final static public double MW_MIN_WIDTH = 600;
+    final static public double MW_MIN_HEIGHT = 300;
+    final static public double MW_MIN_WIDTH = 500;
 
-    final static public double IM_AND_PSEU_MIN_HEIGHT = 300;
+    final static public double IM_AND_PSEU_MIN_HEIGHT = 140;
     final static public double IM_AND_PSEU_MIN_WIDTH = 200;
 
-    final static public double MW_IMAGE_SIZE = 200;
+    final static public double MW_IMAGE_SIZE = 220;
     final static public double SCENE_PADDING = 20;
 	final static public double FIELDS_GAP = 10;
 	final static public double ELEMENTS_GAP = 20;
