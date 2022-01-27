@@ -52,11 +52,11 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} 
-        asset_path: ./target/distributed_chat_system-${{ steps.project.outputs.version }}-jar-with-dependencies.jar
-        asset_name: release.jar
-        asset_content_type: application/jar
-
+        tag_name: ${{ steps.project.outputs.version }}
+        release_name: Release ${{ steps.project.outputs.version }}
+        prerelease: true
+        draft: false
+        body: "🚀 A new version of ODD is available (${{ steps.project.outputs.version }}, ${{ steps.date.outputs.date }})! \nTo ensure a better experience, we recommend updating to this version.\n⚠️ Warning: The different versions of the software are not compatible with each other. "
 
   nightly:
     runs-on: ubuntu-latest
@@ -93,10 +93,10 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ steps.project.outputs.version }}-nightly
-        release_name: Release ${{ steps.project.outputs.version }}-nightly
+        release_name: Pre-release ${{ steps.project.outputs.version }}-nightly
         prerelease: true
         draft: false
-        body: "Nightly release (${{ steps.date.outputs.date }}). This version is not intended to be used in production. For development purposes.\nLogs: ${{ github.event.head_commit.message }}"
+        body: "🌌 Nightly release (${{ steps.date.outputs.date }}). This version is not intended to be used in production. For development purposes.\nLogs: ${{ github.event.head_commit.message }}"
 
     - name: Upload release asset to GitHub
       id: upload-release-asset 
