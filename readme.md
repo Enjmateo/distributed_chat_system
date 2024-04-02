@@ -36,5 +36,5 @@ Le [rapport](rapport.pdf) comprend deux manuels : utilisateur (*section 1*) et a
 ## Contact
 Pour plus d'informations ou pour toute question : [Manah](https://manah.fr), [Enjmateo](https://github.com/Enjmateo).
 
----
+-----
 
